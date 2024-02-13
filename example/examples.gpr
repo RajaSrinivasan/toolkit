@@ -1,0 +1,27 @@
+with "../adalib/adalib.gpr";
+with "../adalib/config/adalib_config.gpr";
+
+abstract project examples is
+
+   for Create_Missing_Dirs use "True";
+   for Exec_Dir use "../bin";
+   for Object_Dir use "obj/" ;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
+
+   package Linker is
+      case adalib_config.Alire_Host_OS is
+         when "macos" =>
+            for Switches("Ada") use ("-L/opt/homebrew/lib","-lgsl","-lgslcblas");
+         when others =>
+            for Switches("Ada") use ("-lgsl","-lgslcblas");
+      end case;
+   end Linker;
+
+end examples;

@@ -1,6 +1,5 @@
 with Ada.Streams.Stream_IO;
 with Ada.Directories ;
-
 package body Hex.dump.file is
    procedure Dump
      (filename    : String;
@@ -18,11 +17,12 @@ package body Hex.dump.file is
       filesize := Ada.Directories.Size( filename );
       if not bare
       then
-         Ada.Text_IO.Put (Outfile, "* Dump of *********");
+         Ada.Text_IO.Put (Outfile, "Dump of ");
          Ada.Text_IO.Put (Outfile, filename);
          Ada.Text_Io.Put (Outfile," Size : ") ;
          Ada.Text_Io.Put (Outfile,Integer'Image(Integer(filesize))) ;
-         Ada.Text_IO.Put_Line (Outfile, " *********************************");
+         Ada.Text_Io.New_Line;
+         --Ada.Text_IO.Put_Line (Outfile, " *********************************");
       end if ;
 
       Ada.Streams.Stream_IO.Open
