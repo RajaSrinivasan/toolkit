@@ -1,8 +1,10 @@
+with Ada.Text_Io; use Ada.Text_Io;
 package body Hex is
 
    use System;
 
-   Nibble_Hex : constant String := "0123456789ABCDEF";
+   Nibble_Hex_UC : constant String := "0123456789ABCDEF";
+   Nibble_Hex : constant String :=    "0123456789abcdef";
 
    function Value (Hex : Character) return Interfaces.Unsigned_8 is
    begin
@@ -74,6 +76,7 @@ package body Hex is
       loop
          result(rptr) := Value(Hex(2*Integer(rptr)-1..2*Integer(rptr)));
       end loop ;
+      Put_Line(hex);
      return result;
    end Value;
 
