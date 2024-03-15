@@ -2,6 +2,9 @@ with System.Storage_Elements; use System.Storage_Elements;
 with Ada.Characters.Handling;
 with Ada.Text_IO;             use Ada.Text_IO;
 with Ada.Integer_Text_IO;     use Ada.Integer_Text_IO;
+with Ada.Streams.Stream_IO;
+with Ada.Directories ;
+
 with GNAT.Debug_Utilities;
 
 package body Hex.dump is
@@ -40,7 +43,7 @@ package body Hex.dump is
       end CharImage;
 
    begin
-      Put_Line("Dumping block");
+
       for B in 1 .. No_Blocks loop
          Blockstart := (B - 1) * Blocklen + 1;
          if bare
@@ -88,5 +91,60 @@ package body Hex.dump is
          exit when Lengthleft = 0;
       end loop;
    end Dump;
+
+
+
+   procedure Dump
+     (filename    : String;
+      show_offset : Boolean               := True;
+      bare : Boolean := False ;
+      Blocklen    : Integer               := DEFAULT_BLOCK_LENGTH;
+      Outfile     : Ada.Text_IO.File_Type := Ada.Text_IO.Standard_Output)
+   is
+      use Ada.Streams;
+      file   : Ada.Streams.Stream_IO.File_Type;
+      stream : Ada.Streams.Stream_IO.Stream_Access;
+      filesize : Ada.Directories.File_Size ;
+   begin
+      
+      filesize := Ada.Directories.Size( filename );
+      if not bare
+      then
+         Ada.Text_IO.Put (Outfile, "Dump of ");
+         Ada.Text_IO.Put (Outfile, filename);
+         Ada.Text_Io.Put (Outfile," Size : ") ;
+         Ada.Text_Io.Put (Outfile,Integer'Image(Integer(filesize))) ;
+         Ada.Text_Io.New_Line;
+         --Ada.Text_IO.Put_Line (Outfile, " *********************************");
+      end if ;
+
+      Ada.Streams.Stream_IO.Open
+        (file,
+         Ada.Streams.Stream_IO.In_File,
+         filename);
+      stream := Ada.Streams.Stream_IO.Stream (file);
+      declare
+        buffer : Ada.Streams.Stream_Element_Array
+                 (1 .. Ada.Streams.Stream_Element_Offset (filesize));
+        bufferlen : Ada.Streams.Stream_Element_Offset;
+      begin
+          stream.Read (buffer, bufferlen);
+          if bufferlen > 0 then
+              Hex.dump.Dump
+                (buffer'Address,
+                 Integer (bufferlen),
+                 bare => bare,
+                 show_offset => show_offset ,
+                 blocklen => Blocklen ,
+                 outfile => Outfile );
+          end if ;
+      end ;
+      Ada.Streams.Stream_IO.Close (file);
+   exception
+      when others =>
+         Ada.Text_Io.Put_Line("Exception");
+         raise;
+   end Dump;
+
 
 end Hex.dump;
