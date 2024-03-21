@@ -57,18 +57,25 @@ package body logging is
 
    procedure SendMessage
      ( message : String ;
+       level : message_level_type := INFORMATIONAL;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) is
    begin
-      SendMessage(Current_Destination.all,message,source,class);
+      SendMessage(Current_Destination.all,message,level,source,class);
    end SendMessage;
 
   procedure SendMessage
      ( dest : StdOutDestination_Type ;
        message : String ;
+       level : message_level_type := INFORMATIONAL ;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) is
    begin
+      Put(Ada.Calendar.Formatting.Image (Ada.Calendar.Clock)); Put(" ");
+
+      Put(source); Put(" ");
+      Put(class); Put(" ");
+      Put(Image(level)); Put(" ");
       Put(message);
       New_Line;
    end SendMessage;

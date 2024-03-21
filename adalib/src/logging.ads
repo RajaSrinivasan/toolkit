@@ -29,6 +29,7 @@ package logging is
  
    procedure SendMessage
      ( message : String ;
+       level : message_level_type := INFORMATIONAL;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class );
  
@@ -38,7 +39,8 @@ package logging is
    procedure SetDestination (destination : access Destination_Type'Class);
    procedure SendMessage
      ( dest : Destination_Type ;
-       message : String ;
+       message : String  ;
+       level : message_level_type := INFORMATIONAL;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) is abstract ;
 
@@ -50,6 +52,7 @@ package logging is
   procedure SendMessage
      ( dest : StdOutDestination_Type ;
        message : String ;
+       level : message_level_type := INFORMATIONAL ;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) ;
 
