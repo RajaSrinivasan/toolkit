@@ -1,0 +1,62 @@
+with Calendar;
+with System.Storage_Elements;
+with Interfaces.C;
+with Interfaces.C.Strings;
+
+with Ada.Calendar;
+with Ada.Text_IO;              use Ada.Text_IO;
+with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
+with Ada.Strings.Fixed;
+with Ada.Streams;              use Ada.Streams;
+
+package logging is
+
+   subtype message_level_type is Natural;
+
+   CRITICAL      : constant message_level_type := 10;
+   ERROR         : constant message_level_type := 20;
+   WARNING       : constant message_level_type := 30;
+   INFORMATIONAL : constant message_level_type := 40;
+   function Image (level : message_level_type) return String;
+
+   subtype Source_Name_Type is String(1..6) ;
+   Default_Source_Name : Source_Name_Type := (others => '.');
+
+   subtype Message_Class_Type is String (1 .. 6);
+   Default_Message_Class : Message_Class_Type := (others => '.');
+
+   function Time_Stamp return String;
+ 
+   procedure SendMessage
+     ( message : String ;
+       source : String := Default_Source_Name ;
+       class : String := Default_Message_Class );
+ 
+  type Destination_Type is abstract tagged record
+      null ;
+   end record;
+   procedure SetDestination (destination : access Destination_Type'Class);
+   procedure SendMessage
+     ( dest : Destination_Type ;
+       message : String ;
+       source : String := Default_Source_Name ;
+       class : String := Default_Message_Class ) is abstract ;
+
+   type StdOutDestination_Type is new Destination_Type with record
+      null;
+   end record;
+
+  overriding
+  procedure SendMessage
+     ( dest : StdOutDestination_Type ;
+       message : String ;
+       source : String := Default_Source_Name ;
+       class : String := Default_Message_Class ) ;
+
+   procedure SelfTest;
+
+private
+   Current_Destination : access Destination_Type'Class ;
+
+
+end logging;
