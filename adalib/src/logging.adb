@@ -71,15 +71,21 @@ package body logging is
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) is
    begin
-      Put(Ada.Calendar.Formatting.Image (Ada.Calendar.Clock)); Put(" ");
-
-      Put(source); Put(" ");
-      Put(class); Put(" ");
-      Put(Image(level)); Put(" ");
-      Put(message);
-      New_Line;
+      Put_Line(Image(message,level,source,class));
    end SendMessage;
 
+   function Image
+     ( message : String ;
+       level : message_level_type := INFORMATIONAL;
+       source : String := Default_Source_Name ;
+       class : String := Default_Message_Class ) return String is
+   begin
+      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock) & " " &
+             source & " " &
+             class & " " &
+             Image(level) & " " &
+             message ;
+   end Image ;
 
    procedure SelfTest is
    begin
