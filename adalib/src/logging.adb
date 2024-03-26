@@ -52,6 +52,10 @@ package body logging is
 
    procedure SetDestination (destination : access Destination_Type'Class) is
    begin
+      if Current_Destination /= null
+      then
+         Close(Current_Destination.all) ;
+      end if ;
       Current_Destination := destination;
    end SetDestination;
 
@@ -64,6 +68,7 @@ package body logging is
       SendMessage(Current_Destination.all,message,level,source,class);
    end SendMessage;
 
+  overriding
   procedure SendMessage
      ( dest : StdOutDestination_Type ;
        message : String ;
@@ -73,6 +78,11 @@ package body logging is
    begin
       Put_Line(Image(message,level,source,class));
    end SendMessage;
+   overriding
+   procedure Close(desg : StdOutDestination_Type) is
+   begin
+      null ;
+   end Close ;
 
    function Image
      ( message : String ;

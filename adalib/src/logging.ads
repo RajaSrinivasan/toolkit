@@ -49,7 +49,8 @@ package logging is
        level : message_level_type := INFORMATIONAL;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) is abstract ;
-
+   procedure Close(desg : Destination_Type) is abstract ;
+   
    type StdOutDestination_Type is new Destination_Type with record
       null;
    end record;
@@ -61,7 +62,9 @@ package logging is
        level : message_level_type := INFORMATIONAL ;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) ;
-
+   overriding
+   procedure Close(desg : StdOutDestination_Type) ;
+   
    procedure SelfTest;
 
 private

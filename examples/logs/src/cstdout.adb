@@ -27,6 +27,11 @@ use logging;
       end case ;
       New_Line;
    end SendMessage;
-begin
-    logging.SetDestination(handle'access);
+
+    overriding
+    procedure Close(dest : cStdoutDestinationType) is
+    begin
+        null ;
+    end Close ;
+
 end cstdout;

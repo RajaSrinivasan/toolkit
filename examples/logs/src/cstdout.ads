@@ -12,7 +12,9 @@ package cstdout is
        source : String := logging.Default_Source_Name ;
        class : String := logging.Default_Message_Class ) ;
 
-        
+    overriding
+    procedure Close(dest : cStdoutDestinationType);
+    
     handle : aliased cStdoutDestinationType ;
 
 end cstdout ;
