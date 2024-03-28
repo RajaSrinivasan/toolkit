@@ -1,19 +1,13 @@
-with Ada.Strings.Unbounded ;
+package Morsecode is
 
-package MorseCode is
-    pragma Elaborate_Body;
-    type basic is
-    (
-        dot ,           -- Dot
-        dash ,          -- Dash
-        gap ,           -- Intra Letter space
-        lspace ,        -- Letter space
-        wspace          -- Word space
-    );
+   type Alphabet is (Dot, Dash);
 
-    type CodeType is array (character) of 
-              Ada.Strings.Unbounded.Unbounded_String ;
-    function Code( c : Character ) return String ;
-private
-    fullcode : CodeType ;
-end MorseCode ;
+   type Letter_Representation is array (Natural range <>) of Alphabet;
+   type Letter is access constant Letter_Representation;
+   type Word is array (Natural range <>) of Letter;
+
+   function Translate (C : Character) return Letter_Representation;
+
+   Unsupported_Character : exception;
+
+end Morsecode;
