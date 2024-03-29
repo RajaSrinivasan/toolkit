@@ -1,4 +1,5 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_Io; use Ada.Text_Io;
 with realtime ; use realtime ;
 
 package body morsecode.signal is
@@ -6,18 +7,24 @@ package body morsecode.signal is
     procedure Generate( C : character ) is
         code : Letter_Representation := Translate(C);
     begin
+        Put(c); New_Line;
         for a in code'Range
         loop
             case code(a) is
                 when Dot => 
                         realtime.Set( simled , true );
                         delay Span(dot);
+                        Put(" ");
                         realtime.Set( simled , false );
+                        Put_Line( " .");
                         delay Span(minigap);
+
                 when Dash =>
                         realtime.Set( simled , true );
                         delay Span(dash);
+                        Put(" ");
                         realtime.Set( simled , false );
+                        Put_Line( " -");
                         delay Span(minigap);
                 when others => null ;
             end case;
@@ -31,6 +38,7 @@ package body morsecode.signal is
         loop
             Generate(s(c));
             delay Span(gap);
+            New_Line;
         end loop ;
         delay Span(macrogap);
     end Generate ;
