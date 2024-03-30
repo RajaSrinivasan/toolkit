@@ -3,8 +3,8 @@ with Ada.Text_Io; use Ada.Text_Io;
 with realtime ; use realtime ;
 
 package body morsecode.signal is
-    simled : SimLED_Type ;
-    procedure Generate( C : character ) is
+
+    procedure Generate( C : character ; led : realtime.LED_Type'Class := simled ) is
         code : Letter_Representation := Translate(C);
     begin
         Put(c); New_Line;
@@ -14,17 +14,17 @@ package body morsecode.signal is
                 when Dot => 
                         realtime.Set( simled , true );
                         delay Span(dot);
-                        Put(" ");
+                        About(led," ");
                         realtime.Set( simled , false );
-                        Put_Line( " .");
+                        About(led," .");
                         delay Span(minigap);
 
                 when Dash =>
                         realtime.Set( simled , true );
                         delay Span(dash);
-                        Put(" ");
+                        About(led," ");
                         realtime.Set( simled , false );
-                        Put_Line( " -");
+                        About(led," -");
                         delay Span(minigap);
                 when others => null ;
             end case;
@@ -32,11 +32,11 @@ package body morsecode.signal is
         delay Span(gap);
     end Generate ;
 
-    procedure Generate( S : string ) is
+    procedure Generate( S : String ; led : realtime.LED_Type'Class := simled  ) is
     begin
         for c in S'Range
         loop
-            Generate(s(c));
+            Generate(s(c),led);
             delay Span(gap);
             New_Line;
         end loop ;
