@@ -12,18 +12,18 @@ package body morsecode.signal is
         loop
             case code(a) is
                 when Dot => 
-                        realtime.Set( simled , true );
+                        realtime.Set( led , true );
                         delay Span(dot);
                         About(led," ");
-                        realtime.Set( simled , false );
+                        realtime.Set( led , false );
                         About(led," .");
                         delay Span(minigap);
 
                 when Dash =>
-                        realtime.Set( simled , true );
+                        realtime.Set( led , true );
                         delay Span(dash);
                         About(led," ");
-                        realtime.Set( simled , false );
+                        realtime.Set( led , false );
                         About(led," -");
                         delay Span(minigap);
                 when others => null ;
