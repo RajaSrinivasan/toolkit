@@ -23,22 +23,29 @@ package body realtime is
         Flush ;
     end About ;
 
-   task body SimButton_Type is
+   task body Button_Type is
       laststate : boolean ;
+      d : duration ;
+      h : Integer ;
+      a : acquire ;
    begin
       accept Monitor( name : String ; cadence : duration; handle : Integer ; acq : acquire ) do
-         loop
-            select
-               accept Last( last : out Boolean ) do
-                  last := laststate ;
-               end Last ;
-            or
-               delay cadence ;
-            end select ;
-            laststate := acq.all (handle) ;
-         end loop ;
+         d := cadence ;
+         h := handle ;
+         a := acq ;
       end Monitor ;
-   end SimButton_Type;
+      Put_Line("Started monitoring button");
+      loop
+         select
+            accept Last( last : out Boolean ) do
+               last := laststate ;
+            end Last ;
+         or
+            delay d ;
+         end select ;
+         laststate := a.all (h) ;
+      end loop ;
+   end Button_Type;
 
 
 end realtime ;

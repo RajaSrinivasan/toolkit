@@ -16,16 +16,9 @@ package realtime is
    
    type acquire is access function ( h : Integer ) return Boolean ;
    
-   type Button_Type is task interface ;
-   procedure Monitor( b : Button_Type ; name : String ; cadence : duration ; handle : Integer ; acq : acquire) is null ;
-   procedure Last( b : Button_Type ; last : out Boolean ) is null ; 
-      
-   task type SimButton_Type is new Button_Type with
-      entry Monitor( name : String ; cadence : duration ; handle : Integer ; acq : acquire ) ;
-      entry Last( last : out Boolean ) ; 
-   end SimButton_Type;
-
-
-
+   task type Button_Type is
+      entry Monitor( name : String ; cadence : duration ; handle : Integer ; acq : acquire) ;
+   	entry Last( last : out Boolean ) ; 
+   end Button_Type ;
    
 end realtime ;
