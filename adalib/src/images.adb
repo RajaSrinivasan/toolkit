@@ -26,7 +26,7 @@ package body images is
       imglen := snprintf_int( buffer(1)'Address , Interfaces.C.size_t(buffer'length) ,
                           Interfaces.C.To_C( format ) ,
                           Interfaces.C.int(value) ) ;
-      return buffer(1..Integer(imglen-1));
+      return buffer(1..Integer(imglen));
    end Image ;
 
 end images ;
