@@ -15,9 +15,10 @@ package realtime is
    procedure About( led : SimLED_Type ; s : String );
    
    type acquire is access function ( h : Integer ) return Boolean ;
+   type statechange is access procedure ( h : Integer ; newstate : boolean );
    
    task type Button_Type is
-      entry Monitor( name : String ; cadence : duration ; handle : Integer ; acq : acquire) ;
+      entry Monitor( name : String ; cadence : duration ; handle : Integer ; acq : not null acquire  ; st : not null statechange) ;
    	entry Last( last : out Boolean ) ; 
    end Button_Type ;
    

@@ -14,5 +14,8 @@ package body simbutton is
     	    if state then state := false ; else state := true ; end if ;
     	end loop ;
     end noise ;    
-    
+    procedure changed( handle : integer ; newstate : boolean ) is
+    begin
+        Put("Changed "); Put_Line(newstate'Image);
+    end changed ;
 end simbutton;

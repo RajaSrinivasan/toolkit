@@ -28,11 +28,16 @@ package body realtime is
       d : duration ;
       h : Integer ;
       a : acquire ;
+      s : statechange ;
+      me : Unbounded_String ;
    begin
-      accept Monitor( name : String ; cadence : duration; handle : Integer ; acq : acquire ) do
+      accept Monitor( name : String ; cadence : duration; handle : Integer ; acq : not null acquire  ; st : not null statechange ) do
          d := cadence ;
          h := handle ;
          a := acq ;
+         s := st ;
+         me := To_Unbounded_String(name);
+         laststate := a.all( h ) ;
       end Monitor ;
       Put_Line("Started monitoring button");
       loop
@@ -43,7 +48,11 @@ package body realtime is
          or
             delay d ;
          end select ;
-         laststate := a.all (h) ;
+         if laststate /= a.all(h)
+         then
+            laststate := not laststate ;
+            s.all(h,laststate);
+         end if ;
       end loop ;
    end Button_Type;
 
