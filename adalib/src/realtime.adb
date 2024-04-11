@@ -1,7 +1,7 @@
 with Ada.Text_Io; use Ada.Text_Io;
 
 package body realtime is
-    use Ada.Strings.Unbounded ;
+
     overriding
     procedure Set( led : SimLED_TYPE ; state : Boolean ) is
     begin
@@ -22,5 +22,23 @@ package body realtime is
         Put(s);
         Flush ;
     end About ;
+
+   task body SimButton_Type is
+      laststate : boolean ;
+   begin
+      accept Monitor( name : String ; cadence : duration; handle : Integer ; acq : acquire ) do
+         loop
+            select
+               accept Last( last : out Boolean ) do
+                  last := laststate ;
+               end Last ;
+            or
+               delay cadence ;
+            end select ;
+            laststate := acq.all (handle) ;
+         end loop ;
+      end Monitor ;
+   end SimButton_Type;
+
 
 end realtime ;
