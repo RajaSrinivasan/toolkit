@@ -21,6 +21,11 @@ procedure Print is
       Put( images.Image(Argument(3) , v ));
       New_Line;
    end T3 ;
+   procedure T4 is
+   begin
+      Put( images.Image(Argument(3) , Argument(2) ));
+      New_Line;
+   end T4 ;   
 begin
    if Argument(1) = "t1"
    then
@@ -31,5 +36,10 @@ begin
    elsif Argument(1) = "t3"
    then
       T3 ;
+   elsif Argument(1) = "t4"
+   then
+      T4 ;
+   else
+      Put_Line("?");
    end if ;
 end Print;
