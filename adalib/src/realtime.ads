@@ -18,8 +18,9 @@ package realtime is
    type statechange is access procedure ( h : Integer ; newstate : boolean );
    
    task type Button_Type is
-      entry Monitor( name : String ; cadence : duration ; handle : Integer ; acq : not null acquire  ; st : not null statechange) ;
+    entry Monitor( name : String ; cadence : duration ; handle : Integer ; acq : not null acquire  ; st : not null statechange) ;
    	entry Last( last : out Boolean ) ; 
    end Button_Type ;
+   type Button_Ptr_Type is access Button_Type ;
    
 end realtime ;
