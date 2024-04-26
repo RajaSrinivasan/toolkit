@@ -1,4 +1,6 @@
+with Ada.Text_Io; use Ada.Text_Io;
 with Ada.Strings.Fixed ;
+
 with Values; 
 
 package body fields is
@@ -15,7 +17,7 @@ package body fields is
       begin
         if fmt'Length > 0
         then
-            result.Append( Values.Value(ids,fmt) );
+            result.Append( Values.Value(fmt,ids) );
         else
             result.Append(  Integer'Value(ids) ) ;
         end if ;
