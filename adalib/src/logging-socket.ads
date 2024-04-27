@@ -5,6 +5,7 @@ package logging.socket is
    type SocketDestination_Type is new Destination_Type with
       record
          s : GNAT.Sockets.Socket_Type ;
+         dest : access GNAT.Sockets.Sock_Addr_Type ;
       end record;
    type SocketDestinationPtr_Type is access all SocketDestination_Type ;
 
