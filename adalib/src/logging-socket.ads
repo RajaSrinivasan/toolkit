@@ -22,4 +22,14 @@ package logging.socket is
    overriding
    procedure Close(dest : SocketDestination_Type) ;
 
+    MAX_MESSAGE_SIZE : constant := Short_Short_Integer'last ;
+    type Message_Type is
+    record
+        l : message_level_type ;
+        s : Source_Name_Type ;
+        c : Message_Class_Type ;
+        ml : Short_Short_Integer ;
+        mt : String(1..MAX_MESSAGE_SIZE) ;
+    end record ;
+
 end logging.socket ;
