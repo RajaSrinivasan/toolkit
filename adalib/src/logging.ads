@@ -44,7 +44,7 @@ package logging is
    end record;
    procedure SetDestination (destination : access Destination_Type'Class);
    procedure SendMessage
-     ( dest : Destination_Type ;
+     ( dest : in out Destination_Type ;
        message : String  ;
        level : message_level_type := INFORMATIONAL;
        source : String := Default_Source_Name ;
@@ -57,7 +57,7 @@ package logging is
 
   overriding
   procedure SendMessage
-     ( dest : StdOutDestination_Type ;
+     ( dest : in out StdOutDestination_Type ;
        message : String ;
        level : message_level_type := INFORMATIONAL ;
        source : String := Default_Source_Name ;

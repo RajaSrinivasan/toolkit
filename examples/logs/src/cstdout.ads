@@ -6,7 +6,7 @@ package cstdout is
 
     overriding
     procedure SendMessage
-     ( dest : cStdOutDestinationType ;
+     ( dest : in out cStdOutDestinationType ;
        message : String ;
        level : logging.message_level_type := logging.INFORMATIONAL ;
        source : String := logging.Default_Source_Name ;

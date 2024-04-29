@@ -10,7 +10,7 @@ with Ada.Directories;
 with Ada.Streams;             use Ada.Streams;
 with Ada.Calendar;            use Ada.Calendar;
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
-
+with Ada.Calendar.Time_Zones ; use Ada.Calendar.Time_Zones;
 with GNAT.Time_Stamp;
 
 with Hex;
@@ -47,7 +47,8 @@ package body logging is
          end if;
          Ada.Strings.Unbounded.Delete (ts, pos, pos);
       end loop;
-      return To_String (ts);
+      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock, Time_Zone => Local_Time_Offset ) ;
+
    end Time_Stamp;
 
    procedure SetDestination (destination : access Destination_Type'Class) is
@@ -70,7 +71,7 @@ package body logging is
 
   overriding
   procedure SendMessage
-     ( dest : StdOutDestination_Type ;
+     ( dest : in out StdOutDestination_Type ;
        message : String ;
        level : message_level_type := INFORMATIONAL ;
        source : String := Default_Source_Name ;
@@ -90,7 +91,8 @@ package body logging is
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) return String is
    begin
-      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock) & " " &
+      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock, Time_Zone => Local_Time_Offset ) & 
+             " " &
              source & " " &
              class & " " &
              Image(level) & " " &

@@ -7,14 +7,14 @@ package body cstdout is
 use logging;
   overriding
   procedure SendMessage
-     ( dest : cStdOutDestinationType ;
+     ( dest : in out cStdOutDestinationType ;
        message : String ;
        level : message_level_type := INFORMATIONAL ;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) is
    begin
-      Put(Ada.Calendar.Formatting.Image (Ada.Calendar.Clock)); Put(" ");
-
+      --Put(Ada.Calendar.Formatting.Image (Ada.Calendar.Clock)); Put(" ");
+      Put(logging.Time_Stamp); Put(" ");
       Put(source); Put(" ");
       Put(class); Put(" ");
       Put(Image(level)); Put(" ");

@@ -14,7 +14,7 @@ package logging.socket is
 
    overriding
    procedure SendMessage
-     ( dest : SocketDestination_Type ;
+     ( dest : in out SocketDestination_Type ;
        message : String ;
        level : message_level_type := INFORMATIONAL ;
        source : String := Default_Source_Name ;
