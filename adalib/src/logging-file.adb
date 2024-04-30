@@ -22,7 +22,6 @@ package body logging.file is
                     number : Integer := 0 ;
                     rotate : duration := 0.0 ) return FileDestinationPtr_Type is
       result : FileDestinationPtr_Type ;
-      filename : Unbounded_String ;
    begin
       result := new FileDestination_Type ;
       result.basename := To_Unbounded_String(name) ;
@@ -52,6 +51,24 @@ package body logging.file is
       end if ;
       Ada.Text_Io.Put_Line(dest.f.all , Image(message,level,source,class));
    end SendMessage;
+
+   procedure SendMessage
+     ( dest : in out FileDestination_Type ;
+       prefix : String ;
+       message : String ) is
+   begin
+       if dest.cadence > 0.0 and then Clock - dest.filestarted > dest.cadence
+      then
+         Close(dest);
+         dest.filenumber := @ + 1 ;
+         Create(dest);
+      end if ;
+      Ada.Text_Io.Put(dest.f.all, prefix);
+      Ada.Text_Io.Put(dest.f.all," ");
+      Ada.Text_Io.Put_Line(dest.f.all , message );
+      Ada.Text_Io.Flush(dest.f.all);
+      --Put_Line(message);
+   end SendMessage ;
 
    overriding
    procedure Close(dest : FileDestination_Type) is

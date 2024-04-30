@@ -26,6 +26,12 @@ package logging.file is
        level : message_level_type := INFORMATIONAL ;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) ;
+
+   procedure SendMessage
+     ( dest : in out FileDestination_Type ;
+       prefix : String ;
+       message : String ) ;
+
    overriding
    procedure Close(dest : FileDestination_Type) ;
 
