@@ -11,7 +11,7 @@ package logging.socket is
    type SocketDestinationPtr_Type is access all SocketDestination_Type ;
 
    function Create (port : GNAT.Sockets.Port_Type ;
-                    host : String := "localhost" ) return SocketDestinationPtr_Type ;
+                    host : String := "127.0.0.1" ) return SocketDestinationPtr_Type ;
 
    overriding
    procedure SendMessage

@@ -29,7 +29,7 @@ begin
    then
       Put("Starting logging service"); New_Line ;
    end if ;
-   sa := GS.Network_Socket_Address( addr => GS.Inet_Addr("localhost") ,
+   sa := GS.Network_Socket_Address( addr => GS.Inet_Addr("127.0.0.1") ,
                               port => GS.Port_Type(cli.port) );
    GS.bind_socket( s , sa );
    loop

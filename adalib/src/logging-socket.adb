@@ -1,9 +1,9 @@
-
+with GNAT.Source_Info ; use GNAT.Source_Info;
 package body logging.socket is
     package GS Renames GNAT.Sockets;
 
    function Create (port : GNAT.Sockets.Port_Type ;
-                    host : String := "localhost" ) 
+                    host : String := "127.0.0.1" ) 
                     return SocketDestinationPtr_Type is
         result : constant SocketDestinationPtr_Type := new SocketDestination_Type ;
     begin
@@ -12,8 +12,12 @@ package body logging.socket is
                             level => GS.IP_Protocol_For_UDP_Level);
         result.dest := new GS.Sock_Addr_Type ;
         result.dest.all := GS.Network_Socket_Address( addr => GS.Inet_Addr(host) ,
-                                                   port => port );
+                                                      port => port );
         return result ;
+    exception
+        when others => 
+            Put("Exception in "); Put(Enclosing_Entity); New_Line ;
+            raise ;
     end Create ;
 
    overriding
