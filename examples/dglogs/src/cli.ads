@@ -10,8 +10,8 @@ package cli is
       
    Verbosity : aliased Integer := 0;
    port : aliased Integer := 8689 ;
-   logname : Ada.Strings.Unbounded.Unbounded_String ;
-   logdir : Ada.Strings.Unbounded.Unbounded_String ;
+   logname : Ada.Strings.Unbounded.Unbounded_String := Null_Unbounded_String ;
+   logdir : Ada.Strings.Unbounded.Unbounded_String := Null_Unbounded_String ;
 
    rotation : duration := 3600.0 ;
    

@@ -32,15 +32,15 @@ package body cli is
    end SwitchHandler;
 
    usagestr : constant String :=
-     "dglogs port_number logfilenamepattern targetdir" ;
+     "port_number logfilenamepattern targetdir" ;
      
    procedure ProcessCommandLine is
       Config : GNAT.Command_Line.Command_Line_Configuration;
    begin
         GNAT.Command_Line.Set_Usage
             (Config,
-         Help =>
-            NAME & " " & VERSION & " " & comp_date & " " & comp_time & usagestr);
+            Help => NAME & " " & VERSION & " " & comp_date & " " & comp_time ,
+            Usage => usagestr);
 
         GNAT.Command_Line.Initialize_Option_Scan(Stop_At_First_Non_Switch => true );
         GNAT.Command_Line.Define_Switch

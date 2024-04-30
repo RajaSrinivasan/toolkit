@@ -28,6 +28,8 @@ package body logging.socket is
        for payload'Address use m'Address;
        last : Ada.Streams.Stream_Element_Offset ;
     begin
+        m.t := Ada.Calendar.Clock ;
+        m.Seq := dest.Count + 1;
         m.l := level ;
         m.s := source ;
         m.c := class ;
@@ -44,6 +46,7 @@ package body logging.socket is
         then
             raise Program_Error with "Truncated datagram";
         end if ;
+        dest.Count := @ + 1 ;
     end SendMessage;
 
    overriding
