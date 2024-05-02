@@ -8,7 +8,7 @@ procedure Logs is
       myname : constant String := gnat.Source_Info.Enclosing_Entity ;
       logsock : aliased logging.socket.SocketDestinationPtr_Type ;
    begin
-      logsock := logging.socket.Create( 1056 , "127.0.0.1");
+      logsock := logging.socket.Create( 1056 , "localhost");
       logging.SetDestination(logsock);
       for i in 1..10
       loop

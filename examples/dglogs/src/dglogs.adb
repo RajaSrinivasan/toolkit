@@ -41,9 +41,13 @@ begin
    then
       Put("Starting logging service"); New_Line ;
    end if ;
-   sa := GS.Network_Socket_Address( addr => GS.Inet_Addr("127.0.0.1") ,
-                              port => GS.Port_Type(cli.port) );
-   GS.bind_socket( s , sa );
+   declare
+      he : GS.Host_Entry_Type := GS.Get_Host_By_Name("localhost");
+   begin
+      sa := GS.Network_Socket_Address( addr => GS.Addresses(he,1) ,
+                                    port => GS.Port_Type(cli.port) );
+      GS.bind_socket( s , sa );
+   end ;
    logfile := logging.file.Create(To_String(cli.logname),rotate => 60.0 );
    logging.SetDestination(logfile);
    loop
@@ -53,12 +57,12 @@ begin
          Put("Received a message from "); Put( GS.Image(sender)); New_Line;
       end if ;
       declare
-         mimg : String := logging.Image( lm.mt(1..Integer(lm.ml)) ,
+         mimg : constant String := logging.Image( lm.mt(1..Integer(lm.ml)) ,
                                          lm.l ,
                                          lm.s , 
                                          lm.c );
-         mprefix : String := GS.Image(sender) &
-                             images.Image("> %06d : ",lm.seq ) ; 
+         mprefix : constant String := GS.Image(sender) &
+                                      images.Image("> %06d : ",lm.seq ) ; 
       begin
          --Put_Line(mprefix);
          logging.file.SendMessage(logfile.all , mprefix , mimg );

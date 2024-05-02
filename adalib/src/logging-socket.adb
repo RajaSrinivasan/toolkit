@@ -1,3 +1,4 @@
+with Ada.Exceptions ; use Ada.Exceptions;
 with GNAT.Source_Info ; use GNAT.Source_Info;
 package body logging.socket is
     package GS Renames GNAT.Sockets;
@@ -6,16 +7,25 @@ package body logging.socket is
                     host : String := "127.0.0.1" ) 
                     return SocketDestinationPtr_Type is
         result : constant SocketDestinationPtr_Type := new SocketDestination_Type ;
+        he        : GNAT.Sockets.Host_Entry_Type := GS.Get_Host_By_Name (host);
     begin
         GS.Create_Socket( result.s , 
                             mode => GS.Socket_Datagram ,
                             level => GS.IP_Protocol_For_UDP_Level);
         result.dest := new GS.Sock_Addr_Type ;
-        result.dest.all := GS.Network_Socket_Address( addr => GS.Inet_Addr(host) ,
+
+        if GS.Addresses_Length (he) < 1
+        then
+            raise Program_Error with "Unknown host " & host ;
+        end if ;
+
+        result.dest.all := GS.Network_Socket_Address( addr => GS.Addresses(he,1) ,
                                                       port => port );
+
         return result ;
     exception
-        when others => 
+        when e : others => 
+            Put_Line(Exception_Message(e));
             Put("Exception in "); Put(Enclosing_Entity); New_Line ;
             raise ;
     end Create ;
