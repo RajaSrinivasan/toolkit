@@ -1,0 +1,12 @@
+name = "clitool"
+description = "Template project for a cli tool"
+version = "0.1.0-dev"
+
+authors = ["R Srinivasan"]
+maintainers = ["R Srinivasan <rajasrinivasan@hotmail.com>"]
+maintainers-logins = ["rajasrinivasan"]
+licenses = "MIT"
+website = ""
+tags = []
+
+executables = ["clitool"]
