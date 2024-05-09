@@ -1,14 +1,23 @@
-with Ada.Containers.Indefinite_Vectors;
+
 generic
-   type Item_Type (<>) is private;
-   with function "=" (Left, Right : Item_Type) return Boolean is <>;
+   type Item_Type is private;
 package Stacks is
-   package Stk_Pkg is new Ada.Containers.Indefinite_Vectors
-     (Index_Type   => Positive,
-      Element_Type => Item_Type);
-   function Create (Depth : Integer := 64) return Stk_Pkg.Vector;
-   procedure Push (Stk : in out Stk_Pkg.Vector; Item : Item_Type);
-   procedure Pop (Stk : in out Stk_Pkg.Vector; Item : out Item_Type);
-   function Top (Stk : Stk_Pkg.Vector) return Item_Type;
-   function Empty (Stk : Stk_Pkg.Vector) return Boolean;
+
+   Overflow : exception ;
+   Empty_Stack : exception ;
+
+   type Contents_Type is array (integer range <>) of aliased Item_Type ;
+   type Stack ( capacity : Integer ) is
+      record
+         contents : Contents_Type(1..capacity) ;
+         top : Integer := 1;
+      end record ;
+
+   function Create (Depth : Integer := 64) return Stack ;
+
+   procedure Push (Stk : in out Stack; Item : Item_Type);
+   procedure Pop (Stk : in out Stack; Item : out Item_Type);
+   function Top (Stk : Stack) return Item_Type;
+   function Empty (Stk : Stack) return Boolean;
+   function Full (Stk : Stack) return Boolean ;
 end Stacks;
