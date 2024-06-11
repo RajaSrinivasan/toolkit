@@ -1,3 +1,4 @@
+pragma Ada_2020;
 with Images ;
 package body logging.file is
 

@@ -1,3 +1,5 @@
+pragma Ada_2020;
+
 package body fifo is
 
    function Create( cap : Integer := 64 ) return Buffer_Type is

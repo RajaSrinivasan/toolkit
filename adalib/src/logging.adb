@@ -1,3 +1,4 @@
+pragma Ada_2020;
 with Ada.Text_IO;               use Ada.Text_IO;
 with Ada.Short_Integer_Text_IO; use Ada.Short_Integer_Text_IO;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
@@ -47,7 +48,7 @@ package body logging is
          end if;
          Ada.Strings.Unbounded.Delete (ts, pos, pos);
       end loop;
-      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock, Time_Zone => Local_Time_Offset ) ;
+      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock ) ;
 
    end Time_Stamp;
 
@@ -91,7 +92,7 @@ package body logging is
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) return String is
    begin
-      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock, Time_Zone => Local_Time_Offset ) & 
+      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock ) & 
              " " &
              source & " " &
              class & " " &

@@ -1,3 +1,4 @@
+pragma Ada_2020;
 with Ada.Exceptions ; use Ada.Exceptions;
 with GNAT.Source_Info ; use GNAT.Source_Info;
 package body logging.socket is
