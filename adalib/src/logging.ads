@@ -1,14 +1,3 @@
-with Calendar;
-with System.Storage_Elements;
-with Interfaces.C;
-with Interfaces.C.Strings;
-
-with Ada.Calendar;
-with Ada.Text_IO;              use Ada.Text_IO;
-with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
-with Ada.Strings.Fixed;
-with Ada.Streams;              use Ada.Streams;
-
 package logging is
 
    subtype message_level_type is Natural;

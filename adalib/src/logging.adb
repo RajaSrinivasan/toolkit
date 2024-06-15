@@ -1,20 +1,9 @@
-pragma Ada_2020;
-with Ada.Text_IO;               use Ada.Text_IO;
-with Ada.Short_Integer_Text_IO; use Ada.Short_Integer_Text_IO;
+with Ada.Text_Io; use Ada.Text_Io;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
-with Ada.Containers.Vectors;
-with Ada.Text_IO.Text_Streams;  use Ada.Text_IO.Text_Streams;
-with Ada.Strings.Fixed;
 with Ada.Strings.Maps;
-with Ada.Directories;
-
-with Ada.Streams;             use Ada.Streams;
 with Ada.Calendar;            use Ada.Calendar;
-with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
-with Ada.Calendar.Time_Zones ; use Ada.Calendar.Time_Zones;
+with Ada.Calendar.Formatting;
 with GNAT.Time_Stamp;
-
-with Hex;
 
 package body logging is
 

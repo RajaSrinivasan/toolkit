@@ -1,5 +1,6 @@
-pragma Ada_2020;
+with Ada.Text_Io; use Ada.Text_Io;
 with Ada.Exceptions ; use Ada.Exceptions;
+with Ada.Streams; use Ada.Streams;
 with GNAT.Source_Info ; use GNAT.Source_Info;
 package body logging.socket is
     package GS Renames GNAT.Sockets;
@@ -8,7 +9,7 @@ package body logging.socket is
                     host : String := "127.0.0.1" ) 
                     return SocketDestinationPtr_Type is
         result : constant SocketDestinationPtr_Type := new SocketDestination_Type ;
-        he        : GNAT.Sockets.Host_Entry_Type := GS.Get_Host_By_Name (host);
+        he        : constant GNAT.Sockets.Host_Entry_Type := GS.Get_Host_By_Name (host);
     begin
         GS.Create_Socket( result.s , 
                             mode => GS.Socket_Datagram ,
