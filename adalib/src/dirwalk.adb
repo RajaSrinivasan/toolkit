@@ -15,7 +15,7 @@ procedure dirwalk( context : context_type ;
 
 begin
 
-    filter := (Ada.Directories.Ordinary_File => True, others => False);
+    filter := [Ada.Directories.Ordinary_File => True, others => False];
 
     Ada.Directories.Start_Search (search, dirname, pattern, filter);
     while Ada.Directories.More_Entries (search) loop
@@ -24,7 +24,7 @@ begin
     end loop;
     Ada.Directories.End_Search (search);
 
-    filter := (Ada.Directories.Directory => True, others => False);
+    filter := [Ada.Directories.Directory => True, others => False];
     Ada.Directories.Start_Search
       (searchd,
        Ada.Directories.Full_Name (dirname),

@@ -1,4 +1,4 @@
-with Ada.Calendar ;
+
 package Morsecode is
 
    type Alphabet is (Dot, 

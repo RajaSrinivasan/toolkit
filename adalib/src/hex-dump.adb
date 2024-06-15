@@ -25,12 +25,11 @@ package body Hex.dump is
       Lengthleft   : Integer          := Length;
       Lengthtodump : Integer;
 
-      adrcol : Integer := 1;
-      piccol : Integer := GNAT.Debug_Utilities.Address_Image_Length + adrcol;
-      hexcol : Integer := piccol + Blocklen + 4;
+      adrcol : constant Integer := 1;
+      piccol : constant Integer := GNAT.Debug_Utilities.Address_Image_Length + adrcol;
 
       function CharImage (ci : Interfaces.Unsigned_8) return Character is
-         c : Character := Character'Val (Integer (ci));
+         c : constant Character := Character'Val (Integer (ci));
       begin
          if not Ada.Characters.Handling.Is_ISO_646 (c) then
             return '.';

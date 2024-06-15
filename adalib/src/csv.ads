@@ -7,10 +7,10 @@ package Csv is
    type File_Object_Type is limited private;
    type File_Type is access File_Object_Type;
    function Open (Name : String; Separator : String) return File_Type;
-   procedure Close (File : in out File_Type);
+   procedure Close (File : in File_Type);
    function No_Columns (File : File_Type) return Integer;
    function Field_Name (File : File_Type; Column : Integer) return String;
-   procedure Get_Line (File : in out File_Type);
+   procedure Get_Line (File : in File_Type);
    function Line_No (File : File_Type) return Integer;
    function End_Of_File (File : File_Type) return Boolean;
    function Field (File : File_Type; Column : Integer) return String;
