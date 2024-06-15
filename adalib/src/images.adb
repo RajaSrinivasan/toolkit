@@ -1,6 +1,5 @@
 with System ; use System ;
-with Interfaces.C ; use Interfaces.C ;
-
+with Interfaces.C ; 
 package body images is
 
    function snprintf
