@@ -39,7 +39,8 @@ package body realtime is
          me := To_Unbounded_String(name);
          laststate := a.all( h ) ;
       end Monitor ;
-      Put_Line("Started monitoring button");
+      Put("Started monitoring button ");
+      Put_Line(To_String(me));
       loop
          select
             accept Last( last : out Boolean ) do

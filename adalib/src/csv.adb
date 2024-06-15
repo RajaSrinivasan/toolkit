@@ -2,7 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Csv is
    function Open (Name : String; Separator : String) return File_Type is
-      File : File_Type := new File_Object_Type;
+      File : constant File_Type := new File_Object_Type;
    begin
 
       GNAT.AWK.Add_File (Name, File.Session);
@@ -42,7 +42,7 @@ package body Csv is
    -- Close --
    -----------
 
-   procedure Close (File : in out File_Type) is
+   procedure Close (File : in File_Type) is
    begin
       String_Vectors_Pkg.Clear (File.Field_Names);
       GNAT.AWK.Close (File.Session);
@@ -64,7 +64,7 @@ package body Csv is
       return String_Vectors_Pkg.Element (Ptr);
    end Field_Name;
 
-   procedure Get_Line (File : in out File_Type) is
+   procedure Get_Line (File : in File_Type) is
    begin
       GNAT.AWK.Get_Line (Session => File.Session);
       if File.No_Columns /=

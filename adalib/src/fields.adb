@@ -1,4 +1,3 @@
-with Ada.Text_Io; use Ada.Text_Io;
 with Ada.Strings.Fixed ;
 
 with Values; 
