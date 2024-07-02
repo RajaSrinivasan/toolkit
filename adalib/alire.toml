@@ -9,3 +9,5 @@ maintainers-logins = ["rajasrinivasan"]
 
 [build-switches]
 development.style_checks = "No"
+"*".Ada_Version = "Ada2022"
+
