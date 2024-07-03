@@ -74,16 +74,16 @@ package body values is
         return Float(fval) ;
     end Value ;
 
-   function sscanf
-     (v : Interfaces.C.char_array ;
-      f : Interfaces.C.char_array ;
-      val : access Interfaces.C.double) return Interfaces.C.int
-     with Import,
-       Convention    => C_Variadic_2,
-     External_Name => "sscanf";
+   --function sscanf
+   --  (v : Interfaces.C.char_array ;
+   --   f : Interfaces.C.char_array ;
+   --   val : access Interfaces.C.double) return Interfaces.C.int
+   --  with Import,
+   --    Convention    => C_Variadic_2,
+   --  External_Name => "sscanf";
 
     function Value( format : String ; value : String ) return Long_Float is
-        fval : aliased Interfaces.C.double ;
+        fval : aliased Interfaces.C.C_Float ;
         status : Interfaces.C.int ;
     begin
         status := sscanf
@@ -100,7 +100,7 @@ package body values is
 
 
     function Value( format : String ; value : String ) return Interfaces.C.double is
-        fval : aliased Interfaces.C.double ;
+        fval : aliased Interfaces.C.C_Float ;
         status : Interfaces.C.int ;
     begin
         status := sscanf
@@ -112,7 +112,7 @@ package body values is
             raise FORMAT_ERROR ;
         end if ;
 
-        return fval ;
+        return Interfaces.C.double(fval) ;
     end Value ;
 
 
