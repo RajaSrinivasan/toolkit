@@ -4,6 +4,7 @@ stages:
 
 variables:
   ADA_PROJECT_PATH: $CI_PROJECT_DIR/adalib
+  EXAMPLES_PATH: $CI_PROJECT_DIR/examples
   ARTIFACTS_PATH: $ADA_PROJECT_PATH/bin
   ALIRE_PATH: $CI_PROJECT_DIR/alire
   GIT_SUBMODULE_STRATEGY: recursive
@@ -32,7 +33,7 @@ build:
 test:
   stage: test
   script:
-    - cd $ADA_PROJECT_PATH/examples
+    - cd $EXAMPLES_PATH
     - source build.sh
     - source test.sh
   dependencies:
