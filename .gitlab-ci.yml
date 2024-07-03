@@ -1,0 +1,39 @@
+stages:
+  - build
+  - test
+
+variables:
+  ADA_PROJECT_PATH: $CI_PROJECT_DIR/adalib
+  ARTIFACTS_PATH: $ADA_PROJECT_PATH/bin
+  ALIRE_PATH: $CI_PROJECT_DIR/alire
+  GIT_SUBMODULE_STRATEGY: recursive
+
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y gnat
+  - apt-get install -y gprbuild
+  - git clone --recurse-submodules https://github.com/alire-project/alire.git
+  - cd alire
+  - dev/build.sh
+  - cd ..
+
+build:
+  stage: build
+  script:
+    - cd $ADA_PROJECT_PATH/
+    - $ALIRE_PATH/bin/alr -n build
+    - cd $ADA_PROJECT_PATH
+
+  artifacts:
+    paths:
+      - $ARTIFACTS_PATH/*
+
+test:
+  stage: test
+  script:
+    - cd $ADA_PROJECT_PATH
+    - ls -lR ./adalib
+  dependencies:
+    - build
+
