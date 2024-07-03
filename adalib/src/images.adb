@@ -8,7 +8,7 @@ package body images is
       format : Interfaces.C.char_array ;
       value  : Interfaces.C.int) return Interfaces.C.int
      with Import,
-       Convention    => C_Variadic_1,
+       Convention    => C_Variadic_3,
      External_Name => "snprintf";
 
    function Image( format : String ; value : Integer ) return String is
@@ -27,7 +27,7 @@ package body images is
       format : Interfaces.C.char_array ;
       value  : Interfaces.C.double ) return Interfaces.C.int
      with Import,
-       Convention    => C_Variadic_1,
+       Convention    => C_Variadic_3,
      External_Name => "snprintf";
 
    function Image( format : String ; value : float ) return String is
@@ -56,7 +56,7 @@ package body images is
       format : Interfaces.C.char_array ;
       value  : Interfaces.C.char_array ) return Interfaces.C.int
      with Import,
-       Convention    => C_Variadic_1,
+       Convention    => C_Variadic_3,
      External_Name => "snprintf";
 
    function Image( format : String ; value : String ) return String is

@@ -1,4 +1,5 @@
 with Interfaces.C ; use Interfaces.C ;
+with Ada.Text_Io; use Ada.Text_Io;
 package body values is
     use Interfaces ;
    function sscanf
@@ -6,7 +7,7 @@ package body values is
       f : Interfaces.C.char_array ;
       val : access Interfaces.C.int) return Interfaces.C.int
      with Import,
-       Convention    => C_Variadic_1,
+       Convention    => C_Variadic_2,
      External_Name => "sscanf";
 
     function Value( format : String ; value : String ) return Integer is
@@ -31,7 +32,7 @@ package body values is
       f : Interfaces.C.char_array ;
       val : access Interfaces.C.unsigned) return Interfaces.C.int
      with Import,
-       Convention    => C_Variadic_1,
+       Convention    => C_Variadic_2,
      External_Name => "sscanf";
 
     function Value( format : String ; value : String ) return Interfaces.Unsigned_32 is
@@ -54,7 +55,7 @@ package body values is
       f : Interfaces.C.char_array ;
       val : access Interfaces.C.C_Float) return Interfaces.C.int
      with Import,
-       Convention    => C_Variadic_1,
+       Convention    => C_Variadic_2,
      External_Name => "sscanf";
 
     function Value( format : String ; value : String ) return Float is
@@ -78,7 +79,7 @@ package body values is
       f : Interfaces.C.char_array ;
       val : access Interfaces.C.double) return Interfaces.C.int
      with Import,
-       Convention    => C_Variadic_1,
+       Convention    => C_Variadic_2,
      External_Name => "sscanf";
 
     function Value( format : String ; value : String ) return Long_Float is
@@ -95,6 +96,23 @@ package body values is
         end if ;
 
         return Long_Float(fval) ;
+    end Value ;
+
+
+    function Value( format : String ; value : String ) return Interfaces.C.double is
+        fval : aliased Interfaces.C.double ;
+        status : Interfaces.C.int ;
+    begin
+        status := sscanf
+          (Interfaces.C.To_C (value),
+           f   => Interfaces.C.To_C(format),
+           val => fval'access );
+        if status /= 1
+        then
+            raise FORMAT_ERROR ;
+        end if ;
+
+        return fval ;
     end Value ;
 
 

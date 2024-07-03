@@ -4,6 +4,7 @@ with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
 with Ada.Float_Text_Io; use Ada.Float_Text_Io;
 with Ada.Long_Float_Text_Io; use Ada.Long_Float_Text_Io;
 with Interfaces; use Interfaces;
+with Interfaces.C; use Interfaces.C;
 
 with images ;
 with values ;
@@ -39,7 +40,7 @@ procedure Print is
       fmt : String := Argument(3) ;
       int : Integer ;
    begin
-      int := values.Value(val,fmt);
+      int := values.Value(fmt,val);
       Put("Integer Value "); Put(int); New_Line ;
    end T5 ;
 
@@ -48,17 +49,17 @@ procedure Print is
       fmt : String := Argument(3) ;
       f : Float ;
    begin
-      f := values.Value(val,fmt);
+      f := values.Value(fmt,val);
       Put("Float Value "); Put(f); New_Line ;
    end T6 ;
 
    procedure T7 is
       val : String := Argument(2) ;
       fmt : String := Argument(3) ;
-      f : Long_Float ;
+      f : Interfaces.C.double ;
    begin
-      f := values.Value(val,fmt);
-      Put("Long_Float Value "); Put(f); New_Line ;
+      f := values.Value(fmt,val);
+      Put("Long_Float Value "); Put(Long_Float(f)); New_Line ;
    end T7 ;
 
 
@@ -67,7 +68,7 @@ procedure Print is
       fmt : String := Argument(3) ;
       u : Unsigned_32 ;
    begin
-      u := values.Value(val,fmt);
+      u := values.Value(fmt,val);
       Put("Unsigned_32 Value "); Put(u'Image); New_Line ;
    end T8 ;
 
