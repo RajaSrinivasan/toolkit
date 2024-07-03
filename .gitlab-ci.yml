@@ -24,20 +24,20 @@ build:
   script:
     - cd $ADA_PROJECT_PATH/
     - $ALIRE_PATH/bin/alr -n build
-    - cd $ADA_PROJECT_PATH
+    - export PATH=$PATH:$ALIRE_PATH/bin
+    - cd $EXAMPLES_PATH/print
+    - alr -n build
 
   artifacts:
     paths:
-      - $ARTIFACTS_PATH/*
+      - $EXAMPLES_PATH/print/bin/*
 
 test:
   stage: test
   script:
-    - cd $EXAMPLES_PATH/print
-    - $ALIRE_PATH/bin/alr -n build
     - cd $EXAMPLES_PATH/print/test
     - source test.sh
-    
+
   dependencies:
     - build
 
