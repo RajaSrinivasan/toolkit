@@ -33,9 +33,11 @@ build:
 test:
   stage: test
   script:
-    - cd $EXAMPLES_PATH
-    - source build.sh
+    - cd $EXAMPLES_PATH/print
+    - $ALIRE_PATH/bin/alr -n build
+    - cd $EXAMPLES_PATH/print/test
     - source test.sh
+    
   dependencies:
     - build
 
