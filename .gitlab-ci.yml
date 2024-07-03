@@ -32,8 +32,9 @@ build:
 test:
   stage: test
   script:
-    - cd $ADA_PROJECT_PATH
-    - ls -lR ./adalib
+    - cd $ADA_PROJECT_PATH/examples
+    - source build.sh
+    - source test.sh
   dependencies:
     - build
 
