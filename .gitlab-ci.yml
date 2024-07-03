@@ -1,6 +1,5 @@
 stages:
   - build
-  - test
 
 variables:
   ADA_PROJECT_PATH: $CI_PROJECT_DIR/adalib
@@ -27,17 +26,10 @@ build:
     - export PATH=$PATH:$ALIRE_PATH/bin
     - cd $EXAMPLES_PATH/print
     - alr -n build
+    - cd $EXAMPLES_PATH/print/test
+    - source test.sh
 
   artifacts:
     paths:
       - $EXAMPLES_PATH/print/bin/*
-
-test:
-  stage: test
-  script:
-    - cd $EXAMPLES_PATH/print/test
-    - source test.sh
-
-  dependencies:
-    - build
 
