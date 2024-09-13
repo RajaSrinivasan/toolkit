@@ -40,6 +40,8 @@ procedure Csvtest is
       myname : constant String := gnat.Source_Info.enclosing_entity ;
       datafile : constant String := Argument(2);
    begin
+      verbose := false ;
+      csv.debug := false ;
       if verbose
       then
          Put_Line(myname);
@@ -64,9 +66,12 @@ procedure Csvtest is
          while not csv.End_Of_File(f)
          loop
             csv.Get_Line(f);
+            ts := Float'Value( csv.Field(f,1) );
             ecg := Float'Value( csv.Field(f,2));
             bp := Float'Value( csv.Field(f,3) );
-            Put(ecg, aft => 4 , exp => 0 ); Set_Col(10); Put(bp, aft => 4 , exp => 0); New_Line;
+            Put(ts, aft => 3, exp => 0 ); Set_Col(10) ;
+            Put(ecg, aft => 4 , exp => 0 ); Set_Col(20); 
+            Put(bp, aft => 4 , exp => 0); New_Line;
          end loop ;
       end ;
 
