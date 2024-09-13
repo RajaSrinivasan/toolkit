@@ -1,5 +1,6 @@
 with Interfaces.C ; use Interfaces.C ;
 with Ada.Text_Io; use Ada.Text_Io;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 package body values is
     use Interfaces ;
    function sscanf
@@ -74,14 +75,6 @@ package body values is
         return Float(fval) ;
     end Value ;
 
-   --function sscanf
-   --  (v : Interfaces.C.char_array ;
-   --   f : Interfaces.C.char_array ;
-   --   val : access Interfaces.C.double) return Interfaces.C.int
-   --  with Import,
-   --    Convention    => C_Variadic_2,
-   --  External_Name => "sscanf";
-
     function Value( format : String ; value : String ) return Long_Float is
         fval : aliased Interfaces.C.C_Float ;
         status : Interfaces.C.int ;
@@ -114,6 +107,28 @@ package body values is
 
         return Interfaces.C.double(fval) ;
     end Value ;
+
+    type struct_tm is
+    record
+        tm_sec : Int ;
+        tm_min : Int ;
+        tm_hour : Int ;
+        tm_mday : Int ;
+        tm_mon : Int ;
+        tm_year : Int ;
+        tm_wday : Int ;
+        tm_yday : Int ;
+        tm_isdst : Int ;
+    end record ;
+
+    function strftime
+     (str : Interfaces.C.char_array ;
+      maxsize : size_t ;
+      format :  Interfaces.C.char_array ;
+      timptr : access struct_tm ) return size_t 
+     with Import,
+       Convention    => C ,
+        External_Name => "strftime";
 
 
 end values ;

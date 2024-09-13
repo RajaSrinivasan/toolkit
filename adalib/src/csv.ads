@@ -6,7 +6,8 @@ package Csv is
    Duplicate_Column : exception;
    type File_Object_Type is limited private;
    type File_Type is access File_Object_Type;
-   function Open (Name : String; Separator : String) return File_Type;
+   function Open (Name : String; Separator : String ; FieldNames : boolean := true) 
+            return File_Type;
    procedure Close (File : in File_Type);
    function No_Columns (File : File_Type) return Integer;
    function Field_Name (File : File_Type; Column : Integer) return String;
