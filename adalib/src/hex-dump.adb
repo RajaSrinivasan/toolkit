@@ -117,6 +117,7 @@ package body Hex.dump is
          --Ada.Text_IO.Put_Line (Outfile, " *********************************");
       end if ;
 
+      -- codemd: begin segment=DumpFile caption=Dump a file 
       Ada.Streams.Stream_IO.Open
         (file,
          Ada.Streams.Stream_IO.In_File,
@@ -138,6 +139,7 @@ package body Hex.dump is
                  outfile => Outfile );
           end if ;
       end ;
+      -- codemd: end
       Ada.Streams.Stream_IO.Close (file);
    exception
       when others =>

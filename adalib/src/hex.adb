@@ -23,6 +23,7 @@ package body Hex is
       raise format_error with "InvalidHex";
    end Value;
 
+   -- codemd: begin segment=StrBin caption=String to binary
    function Value (Hex : Hexstring) return Interfaces.Unsigned_8 is
       use Interfaces;
       Vhigh, Vlow : Interfaces.Unsigned_8;
@@ -31,6 +32,8 @@ package body Hex is
       Vlow  := Value (Hex (2));
       return Vhigh * 16 + Vlow;
    end Value;
+   -- codemd: end
+
    function Value (Str : String) return Interfaces.Unsigned_16 is
       use Interfaces;
       Result   : Interfaces.Unsigned_16 := 0;
@@ -57,7 +60,6 @@ package body Hex is
       return System.Storage_Elements.Storage_Element (u8);
    end Value;
 
--- codemd: begin segment=heximpl caption=Implementation of some functions
    function Value
      (Hex : Hexstring) return System.Storage_Elements.Storage_Element
    is
@@ -67,6 +69,7 @@ package body Hex is
       return System.Storage_Elements.Storage_Element (u8);
    end Value;
 
+   -- codemd: begin segment=StrBlock caption=String to a memory block
    function Value
      (Hex : string) return System.Storage_Elements.Storage_Array is
      use System.Storage_Elements;
@@ -79,8 +82,10 @@ package body Hex is
       Put_Line(hex);
      return result;
    end Value;
-
-   function Image (bin : Interfaces.Unsigned_8) return Hexstring is
+   -- codemd: end
+   
+   -- codemd: begin segment=BinHex caption=Binary to hex string
+   function Image (bin : Interfaces.Unsigned_8) return Hexstrindg is
       use Interfaces;
       img     : Hexstring;
       Lnibble : Interfaces.Unsigned_8 := bin and 16#0f#;
@@ -119,6 +124,7 @@ package body Hex is
       return img;
    end Image;
 
+   -- codemd: begin segment=BlockHex caption=Block of memory to hex
    function Image (binptr : System.Address; Length : Integer) return String is
       use Interfaces;
       img   : String (1 .. 2 * Length);
@@ -132,6 +138,7 @@ package body Hex is
       end loop;
       return img;
    end Image;
+   --codemd: end
 
    function Image
      (bin : System.Storage_Elements.Storage_Element) return Hexstring

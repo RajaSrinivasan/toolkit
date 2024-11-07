@@ -3,7 +3,7 @@ with Ada.Text_IO;
 
 package Hex.dump is
 
-   DEFAULT_BLOCK_LENGTH : constant Integer := 32;
+   DEFAULT_BLOCK_LENGTH : constant Integer := 16;
 
    procedure Dump
      (Adr         : System.Address;
