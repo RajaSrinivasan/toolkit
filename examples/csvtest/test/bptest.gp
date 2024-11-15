@@ -6,3 +6,6 @@ plot 'bptest.csv' using 1:2 with lines title "ECG"
 
 set output 'bptest2.png'
 plot 'bptest.csv' using 1:3 with lines title "BP" 
+
+set output 'small.png'
+plot 'small.csv' using 1:2 with lines title "ECG"
