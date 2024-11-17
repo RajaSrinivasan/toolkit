@@ -103,4 +103,15 @@ package body Csv is
       return Field (File, Integer (Index));
    end Field;
 
+   procedure Set_Names( file : File_Type ; names : String_Vectors_Pkg.Vector) is
+   begin
+      file.Field_Names := names ;
+   end Set_Names ;
+
+   function Names( file : File_Type ) return String_Vectors_Pkg.Vector is
+   begin
+      return file.Field_Names ;
+   end Names ;
+
+
 end Csv;

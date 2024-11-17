@@ -85,11 +85,11 @@ package body Hex is
    -- codemd: end
    
    -- codemd: begin segment=BinHex caption=Binary to hex string
-   function Image (bin : Interfaces.Unsigned_8) return Hexstrindg is
+   function Image (bin : Interfaces.Unsigned_8) return Hexstring is
       use Interfaces;
       img     : Hexstring;
-      Lnibble : Interfaces.Unsigned_8 := bin and 16#0f#;
-      Hnibble : Interfaces.Unsigned_8 :=
+      Lnibble : constant Interfaces.Unsigned_8 := bin and 16#0f#;
+      Hnibble : constant Interfaces.Unsigned_8 :=
         Interfaces.Shift_Right (bin and 16#f0#, 4);
    begin
       img (1) := Nibble_Hex (Integer (Hnibble) + 1);
@@ -126,7 +126,7 @@ package body Hex is
 
    -- codemd: begin segment=BlockHex caption=Block of memory to hex
    function Image (binptr : System.Address; Length : Integer) return String is
-      use Interfaces;
+      -- use Interfaces;
       img   : String (1 .. 2 * Length);
       bytes : array (1 .. Length) of Interfaces.Unsigned_8;
       for bytes'Address use binptr;

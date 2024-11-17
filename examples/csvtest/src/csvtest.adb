@@ -1,92 +1,95 @@
-with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
-with Ada.Float_Text_Io; use Ada.Float_Text_Io;
-with Ada.Calendar ;
+with Ada.Command_Line;    use Ada.Command_Line;
+with Ada.Text_IO;         use Ada.Text_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
+with Ada.Calendar;
 
-with GNAT.Source_Info; use GNAT.Source_Info;
-with GNAT.Calendar.Time_Io; use GNAT.Calendar.Time_Io;
+with GNAT.Source_Info;      use GNAT.Source_Info;
+with GNAT.Calendar.Time_IO; use GNAT.Calendar.Time_IO;
 
-with csv ; 
+with csv;
 
 procedure Csvtest is
-   verbose : boolean := true ;
-   pgm : String := gnat.Source_Info.enclosing_entity ;
+   verbose : Boolean := True;
+   pgm     : String  := GNAT.Source_Info.Enclosing_Entity;
 
    procedure T1 is
-      f : csv.File_Type ;
-      myname : constant String := gnat.Source_Info.enclosing_entity ;
-      ts : Ada.Calendar.Time ;
-      datafile : constant String := Argument(2) ;
+      f        : csv.File_Type;
+      myname   : constant String := GNAT.Source_Info.Enclosing_Entity;
+      ts       : Ada.Calendar.Time;
+      datafile : constant String := Argument (2);
    begin
-      if verbose
-      then
-         Put_Line(myname);
-         Put("Datafile "); Put_Line(datafile);
-      end if ;
-      f := csv.Open( datafile , ";" , false );
-      Put("No of fields ="); Put(csv.No_Columns(f)); New_Line;
-      while not csv.End_Of_File(f)
-      loop
+      if verbose then
+         Put_Line (myname);
+         Put ("Datafile ");
+         Put_Line (datafile);
+      end if;
+      f := csv.Open (datafile, ";", false);
+      Put ("No of fields =");
+      Put (csv.No_Columns (f));
+      New_Line;
+      while not csv.End_Of_File (f) loop
          --ts := gnat.calendar.Time_Io.Value( csv.Field(f,4) , ISO_DATE ) ;
-         Put_Line( csv.Field(f,4) );
-         csv.Get_Line(f);
-      end loop ;
-      csv.Close(f);
-   end T1 ;
+         Put_Line (csv.Field (f, 4));
+         csv.Get_Line (f);
+      end loop;
+      csv.Close (f);
+   end T1;
 
    procedure T2 is
-      f : csv.File_Type ;
-      myname : constant String := gnat.Source_Info.enclosing_entity ;
-      datafile : constant String := Argument(2);
+      f        : csv.File_Type;
+      myname   : constant String := GNAT.Source_Info.Enclosing_Entity;
+      datafile : constant String := Argument (2);
    begin
-      verbose := false ;
-      csv.debug := false ;
-      if verbose
-      then
-         Put_Line(myname);
-         Put("Datafile "); Put_Line(datafile);
-      end if ;
-      f := csv.Open( datafile , "," , true );
-      Put("No of fields ="); Put(csv.No_Columns(f)); New_Line;
-      for i in 1..csv.No_Columns(f)
-      loop
-         Put_Line(csv.Field_Name(f,i));
-      end loop ;
-      csv.Get_Line(f);
-      for i in 1..csv.No_Columns(f)
-      loop
-         Put(csv.Field_Name(f,i)); Put(" units "); Put_Line(csv.Field(f,i));
-      end loop ;
+      verbose   := False;
+      csv.debug := false;
+      if verbose then
+         Put_Line (myname);
+         Put ("Datafile ");
+         Put_Line (datafile);
+      end if;
+      f := csv.Open (datafile, ",", true);
+      Put ("No of fields =");
+      Put (csv.No_Columns (f));
+      New_Line;
+      for i in 1 .. csv.No_Columns (f) loop
+         Put_Line (csv.Field_Name (f, i));
+      end loop;
+      csv.Get_Line (f);
+      for i in 1 .. csv.No_Columns (f) loop
+         Put (csv.Field_Name (f, i));
+         Put (" units ");
+         Put_Line (csv.Field (f, i));
+      end loop;
       declare
-         ts : Float ;
-         ecg : Float ;
-         bp : Float ;
+         ts  : Float;
+         ecg : Float;
+         bp  : Float;
       begin
-         while not csv.End_Of_File(f)
-         loop
-            csv.Get_Line(f);
-            ts := Float'Value( csv.Field(f,1) );
-            ecg := Float'Value( csv.Field(f,2));
-            bp := Float'Value( csv.Field(f,3) );
-            Put(ts, aft => 3, exp => 0 ); Set_Col(10) ;
-            Put(ecg, aft => 4 , exp => 0 ); Set_Col(20); 
-            Put(bp, aft => 4 , exp => 0); New_Line;
-         end loop ;
-      end ;
+         while not csv.End_Of_File (f) loop
+            csv.Get_Line (f);
+            ts  := Float'Value (csv.Field (f, 1));
+            ecg := Float'Value (csv.Field (f, 2));
+            bp  := Float'Value (csv.Field (f, 3));
+            Put (ts, Aft => 3, Exp => 0);
+            Set_Col (10);
+            Put (ecg, Aft => 4, Exp => 0);
+            Set_Col (20);
+            Put (bp, Aft => 4, Exp => 0);
+            New_Line;
+         end loop;
+      end;
 
-   end T2 ;
+   end T2;
 
 begin
-   csv.Debug := verbose ;
-   Put_Line(pgm);
-   if Argument(1) = "T1"
-   then
-      T1 ;
-   elsif Argument(1) = "T2"
-   then
+   csv.Debug := verbose;
+   Put_Line (pgm);
+   if Argument (1) = "T1" then
+      T1;
+   elsif Argument (1) = "T2" then
       T2;
-   else 
+   else
       null;
    end if;
 
