@@ -2,7 +2,7 @@ with Ada.Strings.Unbounded;
 with Ada.Containers.Vectors;
 package foods is
 
-   type CaloriesType is range 1 .. 10_000;
+   type CaloriesType is range 0 .. 10_000;
    type ProteinsType is range 0 .. 100;       -- Grams
 
    type GlycemicIndexType is range 0 .. 100;
@@ -38,12 +38,17 @@ package foods is
       gl          : Glycemic_Load;
       carbs       : CarbohydratesPerServing;
    end record;
+   function Equal( Left, Right : Food_Item_Type ) return boolean ;
 
    package FoodsDatabase_Pkg is new Ada.Containers.Vectors
-     (Index_Type => Natural, Element_Type => Food_Item_Type);
-   subtype FoodsDatabase_Type is FoodsDatabase_Pkg.Vector ;
-   function Load (filename : String) return FoodsDatabase_Type ;
-   procedure Show( db : FoodsDatabase_Type );
+     (Index_Type => Natural, Element_Type => Food_Item_Type , "=" => Equal);
+   subtype FoodsDatabase_Type is FoodsDatabase_Pkg.Vector;
+   function Load (filename : String) return FoodsDatabase_Type;
+   procedure Show (fi : Food_Item_Type);
+   procedure Show (db : FoodsDatabase_Type);
+   function Find(db : FoodsDatabase_Type ; item : String ) return Food_Item_Type ;
+
+   SampleDb : constant String := "Foods.csv" ;
 
    DatabaseError : exception;
 
@@ -56,11 +61,11 @@ package foods is
    package Dishes_Pkg is new Ada.Containers.Vectors
      (Index_Type => Natural, Element_Type => Dish_Type);
    subtype Meal_Type is Dishes_Pkg.Vector;
-   function Load( mfn : String ) return Meal_Type ;
+   function Load (mfn : String) return Meal_Type;
    procedure Add
      (meal : in out Meal_Type; item : String; servings : Servings_Type);
-   procedure Show( meal : Meal_Type );
-   function Calories (meal : Meal_Type) return CaloriesType;
- 
+   procedure Show (meal : Meal_Type);
+
+   function Calories (db : FoodsDatabase_Type ; meal : Meal_Type) return CaloriesType;
 
 end foods;

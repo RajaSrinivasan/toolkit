@@ -1,28 +1,33 @@
-with Ada.Command_Line;    use Ada.Command_Line;
-with Ada.Text_IO;         use Ada.Text_IO;
+with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Text_IO;      use Ada.Text_IO;
 
 with GNAT.Source_Info; use GNAT.Source_Info;
 
 with foods;
 
 procedure meals is
-   verbose : Boolean := True;
-   pgm     : constant String  := GNAT.Source_Info.Enclosing_Entity;
-   meal : foods.Meal_Type ;
+   verbose : Boolean         := True;
+   pgm     : constant String := GNAT.Source_Info.Enclosing_Entity;
+   meal    : foods.Meal_Type;
+   db      : foods.FoodsDatabase_Type ;
 begin
-   if verbose
-   then
+   if verbose then
       Put_Line (pgm);
+   end if;
+   if Argument_Count > 1 then
+      db := foods.Load( Argument(2) );
+   else
+      db := foods.Load( Foods.SampleDb) ;
    end if ;
-   if Argument_Count < 1
-   then
-      Put_Line("usage: meals mealfilename [foodsdb=foods.csv]");
-      return ;
-   end if ;
-   meal := foods.Load( Argument(1) );
-   if verbose
-   then
-      Put_Line("The meal is");
-      foods.Show(meal);
-   end if ;
+   if Argument_Count < 1 then
+      Put_Line ("usage: meals mealfilename [foodsdb=foods.csv]");
+      return;
+   end if;
+   meal := foods.Load (Argument (1));
+
+   if verbose then
+      Put_Line ("The meal is");
+      foods.Show (meal);
+   end if;
+   Put("Total Calories is "); Put(foods.CaloriesType'(foods.Calories(db,meal))'Image); New_Line;
 end meals;
