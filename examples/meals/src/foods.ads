@@ -28,6 +28,8 @@ package foods is
    function Load
      (gi : Glycemic_Index; cs : CarbohydratesPerServing) return Glycemic_Load;
 
+
+   -- codemd: begin segment=FoodItem caption=Another
    type Food_Item_Type is record
       Name        : Ada.Strings.Unbounded.Unbounded_String;
       ServingSize : Ada.Strings.Unbounded.Unbounded_String :=
@@ -39,7 +41,9 @@ package foods is
       carbs       : CarbohydratesPerServing;
    end record;
    function Equal( Left, Right : Food_Item_Type ) return boolean ;
+   -- codemd: end
 
+   -- codemd: begin segment=Database caption=Food Database 
    package FoodsDatabase_Pkg is new Ada.Containers.Vectors
      (Index_Type => Natural, Element_Type => Food_Item_Type , "=" => Equal);
    subtype FoodsDatabase_Type is FoodsDatabase_Pkg.Vector;
@@ -47,17 +51,30 @@ package foods is
    procedure Show (fi : Food_Item_Type);
    procedure Show (db : FoodsDatabase_Type);
    function Find(db : FoodsDatabase_Type ; item : String ) return Food_Item_Type ;
+   -- codemd: end
 
+   -- codemd: begin segment=SampleDb caption=Sample Database
+   -- Sample Food database file containing column each for:
+   -- Name
+   -- ServingSize
+   -- Calories per Serving
+   -- Carbs
+   -- There could well be other columns which will be ignored
    SampleDb : constant String := "Foods.csv" ;
+   -- codemd: end
 
    DatabaseError : exception;
 
+
+   -- codemd: begin segment=Dish caption=Another
    type Servings_Type is range 0 .. 8;
    type Dish_Type is record
       Name     : Ada.Strings.Unbounded.Unbounded_String;
       Servings : Servings_Type;
    end record;
+   -- codemd: end
 
+   -- codemd: begin segment=Meals caption=Collection of dishes
    package Dishes_Pkg is new Ada.Containers.Vectors
      (Index_Type => Natural, Element_Type => Dish_Type);
    subtype Meal_Type is Dishes_Pkg.Vector;
@@ -67,5 +84,6 @@ package foods is
    procedure Show (meal : Meal_Type);
 
    function Calories (db : FoodsDatabase_Type ; meal : Meal_Type) return CaloriesType;
-
+   -- codemd: end
+   
 end foods;

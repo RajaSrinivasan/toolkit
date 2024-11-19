@@ -83,6 +83,7 @@ package body foods is
       return FoodsDatabase_Pkg.Element(found) ;
    end Find ;
 
+   -- codemd: begin segment=CSVLoad caption=Example load CSV FILE
    function Load (mfn : String) return Meal_Type is
       use Ada.Strings.Unbounded;
       result   : Meal_TYpe;
@@ -99,6 +100,7 @@ package body foods is
       csv.close (mealfile);
       return result;
    end Load;
+   -- codemd: end
 
    procedure Add
      (meal : in out Meal_Type; item : String; servings : Servings_Type)
@@ -128,6 +130,7 @@ package body foods is
       end loop;
    end Show;
 
+  -- codemd: begin segment=Calories caption=Compute or Search
   function Calories (db : FoodsDatabase_Type ; dish : Dish_TYpe) return CaloriesType is
    use FoodsDatabase_Pkg;
    fi : Food_Item_Type ;
@@ -155,5 +158,6 @@ package body foods is
       end loop ;
       return result ;
    end Calories;
-
+   -- codemd: end
+   
 end foods;
