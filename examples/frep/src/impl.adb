@@ -1,13 +1,14 @@
-with GNAT.Regpat;
-
 with Ada.Text_IO;       use Ada.Text_IO;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+
+with GNAT.Regpat;
+with GNAT.Strings ;
 
 package body impl is
 
    MAX_LINE_LENGTH : constant        := 128;
    Separator       : constant String := "-----------------------";
-
+   
    procedure Search (filename : String; candidate : String) is
       count      : Natural := 0;
       file       : File_Type;
@@ -44,17 +45,23 @@ package body impl is
       Put_Line (" occurrences");
    end search;
 
+    patternStr : GNAT.Strings.String_Access ;
+    pcompiled : access GNAT.RegPat.Pattern_Matcher ;
    procedure SearchRegEx (filename : String; candidate : String) is
-      use GNAT.RegPat;
+      use GNAT.RegPat, GNAT.Strings ;
       count      : Natural         := 0;
       file       : File_Type;
       line       : String (1 .. MAX_LINE_LENGTH);
       linelength : Natural;
       linenumber : Natural         := 0;
-      pattern    : constant Pattern_Matcher := Compile (candidate);
       matched    : GNAT.RegPat.Match_Array (0 .. 1);
    begin
-
+      if patternStr = NULL
+      then
+        patternStr := new String( candidate'range ) ;
+        patternStr.all := candidate ;
+        pcompiled := new GNAT.RegPat.Pattern_Matcher'(Compile(candidate));
+      end if ;
       Put (Separator);
       Put (filename);
       Put (Separator);
@@ -64,7 +71,7 @@ package body impl is
       while not End_Of_File (file) loop
          Get_Line (file, line, linelength);
          linenumber := linenumber + 1;
-         GNAT.RegPat.Match (pattern, line (1 .. linelength), matched);
+         GNAT.RegPat.Match (pcompiled.all , line (1 .. linelength), matched);
          if matched (0) /= GNAT.RegPat.No_Match then
             Put (linenumber'Image);
             Set_Col (6);
