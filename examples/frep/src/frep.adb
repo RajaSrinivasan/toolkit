@@ -1,0 +1,27 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
+with cli;
+with impl;
+procedure Frep is
+   verbose : Boolean := True;
+begin
+   cli.ProcessCommandLine;
+   loop
+      declare
+         arg : constant String := cli.GetNextArgument;
+      begin
+         if arg'Length < 1 then
+            exit;
+         end if;
+         if cli.Candidate.all'Length >= 1 then
+            impl.Search (arg, cli.Candidate.all);
+         elsif cli.CandidateExp.all'Length >= 1 then
+            impl.SearchRegEx (arg, cli.CandidateExp.all);
+         else
+            Put ("Need a candidate or an expression to search for");
+            New_Line;
+            return;
+         end if;
+      end;
+   end loop;
+end Frep;
