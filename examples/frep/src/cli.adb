@@ -1,3 +1,4 @@
+-- codemd: begin segment=Environment caption=CLI environment
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Ada.Directories;
@@ -5,6 +6,7 @@ with Ada.Exceptions;
 
 with GNAT.Command_Line;
 with GNAT.Source_Info;
+-- codemd: end
 
 package body cli is
 
@@ -47,11 +49,13 @@ package body cli is
       use Ada.Directories;
       Config : GNAT.Command_Line.Command_Line_Configuration;
    begin
+
       GNAT.Command_Line.Set_Usage
         (Config,
          Help  => NAME & " " & VERSION & " " & comp_date & " " & comp_time,
          Usage => usagestr);
 
+    --codemd: begin segment=Define caption=Define the Switches
       GNAT.Command_Line.Define_Switch
         (Config, Verbosity'Access, Switch => "-v:",
          Long_Switch => "--verbosity:", Help => "Verbosity Level");
@@ -74,11 +78,13 @@ package body cli is
          Help => "Output Directory for edited files");
 
       GNAT.Command_Line.Getopt (Config, SwitchHandler'Access);
+    -- codemd: end
 
       if Verbosity >= 1 then
          Show_Arguments;
       end if;
 
+    -- codemd: begin segment=Check caption=Check the consistency of arguments
       if replacement.all'Length > 0 then
          Put ("Output Dir ");
          Put (outputdir.all);
@@ -95,8 +101,12 @@ package body cli is
             raise CLI_ERROR with "Provide a directory for output";
          end if;
       end if;
+    -- codemd: end
 
+   -- codemd: begin segment=Exception caption=Exception handling 
    exception
+      when GNAT.COMMAND_LINE.EXIT_FROM_COMMAND_LINE =>
+        raise ;
       when e : others =>
          Put ("Exception ");
          Put (Ada.Exceptions.Exception_Name (e));
@@ -106,6 +116,7 @@ package body cli is
          Put (usagestr);
          New_Line;
          raise;
+    -- codemd: end
    end ProcessCommandLine;
 
    function GetNextArgument return String is

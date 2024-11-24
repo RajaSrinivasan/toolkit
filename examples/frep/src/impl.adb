@@ -1,8 +1,10 @@
+-- codemd: begin segment=Environment caption=Predefined Language Environment
 with Ada.Text_IO;       use Ada.Text_IO;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Directories;
 with GNAT.Regpat;
 with GNAT.Strings;
+-- codemd: end
 
 package body impl is
 
@@ -90,9 +92,10 @@ package body impl is
       Put_Line (" substitions made");
    end Replace;
 
+-- codemd: begin segment=Compile caption=Compile a regex
    patternStr : GNAT.Strings.String_Access;
    pcompiled  : access GNAT.RegPat.Pattern_Matcher;
-
+-- codemd: skipbegin
    procedure SearchRegEx (filename : String; candidate : String) is
       use GNAT.RegPat, GNAT.Strings;
       count      : Natural := 0;
@@ -102,16 +105,20 @@ package body impl is
       linenumber : Natural := 0;
       matched    : GNAT.RegPat.Match_Array (0 .. 1);
    begin
+-- codemd: skipend
       if patternStr = null then
          patternStr     := new String (candidate'Range);
          patternStr.all := candidate;
          pcompiled := new GNAT.RegPat.Pattern_Matcher'(Compile (candidate));
       end if;
+-- codemd: end
+
       Put (Separator);
       Put (filename);
       Put (Separator);
       New_Line;
 
+-- codemd: begin segment=Search caption=Search for RegEx
       Open (file, In_FIle, filename);
       while not End_Of_File (file) loop
          Get_Line (file, line, linelength);
@@ -131,6 +138,7 @@ package body impl is
          end if;
       end loop;
       Close (file);
+-- codemd: end
       Put (count'Image);
       Put_Line (" occurrences");
    end SearchRegEx;
@@ -167,6 +175,7 @@ package body impl is
       Put (filename);
       Put (Separator);
       New_Line;
+      -- codemd: begin segment=Replace caption=Repalace the candidate
       Open (file, In_File, filename);
       Create (outfile, Out_File, outfilename);
       while not End_Of_File (file) loop
@@ -184,6 +193,7 @@ package body impl is
       end loop;
       Close (outfile);
       Close (file);
+      -- codemd: end
       Put (count'Image);
       Put_Line (" substitions made");
    end ReplaceRegEx;
