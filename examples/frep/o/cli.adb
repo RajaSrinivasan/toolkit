@@ -8,13 +8,13 @@ with GNAT.Source_Info;
 
 package body cli is
 
-   comp_date : constant String := GNAT.Source_Info.Compilation_Date;
-   comp_time : constant String := GNAT.Source_Info.Compilation_Time;
+   comp_date :constant String := GNAT.Source_Info.Compilation_Date;
+   comp_time :constant String := GNAT.Source_Info.Compilation_Time;
 
-   procedure StringArg (name : String; ptr : GNAT.Strings.String_Access) is
+   procedure StringArg (name :String; ptr : GNAT.Strings.String_Access) is
    begin
       Put (name);
-      Put (" : ");
+      Put (" :");
       if ptr.all'Length >= 1 then
          Put_Line (ptr.all);
       else
@@ -30,7 +30,7 @@ package body cli is
    end Show_Arguments;
 
    procedure SwitchHandler
-     (Switch : String; Parameter : String; Section : String)
+     (Switch :String; Parameter : String; Section : String)
    is
    begin
       Put ("SwitchHandler " & Switch);
@@ -39,13 +39,13 @@ package body cli is
       New_Line;
    end SwitchHandler;
 
-   usagestr : constant String :=
+   usagestr :constant String :=
      "-s <string> -r <regexp> -R <replacement> -o outputdir <string>" &
      " file1 file2 ,,.";
 
    procedure ProcessCommandLine is
       use Ada.Directories;
-      Config : GNAT.Command_Line.Command_Line_Configuration;
+      Config :GNAT.Command_Line.Command_Line_Configuration;
    begin
       GNAT.Command_Line.Set_Usage
         (Config,
@@ -97,7 +97,7 @@ package body cli is
       end if;
 
    exception
-      when e : others =>
+      when e :others =>
          Put ("Exception ");
          Put (Ada.Exceptions.Exception_Name (e));
          Put (" ");
@@ -109,7 +109,7 @@ package body cli is
    end ProcessCommandLine;
 
    function GetNextArgument return String is
-      nextarg : constant String :=
+      nextarg :constant String :=
         GNAT.Command_Line.Get_Argument (Do_Expansion => False);
    begin
       return nextarg;

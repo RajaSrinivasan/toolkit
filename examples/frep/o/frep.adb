@@ -3,12 +3,12 @@ with Ada.Text_IO; use Ada.Text_IO;
 with cli;
 with impl;
 procedure Frep is
-   verbose : Boolean := True;
+   verbose :Boolean := True;
 begin
    cli.ProcessCommandLine;
    loop
       declare
-         arg : constant String := cli.GetNextArgument;
+         arg :constant String := cli.GetNextArgument;
       begin
          if arg'Length < 1 then
             exit;

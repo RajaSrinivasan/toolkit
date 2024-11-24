@@ -6,16 +6,16 @@ with GNAT.Strings;
 
 package body impl is
 
-   MAX_LINE_LENGTH : constant        := 128;
-   Separator       : constant String := "-----------------------";
+   MAX_LINE_LENGTH :constant        := 128;
+   Separator       :constant String := "-----------------------";
 
-   procedure Search (filename : String; candidate : String) is
-      count      : Natural := 0;
-      file       : File_Type;
-      line       : String (1 .. MAX_LINE_LENGTH);
-      linelength : Natural;
-      linenumber : Natural := 0;
-      Position   : Natural;
+   procedure Search (filename :String; candidate : String) is
+      count      :Natural := 0;
+      file       :File_Type;
+      line       :String (1 .. MAX_LINE_LENGTH);
+      linelength :Natural;
+      linenumber :Natural := 0;
+      Position   :Natural;
    begin
 
       Put (Separator);
@@ -30,7 +30,7 @@ package body impl is
          if Position > 0 then
             Put (linenumber'Image);
             Set_Col (6);
-            Put (" : ");
+            Put (" :");
             Put (line (1 .. Position - 1));
             Put ("[");
             Put (candidate);
@@ -46,20 +46,20 @@ package body impl is
    end Search;
 
    procedure Replace
-     (filename  : String; candidate : String; replacement : String;
-      OutputDir : String)
+     (filename  :String; candidate : String; replacement : String;
+      OutputDir :String)
    is
-      outfilename : constant String :=
+      outfilename :constant String :=
         Ada.Directories.Compose
           (OutputDir, Ada.Directories.Simple_Name (filename));
 
-      outfile : File_Type;
+      outfile :File_Type;
 
-      count      : Natural := 0;
-      file       : File_Type;
-      line       : String (1 .. MAX_LINE_LENGTH);
-      linelength : Natural;
-      Position   : Natural;
+      count      :Natural := 0;
+      file       :File_Type;
+      line       :String (1 .. MAX_LINE_LENGTH);
+      linelength :Natural;
+      Position   :Natural;
 
    begin
       Put (Separator);
@@ -90,17 +90,17 @@ package body impl is
       Put_Line (" substitions made");
    end Replace;
 
-   patternStr : GNAT.Strings.String_Access;
-   pcompiled  : access GNAT.RegPat.Pattern_Matcher;
+   patternStr :GNAT.Strings.String_Access;
+   pcompiled  :access GNAT.RegPat.Pattern_Matcher;
 
-   procedure SearchRegEx (filename : String; candidate : String) is
+   procedure SearchRegEx (filename :String; candidate : String) is
       use GNAT.RegPat, GNAT.Strings;
-      count      : Natural := 0;
-      file       : File_Type;
-      line       : String (1 .. MAX_LINE_LENGTH);
-      linelength : Natural;
-      linenumber : Natural := 0;
-      matched    : GNAT.RegPat.Match_Array (0 .. 1);
+      count      :Natural := 0;
+      file       :File_Type;
+      line       :String (1 .. MAX_LINE_LENGTH);
+      linelength :Natural;
+      linenumber :Natural := 0;
+      matched    :GNAT.RegPat.Match_Array (0 .. 1);
    begin
       if patternStr = null then
          patternStr     := new String (candidate'Range);
@@ -120,7 +120,7 @@ package body impl is
          if matched (0) /= GNAT.RegPat.No_Match then
             Put (linenumber'Image);
             Set_Col (6);
-            Put (" : ");
+            Put (" :");
             Put (line (1 .. matched (0).First - 1));
             Put ("[");
             Put (line (matched (0).First .. matched (0).Last));
@@ -136,22 +136,22 @@ package body impl is
    end SearchRegEx;
 
    procedure ReplaceRegEx
-     (filename  : String; candidate : String; replacement : String;
-      outputdir : String)
+     (filename  :String; candidate : String; replacement : String;
+      outputdir :String)
    is
 
       use GNAT.RegPat, GNAT.Strings;
 
-      outfilename : constant String :=
+      outfilename :constant String :=
         Ada.Directories.Compose
           (OutputDir, Ada.Directories.Simple_Name (filename));
-      outfile     : File_Type;
+      outfile     :File_Type;
 
-      count      : Natural := 0;
-      file       : File_Type;
-      line       : String (1 .. MAX_LINE_LENGTH);
-      linelength : Natural;
-      matched    : GNAT.RegPat.Match_Array (0 .. 1);
+      count      :Natural := 0;
+      file       :File_Type;
+      line       :String (1 .. MAX_LINE_LENGTH);
+      linelength :Natural;
+      matched    :GNAT.RegPat.Match_Array (0 .. 1);
 
    begin
       if patternStr = null then
