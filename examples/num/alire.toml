@@ -1,0 +1,12 @@
+name = "num"
+description = ""
+version = "0.1.0-dev"
+
+authors = ["R Srinivasan"]
+maintainers = ["R Srinivasan <rajasrinivasan@hotmail.com>"]
+maintainers-logins = ["rajasrinivasan"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["num"]
