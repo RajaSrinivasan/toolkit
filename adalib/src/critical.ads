@@ -1,3 +1,4 @@
+-- codemd: begin segment=Generic caption=Spec of the generic package
 generic
 
     type Item_Type is private ;
@@ -24,3 +25,4 @@ package critical is
         secondary : ItemPtr_Type ;
     end record ;
 end critical ;
+--codemd: end

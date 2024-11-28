@@ -6,7 +6,8 @@ package body critical is
     begin
         allocate := a ;
     end SetAllocators ;
-                                
+
+    --codemd: begin segment=GetSet caption=GetSet and Setter implementations                  
     procedure Set(var : in out Variable_Type;  value : Item_Type ) is
     begin
         if var.Primary = null
@@ -41,5 +42,6 @@ package body critical is
         end if ;
         raise VariableCorruption ;
     end Get ;
+    --codemd: end
 
 end critical ;

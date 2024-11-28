@@ -1,3 +1,4 @@
+-- codemd: begin segment=Implement caption=Implementation
 package body cvars is
     function allocator( secondary : boolean ) return access Float is
     begin
@@ -6,3 +7,4 @@ package body cvars is
 begin
     critical_float.SetAllocators( allocator'access );
 end cvars ;
+--codemd: end

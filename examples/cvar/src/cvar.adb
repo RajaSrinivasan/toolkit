@@ -1,4 +1,5 @@
 with Ada.Text_Io; use Ada.Text_Io;
+--codemd: begin segment=Application caption=Application
 with critical_float ;
 with cvars ;
 
@@ -9,3 +10,5 @@ begin
    Put(critical_float.Get(cvars.tempSetpoint)'Image); Put(" ");
    Put(critical_float.Get(cvars.pressureSetpoint)'Image); New_Line ;
 end Cvar;
+--codemd: end
+
