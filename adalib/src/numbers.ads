@@ -14,7 +14,6 @@ package numbers is
     package HexadecimalVector_Pkg is new Ada.Containers.Vectors( Natural , HexadecimalDigit_Type );
     subtype HexadecimalDigits_Type is HexadecimalVector_Pkg.Vector ;
 
-    package NumbersVector_Pkgs is new Ada.Containers.Vectors( Natural , Natural );
     function Convert( value : Natural ) return OctalVector_Pkg.Vector; 
     function Convert( value : Natural ) return DecimalVector_Pkg.Vector ;
     function Convert( value : Natural ) return HexadecimalVector_Pkg.Vector ;
@@ -24,4 +23,20 @@ package numbers is
     function Image( digs : OctalVector_Pkg.Vector ) return String ;
     function Image( digs : DecimalVector_Pkg.Vector ) return String ;
     function Image( digs : HexadecimalVector_Pkg.Vector ) return String ;
+
+    package NumbersVector_Pkg is new Ada.Containers.Vectors( Natural , Natural );
+
+    procedure Show( num : NumbersVector_Pkg.Vector );
+    function Divisors( num : Natural ) return NumbersVector_Pkg.Vector ;
+    function Factors( num : Natural ) return NumbersVector_Pkg.Vector ;
+    function Value( factors : NumbersVector_Pkg.Vector ) return Natural ;
+
+   -- Unary Algorithms
+    function IsPrime( num : Natural ) return boolean ;
+    function IsPerfect( num : Natural ) return boolean ;
+    function IsKaprekar( num : Natural ) return boolean ;
+    
+   -- Binary Algorithms
+    function gcd(left,right : Natural) return Natural ;
+    
 end numbers ;

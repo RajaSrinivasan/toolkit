@@ -1,5 +1,10 @@
 pragma Ada_2012;
+with Ada.Text_Io; use Ada.Text_Io ;
+with Ada.Numerics.Elementary_Functions ; use Ada.Numerics.Elementary_Functions ;
+
 package body numbers is
+
+    package Sorter_Pkg is new NumbersVector_Pkg.generic_sorting( "<" );
 
    -------------
    -- Convert --
@@ -9,7 +14,7 @@ package body numbers is
       result : OctalVector_Pkg.Vector ;
       valnow : Natural := value ;
    begin
-      if valnow <= 8
+      if valnow < 8
       then
          result.Append(valnow);
          return result ;
@@ -33,7 +38,7 @@ package body numbers is
       result : DecimalVector_Pkg.Vector ;
       valnow : Natural := value ;
    begin
-      if valnow <= 10
+      if valnow < 10
       then
          result.Append(valnow);
          return result ;
@@ -57,7 +62,7 @@ package body numbers is
       result : HexaDecimalVector_Pkg.Vector ;
       valnow : Natural := value ;
    begin
-      if valnow <= 16
+      if valnow < 16
       then
          result.Append(valnow);
          return result ;
@@ -201,5 +206,155 @@ package body numbers is
       end loop ;
       return result ;
    end Image;
+
+   procedure ShowNumber( cursor : NumbersVector_Pkg.cursor ) is
+   begin
+      Put_Line( NumbersVector_PKg.Element(cursor)'Image );
+   end ShowNumber ;
+
+    procedure Show( num : NumbersVector_Pkg.Vector ) is
+    begin
+      num.Iterate( ShowNumber'access );
+    end Show ;
+
+    function Divisors( num : Natural ) return NumbersVector_Pkg.Vector is
+      result : NumbersVector_Pkg.Vector ;
+      sqrtnum : Float ;
+    begin
+      sqrtnum := sqrt( Float(num) );
+      for d in 2..num/2
+      loop
+         if num mod d = 0
+         then
+            result.Append(d);
+         end if ;
+      end loop ;
+      result.Append( 1 );
+      result.Append( num );
+      Sorter_Pkg.Sort(result);
+      return result ;
+    end Divisors ;
+
+    function Factors( num : Natural) return NumbersVector_Pkg.Vector is
+      result : NumbersVector_Pkg.Vector ;
+      curfac : Natural := 2 ;
+      curnum : Natural := num ;
+      sqrtnum : Natural ;
+    begin
+      sqrtnum := 1 + Natural( sqrt( Float( num )) );
+      if curfac > sqrtnum
+      then
+         result.Append( num );
+         return result ;
+      end if ;
+      loop
+         if curnum mod curfac = 0
+         then
+            result.Append( curfac );
+            curnum := curnum / curfac ;
+            if curnum <= 1
+            then
+               exit ;
+            end if ;
+         else
+            curfac := curfac + 1 ;   
+         end if ;
+      end loop ;
+      return result ;
+    end Factors ;
+
+    function Value( factors : NumbersVector_Pkg.Vector ) return Natural is
+      result : Natural := 1 ;
+      procedure Value ( cursor : NumbersVector_Pkg.cursor ) is
+      begin
+         result := result * NumbersVector_Pkg.Element(cursor) ;
+      end Value ;
+    begin
+      factors.Iterate( Value'access );
+      return result ;
+    end Value ;
+ 
+
+    function IsPrime( num : Natural ) return boolean is
+      use Ada.Containers, NumbersVector_Pkg ;
+      facs : Vector := Factors( num );
+    begin
+      if facs.Length > 1
+      then
+         return false;
+      end if ;
+      return true ;
+    end IsPrime ;
+    function IsPerfect( num : Natural ) return boolean is
+      use Ada.Containers, NumbersVector_Pkg ;
+      divs : Vector := Divisors( num );
+      sum : Natural := 0 ;
+      procedure Summer( cur : cursor ) is
+      begin
+         sum := sum + Element(cur);
+         --Put("Item "); Put( To_Index(cur)'Image ); New_Line;
+      end Summer ;
+    begin
+      divs.Iterate( Summer'access );
+      if sum = num * 2
+      then
+         return true ;
+      end if ;
+      return false ;
+    end IsPerfect ;
+
+    function IsKaprekar( num : Natural ) return boolean is
+      use Ada.Containers, DecimalVector_Pkg ;
+      numsq : Natural := num * num ;
+      digs : DecimalVector_Pkg.Vector := Convert(numsq) ;
+      total : Natural := Natural(digs.Length) ;
+      left, right : Natural := 0 ;
+      procedure Summer( cur : cursor ) is
+         idx : Natural := To_Index(cur);
+      begin
+         -- Put("Item "); Put( To_Index(cur)'Image ); New_Line;
+         if idx < total / 2
+         then
+            left := left*10 + Element(cur);
+         else
+            right := right*10 + Element(cur);
+         end if ;
+      end Summer ;
+    begin
+      digs.Iterate( Summer'access );
+      if left = 0 or right = 0
+      then
+         return false ;
+      end if ;
+      if left + right = num
+      then
+         return true ;
+      end if;
+      return false ;
+    end IsKaprekar ;
+
+
+    function gcd(left,right : Natural) return Natural is
+      result : Natural ;
+      temp : Natural ;
+    begin
+      if left > right
+      then
+         if left mod right = 0
+         then
+            return right ;
+         end if ;
+         return gcd( left mod right , right );
+      end if ;
+      if left < right
+      then
+         if right mod left = 0
+         then
+            return left ;
+         end if ;
+         return gcd( right mod left , left );
+      end if ;
+      return left ;
+    end gcd ;
 
 end numbers;
