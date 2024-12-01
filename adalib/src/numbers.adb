@@ -33,7 +33,7 @@ package body numbers is
    -------------
    -- Convert --
    -------------
-
+   --codemd: begin segment=Convert caption=From number to digits
    function Convert (value : Natural) return DecimalVector_Pkg.Vector is
       result : DecimalVector_Pkg.Vector ;
       valnow : Natural := value ;
@@ -53,6 +53,7 @@ package body numbers is
       end loop ;
       return result ;
    end Convert;
+   -- codemd: end
 
    -------------
    -- Convert --
@@ -101,7 +102,7 @@ package body numbers is
    -----------
    -- Value --
    -----------
-
+   --codemd: begin segment=Value caption=Compute the inverse. 
    function Value (digs : DecimalVector_Pkg.Vector) return Natural is
       use DecimalVector_Pkg ;
       result : Natural := 0 ;
@@ -117,6 +118,7 @@ package body numbers is
       end loop ;
       return result ;
    end Value;
+   --codemd: end
 
    -----------
    -- Value --
@@ -207,15 +209,17 @@ package body numbers is
       return result ;
    end Image;
 
+   --codemd: begin segment=Iterate caption=Iteration over the vector
    procedure ShowNumber( cursor : NumbersVector_Pkg.cursor ) is
    begin
-      Put_Line( NumbersVector_PKg.Element(cursor)'Image );
+      Put( NumbersVector_PKg.Element(cursor)'Image );  Put(", ");
    end ShowNumber ;
 
     procedure Show( num : NumbersVector_Pkg.Vector ) is
     begin
       num.Iterate( ShowNumber'access );
     end Show ;
+   --codemd: end
 
     function Divisors( num : Natural ) return NumbersVector_Pkg.Vector is
       result : NumbersVector_Pkg.Vector ;
@@ -234,6 +238,29 @@ package body numbers is
       Sorter_Pkg.Sort(result);
       return result ;
     end Divisors ;
+   --codemd: begin segment=Factors caption=Prime factorization
+
+   function DivisorSum( num : Natural ) return Natural is
+      use NumbersVector_Pkg ;
+      divs : Vector := Divisors(num);
+      result : Natural := 0 ;
+      procedure Summer( cur : cursor ) is
+      begin
+         result := result + Element(cur);
+      end Summer ;
+   begin
+      divs.Iterate(Summer'access);
+      return result ;
+   end DivisorSum;
+ 
+
+   function Abundance( num : Natural ) return AbundancyRatio is
+      result : AbundancyRatio ;
+      divsum : Natural := DivisorSum(num);
+   begin
+      result := AbundancyRatio(Float(divsum) / Float(num)) ;
+      return result ;
+   end Abundance;
 
     function Factors( num : Natural) return NumbersVector_Pkg.Vector is
       result : NumbersVector_Pkg.Vector ;
@@ -262,6 +289,7 @@ package body numbers is
       end loop ;
       return result ;
     end Factors ;
+   --codemd: end
 
     function Value( factors : NumbersVector_Pkg.Vector ) return Natural is
       result : Natural := 1 ;
@@ -274,7 +302,7 @@ package body numbers is
       return result ;
     end Value ;
  
-
+   -- codemd: begin segment=Prime caption=Is a number prime
     function IsPrime( num : Natural ) return boolean is
       use Ada.Containers, NumbersVector_Pkg ;
       facs : Vector := Factors( num );
@@ -285,6 +313,8 @@ package body numbers is
       end if ;
       return true ;
     end IsPrime ;
+   -- codemd: end
+
     function IsPerfect( num : Natural ) return boolean is
       use Ada.Containers, NumbersVector_Pkg ;
       divs : Vector := Divisors( num );
@@ -302,7 +332,18 @@ package body numbers is
       end if ;
       return false ;
     end IsPerfect ;
+      
+   function IsMultiperfect( num : Natural ) return boolean is
+      divsum : Natural := DivisorSum(num);
+   begin
+      if divsum mod num = 0
+      then
+         return true ;
+      end if ;
+      return false ;
+   end IsMultiperfect;
 
+   --codemd: begin segment=Kaprekar caption=Kaprekar numbers
     function IsKaprekar( num : Natural ) return boolean is
       use Ada.Containers, DecimalVector_Pkg ;
       numsq : Natural := num * num ;
@@ -332,7 +373,7 @@ package body numbers is
       end if;
       return false ;
     end IsKaprekar ;
-
+   --codemd: end
 
     function gcd(left,right : Natural) return Natural is
       result : Natural ;
@@ -357,4 +398,11 @@ package body numbers is
       return left ;
     end gcd ;
 
+    function AreFriendly( left, right : Natural ) return boolean is
+      lab, rab : AbundancyRatio ;
+    begin
+      lab := Abundance(left);
+      rab := Abundance(right);
+      return lab = rab ;
+    end AreFriendly;
 end numbers;
