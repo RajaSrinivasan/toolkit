@@ -38,8 +38,12 @@ package numbers is
     -- Ref: https://reference.wolfram.com/language/ref/DivisorSum.html?q=DivisorSum
     function DivisorSum( num : Natural ) return Natural ;
 
+   --codemd: begin segment=Abundance caption=Abundancy ratio
+    -- Ref: https://mathworld.wolfram.com/Abundancy.html
     type AbundancyRatio is delta 0.01 digits 6 ;
     function Abundance( num : Natural ) return AbundancyRatio ;
+   --codemd: end
+   
     function Factors( num : Natural ) return NumbersVector_Pkg.Vector ;
     function Value( factors : NumbersVector_Pkg.Vector ) return Natural ;
 
