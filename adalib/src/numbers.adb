@@ -4,7 +4,7 @@ with Ada.Numerics.Elementary_Functions ; use Ada.Numerics.Elementary_Functions ;
 
 package body numbers is
 
-    package Sorter_Pkg is new NumbersVector_Pkg.generic_sorting( "<" );
+
 
    -------------
    -- Convert --

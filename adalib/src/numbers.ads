@@ -30,7 +30,8 @@ package numbers is
    --codemd: end
 
     package NumbersVector_Pkg is new Ada.Containers.Vectors( Natural , Natural );
-
+    package Sorter_Pkg is new NumbersVector_Pkg.generic_sorting( "<" );
+    
     procedure Show( num : NumbersVector_Pkg.Vector );
     function Divisors( num : Natural ) return NumbersVector_Pkg.Vector ;
 
@@ -43,7 +44,7 @@ package numbers is
     type AbundancyRatio is delta 0.01 digits 6 ;
     function Abundance( num : Natural ) return AbundancyRatio ;
    --codemd: end
-   
+
     function Factors( num : Natural ) return NumbersVector_Pkg.Vector ;
     function Value( factors : NumbersVector_Pkg.Vector ) return Natural ;
 
