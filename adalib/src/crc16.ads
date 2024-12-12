@@ -16,7 +16,7 @@ package crc16 is
    function Compute
      (Blockptr : System.Address;
       blocklen : Integer) return Interfaces.Unsigned_16;
-
+   function Compute( arg : String ) return Interfaces.Unsigned_16;
    procedure Update
      (Oldvalue :     Interfaces.Unsigned_16;
       Block    :     block_type;

@@ -2,7 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body crc16 is
    CRCtable : constant array (1 .. 256) of Interfaces.Unsigned_16 :=
-     (16#0000#,
+     [16#0000#,
       16#C0C1#,
       16#C181#,
       16#0140#,
@@ -257,7 +257,7 @@ package body crc16 is
       16#4100#,
       16#81C1#,
       16#8081#,
-      16#4040#);
+      16#4040#];
    procedure Update
      (Oldvalue :     Interfaces.Unsigned_16;
       Blockptr :     System.Address;
@@ -296,6 +296,11 @@ package body crc16 is
       end loop;
       return Newcrc;
    end Compute;
+   function Compute( arg : String ) return Interfaces.Unsigned_16 is
+   begin
+      return Compute( arg'Address , arg'Length );
+   end Compute ;
+
    procedure Update
      (Oldvalue :     Interfaces.Unsigned_16;
       Block    :     block_type;
