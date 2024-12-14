@@ -17,11 +17,19 @@ procedure Integ is
    -- codemd: begin segment=Corrupt caption=Random bit in a random byte
    function Corrupt (b : Unsigned_8) return Unsigned_8 is
       mask : Unsigned_8 := 0;
-      rv   : Float      := GNAT.Random_Numbers.Random (Gen);
+      rv   : Float ;
    begin
-      mask := Shift_Left (2#1#, Natural (rv * Float (mask'Size)));
+      loop
+         rv := GNAT.Random_Numbers.Random (Gen);
+         mask := Shift_Left (2#1#, Natural (rv * Float (mask'Size)));
+         if mask /= 0
+         then
+            exit ;
+         end if ;
+      end loop ;
       return mask xor b;
    end Corrupt;
+   -- codemd: end
 
    function Corrupt (str : String) return String is
       result : String := str;
@@ -45,7 +53,7 @@ procedure Integ is
       New_Line;
       return result;
    end Corrupt;
-   -- codemd: end
+
 
    procedure ParityTest is
       myname : constant String := Enclosing_Entity;
