@@ -278,6 +278,8 @@ package body crc16 is
       end loop;
       Newvalue := Newcrc;
    end Update;
+   
+   --codemd: begin segment=Compute caption=Compute CRC
    function Compute
      (Blockptr : System.Address;
       blocklen : Integer) return Interfaces.Unsigned_16
@@ -296,6 +298,8 @@ package body crc16 is
       end loop;
       return Newcrc;
    end Compute;
+   --codemd: end
+
    function Compute( arg : String ) return Interfaces.Unsigned_16 is
    begin
       return Compute( arg'Address , arg'Length );

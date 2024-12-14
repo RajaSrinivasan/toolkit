@@ -9,6 +9,8 @@ with GNAT.Calendar.Time_IO; use GNAT.Calendar.Time_IO;
 
 with csv;
 
+with tables ;
+
 procedure Csvtest is
    verbose : Boolean := True;
    pgm     : String  := GNAT.Source_Info.Enclosing_Entity;
@@ -81,7 +83,11 @@ procedure Csvtest is
       end;
 
    end T2;
-
+   procedure T3 is
+   begin
+      Put("External_Name "); Put_Line(tables.IName);
+      Put("External Tag "); Put_Line(tables.ITag);
+   end T3 ;
 begin
    csv.Debug := verbose;
    Put_Line (pgm);
@@ -89,6 +95,8 @@ begin
       T1;
    elsif Argument (1) = "T2" then
       T2;
+   elsif Argument (1) = "T3" then
+      T3;
    else
       null;
    end if;
