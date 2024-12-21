@@ -1,4 +1,6 @@
 with "config/ptable_config.gpr";
+with "../examples.gpr" ;
+
 project Ptable is
 
    for Source_Dirs use ("src/", "config/");

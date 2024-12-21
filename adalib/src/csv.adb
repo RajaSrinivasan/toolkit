@@ -74,8 +74,9 @@ package body Csv is
         Integer (GNAT.AWK.Number_Of_Fields (File.Session))
       then
          if Debug then
-            Put ("Invalid line in input file");
+            Put ("Invalid line in input file ");
             Put_Line (GNAT.AWK.Field (0, File.Session));
+            Put("Field Count "); Put_Line ( GNAT.AWK.Number_Of_Fields(file.session) ' Image );
          end if;
       end if;
       File.Current_Line := File.Current_Line + 1;

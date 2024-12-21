@@ -1,67 +1,87 @@
 with Ada.Calendar ;
 with Ada.Containers.Vectors ;
-with Ada.Containers.Indefinite_Vectors ;
-with Ada.Tags ;
-with GNAT.Strings ;
+--with Ada.Containers.Indefinite_Vectors ;
+--with Ada.Tags ;
+--with GNAT.Strings ;
+with Ada.Strings.Unbounded ; use Ada.Strings.Unbounded ;
 
 package tables is
 
    type ColumnType is abstract tagged record
-      name : GNAT.Strings.String_Access ;
+      name : Unbounded_String  ;
    end record ;
 
-   procedure Append( vec : in out ColumnType ; valStr : String ; formatStr : String := "" ) is abstract ;
+   procedure Append( col : in out ColumnType ; value : String ) is abstract ;
+   procedure Set( col : in out ColumnType ; idx : Natural ; value : String ) is abstract ;
+   function Image( col : in out ColumnType ; idx : Natural ) return String is abstract ;
+   function Length( col : ColumnType ) return Natural is abstract;
+   procedure Remove( col : in out ColumnType ; idx : Natural ) is abstract ;
 
-   package IntegerVector_Pkg is new Ada.Containers.Vectors( Natural , Integer );
-   type IntegerColumnType is new ColumnType with record
-      values : IntegerVector_Pkg.Vector ;
-   end record ;
-   procedure Append( vec : in out IntegerColumnType ; valStr : String ; formatStr : String := "" ) ;
-   ITag : constant String := Ada.Tags.External_Tag(IntegerColumnType'tag) ;
-   IName : constant String := Ada.Tags.Expanded_Name(IntegerColumnType'Tag) ;
+   type ColPtrType is access all ColumnType'Class ;
+   function Create( name : String ) return ColPtrType is abstract ;
+   package TablePkg is new Ada.Containers.Vectors( Natural , ColPtrType );
+   subtype TableType is TablePkg.Vector ;
 
-   package RealVector_Pkg is new Ada.Containers.Vectors( Natural , Long_Float );
-   type RealColumnType is new ColumnType with record
-      values : RealVector_Pkg.Vector ;
-   end record;
-   procedure Append( vec : in out RealColumnType ; valStr : String ; formatStr : String := "" ) ;
+   generic 
+      type T is private ;
+      with function Vfun( s : String ) return T ;
+      with function Ifun( v : T ) return String ;
+   package ColumnPkg is
 
-   package StringVector_Pkg is new Ada.Containers.Indefinite_Vectors( Natural , String );
+      package ColumnValues_Pkg is new Ada.Containers.Vectors( Natural , T ) ;
+      subtype ColumnValuesType is ColumnValues_Pkg.Vector ;
+
+      type TColumnType is new ColumnType with record
+         values : ColumnValuesType ;
+      end record ;
+
+      function Create( name : String ) return ColPtrType ;
+      function Length( col : TColumnType ) return Natural ;
+      procedure Remove( col : in out TColumnType ; idx : Natural ) ;
+      function Get( col : TColumnType ; idx : Natural) return T ;
+
+      procedure Append( col : in out TColumnType ; value : String ) ;
+      procedure Set( col : in out TColumnType ; idx : Natural ; value : String ) ;
+      function Image( col : in out TColumnType ; idx : Natural ) return String ;
+
+   end ColumnPkg ;
+
+   package StringColumnValues_Pkg is new Ada.Containers.Vectors( Natural , Unbounded_String );
    type StringColumnType is new ColumnType with record
-      values : StringVector_Pkg.Vector ;
-   end record ;
-   procedure Append( vec : in out StringColumnType ; valStr : String ; formatStr : String := "" ) ;
-
-   function "=" (Left,Right : Ada.Calendar.Time) return boolean ;
-   package TimeVector_Pkg is new Ada.Containers.Vectors( Natural , Ada.Calendar.Time );
-   type TimeColumnType is new ColumnType with record
-      values : TimeVector_Pkg.Vector;
-   end record;
-   procedure Append( vec : in out TimeColumnType ; valStr : String ; formatStr : String := "" ) ;
-
-   package ColumnVector_Pkg is new Ada.Containers.Indefinite_Vectors( Natural , ColumnType'Class );
-   subtype TableType is ColumnVector_Pkg.Vector ;
-
-   -- procedure AddRow( table : in out TableType ; values : StringVector_Pkg.Vector );
-
-   type ValueType is abstract tagged null record ;
-   type IntegerValueType is new ValueType with record 
-      value : Integer ;
-   end record ;
-   type RealValueType is new ValueType with record 
-      value : Long_Float ;
-   end record ;
-   type TimeValueType is new ValueType with record 
-      value : Ada.Calendar.Time ;
-   end record ;
-   type StringValueType is new ValueType with record
-      value : GNAT.Strings.String_Access;
+      values : StringColumnValues_Pkg.Vector ;
    end record ;
 
-   package Values_Pkg is new Ada.Containers.Indefinite_Vectors( Natural , ValueType'Class );
-   subtype RowType is Values_Pkg.Vector ;
+   function CreateStringColumn( name : String ) return ColPtrType ;
+   function Length( col : StringColumnType ) return Natural ;
+   procedure Remove( col : in out StringColumnType ; idx : Natural ) ;
 
-   -- function Get( table : TableType ; rownum : Natural ) return RowType ;
-   -- function Append( table : in out TableType ; row : RowType );
+   function Get( col : StringColumnType ; idx : Natural) return String ;
+   procedure Append( col : in out StringColumnType ; value : String ) ;
+   procedure Set( col : in out StringColumnType ; idx : Natural ; value : String ) ;
+   function Image( col : in out StringColumnType ; idx : Natural ) return String ;
 
+   -- https://ebird.org/data/download
+
+   -- CSV Files
+   procedure Load( filename : String ; table : in out TableType ; sep : String := ";");
+   procedure Save( filename : String ; table : TableType ; sep : String := ";" );
+
+   function Rows( table : TableType ) return Natural ;
+   function Columns( table : TableType ) return Natural ; 
+
+   -- Algorithms on tables
+   procedure Iterate( table : TableType ;
+                      proc : not null access procedure (table : TableType ;
+                                                    rownum : Natural)) ;
+
+   procedure Mutate( table : in out TableType ;
+                     col : in out ColPtrType ;
+                     proc : not null access procedure (table : in out TableType ;
+                                                       rownum : Natural ;
+                                                       col : in out ColPtrType ));
+   
+   procedure Filter( table : in out TableType ;
+                     remove : not null access function (table : in out TableType ;
+                                                       rownum : Natural ) return boolean );
+                                
 end tables ;
