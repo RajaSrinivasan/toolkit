@@ -1,5 +1,7 @@
 with Ada.Calendar ;
 with Ada.Containers.Vectors ;
+with Ada.Text_Io;
+
 --with Ada.Containers.Indefinite_Vectors ;
 --with Ada.Tags ;
 --with GNAT.Strings ;
@@ -7,6 +9,7 @@ with Ada.Strings.Unbounded ; use Ada.Strings.Unbounded ;
 
 package tables is
 
+   -- codemd: begin segment=Abstract caption=Abstraction of table
    type ColumnType is abstract tagged record
       name : Unbounded_String  ;
    end record ;
@@ -21,7 +24,9 @@ package tables is
    function Create( name : String ) return ColPtrType is abstract ;
    package TablePkg is new Ada.Containers.Vectors( Natural , ColPtrType );
    subtype TableType is TablePkg.Vector ;
+   -- codemd: end
 
+   -- codemd: begin segment=BasicTypes caption=basic data types
    generic 
       type T is private ;
       with function Vfun( s : String ) return T ;
@@ -45,6 +50,7 @@ package tables is
       function Image( col : in out TColumnType ; idx : Natural ) return String ;
 
    end ColumnPkg ;
+   -- codemd: end
 
    package StringColumnValues_Pkg is new Ada.Containers.Vectors( Natural , Unbounded_String );
    type StringColumnType is new ColumnType with record
@@ -64,11 +70,14 @@ package tables is
 
    -- CSV Files
    procedure Load( filename : String ; table : in out TableType ; sep : String := ";");
-   procedure Save( filename : String ; table : TableType ; sep : String := ";" );
+   procedure Print( table : TableType ; sep : String := " ; " ; header : boolean := false ;
+                    outfile : Ada.Text_Io.File_Type := Ada.Text_Io.Standard_Output ) ;
+    procedure Save( filename : String ; table : TableType ; sep : String := ";" ; header : boolean := false );
 
    function Rows( table : TableType ) return Natural ;
    function Columns( table : TableType ) return Natural ; 
 
+   -- codemd: begin segment=dplyr caption=Operations
    -- Algorithms on tables
    procedure Iterate( table : TableType ;
                       proc : not null access procedure (table : TableType ;
@@ -83,5 +92,5 @@ package tables is
    procedure Filter( table : in out TableType ;
                      remove : not null access function (table : in out TableType ;
                                                        rownum : Natural ) return boolean );
-                                
+   -- codemd: end
 end tables ;

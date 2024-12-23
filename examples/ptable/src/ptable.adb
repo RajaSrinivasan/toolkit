@@ -41,7 +41,9 @@ procedure Ptable is
       pt.Append (atomic_mass);
 
       tables.Load( Argument(1) , pt , "," );
-      tables.Iterate( pt , show'access );
+      tables.Print(pt);
+      tables.Save(Argument(1) & ".csv" , pt );
+      --tables.Iterate( pt , show'access );
    end T1;
 begin
    if Argument_Count > 0 then

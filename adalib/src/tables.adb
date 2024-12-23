@@ -94,9 +94,44 @@ package body tables is
 
    procedure Load( filename : String ; table : in out TableType; sep : String := ";") is separate ;
 
-   procedure Save( filename : String ; table : TableType ; sep : String := ";" ) is
+   procedure PrintHeader( tbl : tables.TableType ; sep : String := " ; " ;
+                          outfile : Ada.Text_Io.File_Type := Ada.Text_Io.Standard_Output) is
+      use Ada.Text_Io ;
    begin
-      null ;
+      for c in 0 .. tables.Columns( tbl )-1
+      loop
+         Put( outfile , To_String(tables.TablePkg.Element(tbl,c).name)); 
+         Put(sep);
+      end loop ;
+      New_Line(outfile) ;
+   end PrintHeader ;
+
+   procedure Print( table : TableType ; sep : String := " ; " ; header : boolean := false ;
+                    outfile : Ada.Text_Io.File_Type := Ada.Text_Io.Standard_Output ) is
+      use Ada.Text_Io ;
+   begin
+      if header
+      then
+         PrintHeader(table, sep , outfile );
+      end if ;
+      for r in 0 .. tables.Rows(table) - 1
+      loop
+         for c in 0 .. tables.Columns( table )-1
+         loop
+            Put( outfile , tables.TablePkg.Element(table,c).Image(r)) ;
+            Put( outfile , sep );
+         end loop ;
+         New_Line(outfile) ;
+      end loop ;
+   end Print ;
+
+   procedure Save( filename : String ; table : TableType ; sep : String := ";" ; header : boolean := false ) is
+      use Ada.Text_Io ;
+      outfile : File_Type ;
+   begin
+      Create( outfile , Out_File , filename );
+      Print( table , sep , header , outfile );
+      Close(outfile);
    end Save ;
 
    function Rows( table : TableType ) return Natural is

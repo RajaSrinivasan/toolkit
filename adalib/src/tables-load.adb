@@ -6,9 +6,7 @@ procedure Load( filename : String ; table : in out TableType ; sep : String := "
    tblfile : csv.File_Type ;
 begin
    tblfile := csv.Open( filename , separator => sep , fieldnames => false );
-   while not csv.End_Of_File(tblfile)
    loop
-      csv.Get_Line(tblfile);
       for fld in 0 .. TablePkg.Length(table)-1
       loop 
          declare
@@ -18,6 +16,11 @@ begin
             TablePkg.Element(table,Integer(fld)).Append( colval );
          end ;
       end loop ;
+      if csv.End_Of_File(tblfile)
+      then
+         exit ;
+      end if ;
+      csv.Get_Line(tblfile);
    end loop ;
    csv.Close(tblfile);
 end Load ;
