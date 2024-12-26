@@ -32,6 +32,7 @@ package body logging.socket is
             raise ;
     end Create ;
 
+   -- codemd: begin segment=SockDest caption=Socket destination
    overriding
    procedure SendMessage
      ( dest : in out SocketDestination_Type ;
@@ -64,7 +65,8 @@ package body logging.socket is
         end if ;
         dest.Count := @ + 1 ;
     end SendMessage;
-
+   -- codemd: end
+   
    overriding
    procedure Close(dest : SocketDestination_Type) is
     begin

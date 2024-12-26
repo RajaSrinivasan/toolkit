@@ -37,7 +37,7 @@ package body logging is
          end if;
          Ada.Strings.Unbounded.Delete (ts, pos, pos);
       end loop;
-      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock ) ;
+      return Ada.Calendar.Formatting.Local_Image (Ada.Calendar.Clock ) ;
 
    end Time_Stamp;
 
@@ -50,6 +50,7 @@ package body logging is
       Current_Destination := destination;
    end SetDestination;
 
+   -- codemd: begin segment=Dispatch caption=Dispatch
    procedure SendMessage
      ( message : String ;
        level : message_level_type := INFORMATIONAL;
@@ -58,7 +59,8 @@ package body logging is
    begin
       SendMessage(Current_Destination.all,message,level,source,class);
    end SendMessage;
-
+   -- codemd: end
+   
   overriding
   procedure SendMessage
      ( dest : in out StdOutDestination_Type ;
@@ -81,7 +83,7 @@ package body logging is
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) return String is
    begin
-      return Ada.Calendar.Formatting.Image (Ada.Calendar.Clock ) & 
+      return Ada.Calendar.Formatting.Local_Image (Ada.Calendar.Clock ) & 
              " " &
              source & " " &
              class & " " &
@@ -92,7 +94,7 @@ package body logging is
    procedure SelfTest is
    begin
       for i in 1 .. 10 loop
-         SendMessage (Ada.Calendar.Formatting.Image (Ada.Calendar.Clock));
+         SendMessage (Ada.Calendar.Formatting.Local_Image (Ada.Calendar.Clock));
          delay 0.5;
       end loop;
    end SelfTest;

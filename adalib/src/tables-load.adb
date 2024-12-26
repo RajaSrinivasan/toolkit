@@ -1,6 +1,7 @@
 with Ada.Containers ;
 with csv ;
 separate (tables)
+--codemd: begin segment=Load caption=Load the table from csv
 procedure Load( filename : String ; table : in out TableType ; sep : String := ";") is
    use type Ada.Containers.Count_Type;
    tblfile : csv.File_Type ;
@@ -24,4 +25,5 @@ begin
    end loop ;
    csv.Close(tblfile);
 end Load ;
+--codemd: end
    

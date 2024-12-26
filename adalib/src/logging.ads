@@ -1,5 +1,6 @@
 package logging is
 
+   -- codemd: begin segment=API caption=Basic logging needs
    subtype message_level_type is Natural;
 
    CRITICAL      : constant message_level_type := 10;
@@ -21,13 +22,15 @@ package logging is
        level : message_level_type := INFORMATIONAL;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class );
-   
+   -- codemd: end
+
    function Image
         ( message : String ;
           level : message_level_type := INFORMATIONAL;
           source : String := Default_Source_Name ;
           class : String := Default_Message_Class ) return String ;
    
+  -- codemd: begin segment=Dest caption=Log destinations
   type Destination_Type is abstract tagged record
       null ;
    end record;
@@ -43,7 +46,8 @@ package logging is
    type StdOutDestination_Type is new Destination_Type with record
       null;
    end record;
-
+   -- codemd: end
+   
   overriding
   procedure SendMessage
      ( dest : in out StdOutDestination_Type ;

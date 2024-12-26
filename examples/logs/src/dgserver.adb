@@ -33,7 +33,7 @@ procedure dgserver is
 
          logging.SendMessage
            (GNAT.Sockets.Image (from) & " " &
-            Ada.Calendar.Formatting.Image (logmsg.t) & " " &
+            Ada.Calendar.Formatting.Local_Image (logmsg.t) & " " &
             logmsg.mt (1 .. Integer (logmsg.ml)),
             logmsg.l, logmsg.s, logmsg.c);
       end loop;

@@ -72,6 +72,7 @@ package body tables is
       col.Values.Delete( idx );
    end Remove ;
 
+   --codemd: begin segment=StrCol caption=Strings
    function Get( col : StringColumnType ; idx : Natural) return String is
    begin
       return To_String(col.Values.Element(idx)) ;
@@ -91,7 +92,8 @@ package body tables is
    begin
       return Get( col , idx );
    end Image ;
-
+   --codemd: end
+   
    procedure Load( filename : String ; table : in out TableType; sep : String := ";") is separate ;
 
    procedure PrintHeader( tbl : tables.TableType ; sep : String := " ; " ;

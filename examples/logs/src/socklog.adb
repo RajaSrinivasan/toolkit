@@ -4,6 +4,7 @@ with GNAT.Source_Info;
 
 procedure socklog is
 
+   -- codemd: begin segment=Socklog caption=UDP socket log
    procedure T1 is
       myname  : constant String := GNAT.Source_Info.Enclosing_Entity;
       logsock : aliased logging.socket.SocketDestinationPtr_Type;
@@ -18,7 +19,8 @@ procedure socklog is
          delay 2.0;
       end loop;
    end T1;
-
+   -- codemd: end
+   
 begin
    T1;
 end socklog;

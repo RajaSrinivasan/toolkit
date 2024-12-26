@@ -26,6 +26,7 @@ procedure Ptable is
       New_Line ;
    end show ;
 
+   -- codemd: begin segment=Table caption=Load and print the table from CSV
    procedure T1 is
       tname         : constant String   := GNAT.Source_Info.Enclosing_Entity;
 
@@ -43,8 +44,8 @@ procedure Ptable is
       tables.Load( Argument(1) , pt , "," );
       tables.Print(pt);
       tables.Save(Argument(1) & ".csv" , pt );
-      --tables.Iterate( pt , show'access );
    end T1;
+   -- CODEMD: END
 begin
    if Argument_Count > 0 then
       T1;

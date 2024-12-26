@@ -52,11 +52,13 @@ package tables is
    end ColumnPkg ;
    -- codemd: end
 
+   --codemd: begin segment=StrCol caption=String Columns
    package StringColumnValues_Pkg is new Ada.Containers.Vectors( Natural , Unbounded_String );
    type StringColumnType is new ColumnType with record
       values : StringColumnValues_Pkg.Vector ;
    end record ;
-
+   --codemd: end
+   
    function CreateStringColumn( name : String ) return ColPtrType ;
    function Length( col : StringColumnType ) return Natural ;
    procedure Remove( col : in out StringColumnType ; idx : Natural ) ;
