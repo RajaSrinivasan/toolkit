@@ -20,6 +20,7 @@ package logging.socket is
        level : message_level_type := INFORMATIONAL ;
        source : String := Default_Source_Name ;
        class : String := Default_Message_Class ) ;
+       
    overriding
    procedure Close(dest : SocketDestination_Type) ;
 

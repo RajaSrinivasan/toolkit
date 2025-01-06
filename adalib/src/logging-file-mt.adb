@@ -10,6 +10,7 @@ package body logging.file.mt is
          if fdest = null
          then
             fdest := Create( name , filetype , number , rotate );
+            SetDestination (fdest);
          end if ;
       end Create; 
 
