@@ -1,3 +1,5 @@
+with System ;
+with Interfaces ;
 with Ada.Strings.Unbounded ; use Ada.Strings.Unbounded;
 with Ada.Streams ;
 with GNAT.Sockets;
@@ -24,8 +26,14 @@ package server is
    end ClientSock_Type;
    type ClientSockPtr_Type is access all ClientSock_Type ;
 
+   -- Compatible with the server design
+   procedure Send( sock : GS.Socket_Type ; payload : AS.Stream_Element_Array );
+   procedure Send( sock : GS.Socket_Type ; payload : String );
+   procedure Send( sock : GS.Socket_Type ; payload : System.Address ; payloadlen : Integer );
+
    MAX_MESSAGE_SIZE : constant := 1024 ;
 
+   subtype HeaderType is Interfaces.Unsigned_16 ;
 private
 
    type DebugClient is new ClientType with

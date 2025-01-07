@@ -34,8 +34,8 @@ package body logging.socket.stream is
       hdr.l := level ;
       hdr.s := source ;
       hdr.c := class ;
-      Message_Header_Type'Output ( GS.Stream(dest.s) , hdr);
-      String'Output (GS.Stream(dest.s) , message );
+      Message_Header_Type'Write ( GS.Stream(dest.s) , hdr);
+      String'Write (GS.Stream(dest.s) , message );
    end SendMessage;
 
    overriding

@@ -1,9 +1,9 @@
-with Interfaces ; use Interfaces ;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with GNAT.Source_Info ; 
 with server;
 package body server is
+
    use GNAT.Sockets ;
    package GSI renames GNAT.Source_Info ;
 
@@ -57,7 +57,7 @@ package body server is
       mysock : GS.Socket_Type ;
       myaddr : GS.Sock_Addr_Type ;
 
-      msglen : aliased Unsigned_16 ;
+      msglen : aliased HeaderType ;
       buffer : AS.Stream_Element_Array(1..server.MAX_MESSAGE_SIZE);
    begin
       accept Serve( handler : ClientPtr_Type ; sock : GS.Socket_Type ; addr : GS.Sock_Addr_Type) do
@@ -67,7 +67,7 @@ package body server is
       end Serve ;
       MyHandler.NewClient( mysock , myaddr );
       loop 
-         Unsigned_16'Read( GS.Stream(mysock) , msglen );
+         HeaderType'Read( GS.Stream(mysock) , msglen );
          AS.Stream_Element_Array'Read( GS.Stream(mysock) , buffer( 1..AS.Stream_Element_Offset(msglen) ) );
          Myhandler.Message( buffer(1..AS.Stream_Element_Offset(msglen)) , mysock , myaddr );
       end loop ;
@@ -92,6 +92,29 @@ package body server is
       Put( msgbytes'Length'Image );
       New_Line ;
    end Message ;
+
+   procedure Send( sock : GS.Socket_Type ; payload : AS.Stream_Element_Array ) is
+      hdr : constant HeaderType := HeaderType(payload'Length) ;
+   begin
+      HeaderType'Write( GS.Stream(sock) , hdr );
+      AS.Stream_Element_Array'Write( GS.Stream(sock) , payload );
+   end Send ;
+
+   procedure Send( sock : GS.Socket_Type ; payload : String ) is
+      hdr : constant HeaderType := HeaderType(payload'Length) ;
+   begin
+      HeaderType'Write( GS.Stream(sock) , hdr );
+      String'Write( GS.Stream(sock) , payload );
+   end Send ;
+
+   procedure Send( sock : GS.Socket_Type ; payload : System.Address ; payloadlen : Integer ) is
+      hdr : constant HeaderType := HeaderType(payloadLen) ;
+      pl : AS.Stream_Element_Array(1..AS.Stream_Element_Offset(payloadlen));
+      for pl'Address use payload;
+   begin
+      HeaderType'Write( GS.Stream(sock) , hdr );
+      AS.Stream_Element_Array'Write( GS.Stream(sock) , pl );
+   end Send ;
 
 begin
    if debug
