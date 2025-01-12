@@ -82,15 +82,20 @@ package body Morsecode is
       end case;
    end Translate;
 
-   function Span( a : Alphabet ) return duration is
+   function Span (a : Alphabet) return Duration is
    begin
       case a is
-         when dot => return 1.0 ;               -- dit/dot
-         when dash => return 3.0 ;              --
-         when minigap => return 1.0 ;           -- intra letter gap
-         when gap => return 2.0 ;               -- inter letter gap
-         when macrogap => return 4.0 ;          -- inter word gap
-      end case ;
-   end Span ;
+         when Dot =>
+            return 1.0;               -- dit/dot
+         when Dash =>
+            return 3.0;              --
+         when minigap =>
+            return 1.0;           -- intra letter gap
+         when gap =>
+            return 2.0;               -- inter letter gap
+         when macrogap =>
+            return 4.0;          -- inter word gap
+      end case;
+   end Span;
 
 end Morsecode;

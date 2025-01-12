@@ -1,63 +1,57 @@
 package body fifo is
 
-   function Create( cap : Integer := 64 ) return Buffer_Type is
-   	result : Buffer_Type(cap);
+   function Create (cap : Integer := 64) return Buffer_Type is
+      result : Buffer_Type (cap);
    begin
-   	return result ;
-   end Create ;
+      return result;
+   end Create;
 
-   procedure Push( buf : in out Buffer_Type; item : Item_Type ) is
+   procedure Push (buf : in out Buffer_Type; item : Item_Type) is
    begin
 
-      if Full(buf)
-      then
-         raise Overflow_Error ;
-      end if ;
+      if Full (buf) then
+         raise overflow_Error;
+      end if;
 
-      buf.Contents(buf.push_to) := item ;
-      buf.count := @ + 1 ;
-      if buf.pull_from < buf.Contents'First
-      then
-         buf.pull_from := buf.push_to ;
-      end if ;
+      buf.contents (buf.push_to) := item;
+      buf.count                  := @ + 1;
+      if buf.pull_from < buf.contents'First then
+         buf.pull_from := buf.push_to;
+      end if;
 
-      if buf.push_to = buf.Contents'last
-      then
-         buf.push_to := buf.Contents'First ;
+      if buf.push_to = buf.contents'Last then
+         buf.push_to := buf.contents'First;
       else
-         buf.push_to := @ + 1 ;
-      end if ;
+         buf.push_to := @ + 1;
+      end if;
 
-   end Push ;
+   end Push;
 
-   procedure Get( buf : in out Buffer_Type; item : out Item_Type ) is
+   procedure Get (buf : in out Buffer_Type; item : out Item_Type) is
    begin
 
-      if Empty(buf)
-      then
-         raise Empty_Error ;
-      end if ;
+      if Empty (buf) then
+         raise empty_Error;
+      end if;
 
-      item := buf.Contents( buf.pull_from );
-      buf.count := @ - 1 ;
-      if buf.pull_from = buf.contents'Last
-      then
-         buf.pull_from := buf.Contents'First ;
+      item      := buf.contents (buf.pull_from);
+      buf.count := @ - 1;
+      if buf.pull_from = buf.contents'Last then
+         buf.pull_from := buf.contents'First;
       else
          buf.pull_from := @ + 1;
-      end if ;
+      end if;
 
-   end Get ;
+   end Get;
 
-   function Empty( buf : Buffer_Type ) return Boolean is
+   function Empty (buf : Buffer_Type) return Boolean is
    begin
-      return buf.count = 0 ;
-   end Empty ;
+      return buf.count = 0;
+   end Empty;
 
-   function Full( buf : Buffer_Type ) return Boolean is
+   function Full (buf : Buffer_Type) return Boolean is
    begin
-      return buf.count = buf.Contents'Last ;
-   end Full ;
+      return buf.count = buf.contents'Last;
+   end Full;
 
-
-end fifo ;
+end fifo;

@@ -113,23 +113,22 @@ package body numlib is
    end Print;
 
    function Append (v1 : Vector; v2 : Vector) return Vector is
-      use type Ada.Containers.Count_Type ;
-      result : Vector ;
-      procedure Append( c : cursor ) is 
-         tidx : constant Extended_Index := To_Index(c);
-         fidx : Extended_Index ; -- := tidx - Extended_Index(v1.Length) ;
+      use type Ada.Containers.Count_Type;
+      result : Vector;
+      procedure Append (c : Cursor) is
+         tidx : constant Extended_Index := To_Index (c);
+         fidx : Extended_Index; -- := tidx - Extended_Index(v1.Length) ;
       begin
-         if tidx >= Extended_Index(v1.Length)
-         then
-             fidx := tidx - Extended_Index(v1.Length) ;
-            Replace_Element(result, c , v2.Element(fidx)) ;
+         if tidx >= Extended_Index (v1.Length) then
+            fidx := tidx - Extended_Index (v1.Length);
+            Replace_Element (result, c, v2.Element (fidx));
          else
-            Replace_Element(result , c , v1.Element(tidx));
-         end if ; 
-      end Append ;
+            Replace_Element (result, c, v1.Element (tidx));
+         end if;
+      end Append;
    begin
-      result.Set_Length( v1.Length + v2.Length );
-      result.Iterate( Append'access );
+      result.Set_Length (v1.Length + v2.Length);
+      result.Iterate (Append'Access);
       return result;
    end Append;
 
@@ -244,21 +243,22 @@ package body numlib is
       end Mutate;
    begin
       v.Iterate (Mutate'Access);
-   end Mutate ;
+   end Mutate;
 
    function Mutate
      (v        : Vector;
       modifier : not null access function (value : RealType) return RealType)
-      return Vector 
+      return Vector
    is
-      result : Vector := Create(V) ;
+      result : Vector := Create (v);
       procedure Mutate (c : Cursor) is
       begin
-         Replace_Element (result , result.To_Cursor( To_Index(c) ) , modifier (Element (c)));
+         Replace_Element
+           (result, result.To_Cursor (To_Index (c)), modifier (Element (c)));
       end Mutate;
    begin
       v.Iterate (Mutate'Access);
-      return result ;
-   end Mutate ;
+      return result;
+   end Mutate;
 
 end numlib;

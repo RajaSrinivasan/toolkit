@@ -1,7 +1,10 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Csv is
-   function Open (Name : String; Separator : String ; FieldNames : boolean := true) return File_Type is
+   function Open
+     (Name : String; Separator : String; FieldNames : Boolean := True)
+      return File_Type
+   is
       File : constant File_Type := new File_Object_Type;
    begin
 
@@ -22,21 +25,22 @@ package body Csv is
             declare
                use String_Vectors_Pkg;
                Columnname : constant String :=
-               GNAT.AWK.Field (GNAT.AWK.Count (Fld), File.Session);
-               Oldentry : String_Vectors_Pkg.Cursor;
+                 GNAT.AWK.Field (GNAT.AWK.Count (Fld), File.Session);
+               Oldentry   : String_Vectors_Pkg.Cursor;
             begin
                if Debug then
                   Put ("Field ");
                   Put_Line (Columnname);
                end if;
-               Oldentry := String_Vectors_Pkg.Find (File.Field_Names, Columnname);
+               Oldentry :=
+                 String_Vectors_Pkg.Find (File.Field_Names, Columnname);
                if Oldentry /= String_Vectors_Pkg.No_Element then
                   raise Duplicate_Column;
                end if;
                String_Vectors_Pkg.Append (File.Field_Names, Columnname);
             end;
          end loop;
-      end if ;
+      end if;
       File.Current_Line := 0;
       return File;
    end Open;
@@ -70,13 +74,13 @@ package body Csv is
    procedure Get_Line (File : in File_Type) is
    begin
       GNAT.AWK.Get_Line (Session => File.Session);
-      if File.No_Columns /=
-        Integer (GNAT.AWK.Number_Of_Fields (File.Session))
+      if File.No_Columns /= Integer (GNAT.AWK.Number_Of_Fields (File.Session))
       then
          if Debug then
             Put ("Invalid line in input file ");
             Put_Line (GNAT.AWK.Field (0, File.Session));
-            Put("Field Count "); Put_Line ( GNAT.AWK.Number_Of_Fields(file.session) ' Image );
+            Put ("Field Count ");
+            Put_Line (GNAT.AWK.Number_Of_Fields (File.Session)'Image);
          end if;
       end if;
       File.Current_Line := File.Current_Line + 1;
@@ -104,15 +108,14 @@ package body Csv is
       return Field (File, Integer (Index));
    end Field;
 
-   procedure Set_Names( file : File_Type ; names : String_Vectors_Pkg.Vector) is
+   procedure Set_Names (file : File_Type; names : String_Vectors_Pkg.Vector) is
    begin
-      file.Field_Names := names ;
-   end Set_Names ;
+      file.Field_Names := names;
+   end Set_Names;
 
-   function Names( file : File_Type ) return String_Vectors_Pkg.Vector is
+   function Names (file : File_Type) return String_Vectors_Pkg.Vector is
    begin
-      return file.Field_Names ;
-   end Names ;
-
+      return file.Field_Names;
+   end Names;
 
 end Csv;

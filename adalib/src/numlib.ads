@@ -9,7 +9,7 @@ package numlib is
    type RealArray is array (Integer range <>) of RealType;
    package RealVectors_Pkg is new Ada.Containers.Vectors (Natural, RealType);
    use RealVectors_Pkg;
-   package Sorter_Pkg is new RealVectors_Pkg.generic_sorting( "<" );
+   package Sorter_Pkg is new RealVectors_Pkg.Generic_Sorting ("<");
 
    function Convert (a : RealArray) return Vector;
    function Convert (v : Vector) return RealArray;
@@ -20,7 +20,7 @@ package numlib is
    function Create (length : Natural; low, high : RealType) return Vector;
    function Create (low, high, step : RealType) return Vector;
 
--- codemd: end
+   -- codemd: end
 
    function Create
      (length   : Natural;
@@ -45,9 +45,10 @@ package numlib is
    procedure Add (v : in out Vector; value : Vector);
    procedure Sub (v : in out Vector; value : Vector);
    procedure Mult (v : in out Vector; value : Vector);
-   procedure Div (v : in out Vector; value : Vector);   
-   
-   procedure Append (v1 : in out Vector; v2 : Vector) renames RealVectors_Pkg.Append_Vector ;
+   procedure Div (v : in out Vector; value : Vector);
+
+   procedure Append (v1 : in out Vector; v2 : Vector) renames
+     RealVectors_Pkg.Append_Vector;
    function Append (v1 : Vector; v2 : Vector) return Vector;
    -- codemd: end
 
@@ -56,11 +57,16 @@ package numlib is
    -- These are inspired by dplyr https://dplyr.tidyverse.org
    -- Functions/Procedures of the same name
    -- For a more comprehensive emulation, refer numlib.dplyr
-  function Mutate
+   function Mutate
      (v        : Vector;
-      modifier : not null access function (value : RealType) return RealType) return Vector ;
+      modifier : not null access function (value : RealType) return RealType)
+      return Vector;
    procedure Mutate
      (v        : in out Vector;
       modifier : not null access function (value : RealType) return RealType);
 
+   type Fx is interface;
+   type FxPtr is access all Fx'Class;
+
+   function Val (F : Fx; x : RealType) return RealType is abstract;
 end numlib;

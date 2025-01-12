@@ -14,8 +14,7 @@ package Hex is
      (Hex : Character) return System.Storage_Elements.Storage_Element;
    function Value
      (Hex : Hexstring) return System.Storage_Elements.Storage_Element;
-   function Value
-     (Hex : String) return System.Storage_Elements.Storage_Array;
+   function Value (Hex : String) return System.Storage_Elements.Storage_Array;
 
    function Image (bin : Interfaces.Unsigned_8) return Hexstring;
    function Image (bin : Interfaces.Unsigned_16) return String;

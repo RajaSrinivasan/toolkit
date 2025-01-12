@@ -1,11 +1,11 @@
-
 package Morsecode is
 
-   type Alphabet is (Dot, 
-                     Dash,
-                     minigap ,           -- intra letter gap
-                     gap ,               -- inter letter gap
-                     macrogap );
+   type Alphabet is
+     (Dot,
+      Dash,
+      minigap,           -- intra letter gap
+      gap,               -- inter letter gap
+      macrogap);
 
    type Letter_Representation is array (Natural range <>) of Alphabet;
    type Letter is access constant Letter_Representation;
@@ -15,6 +15,6 @@ package Morsecode is
 
    Unsupported_Character : exception;
 
-   function Span( a : Alphabet ) return duration ;
+   function Span (a : Alphabet) return Duration;
 
 end Morsecode;

@@ -12,13 +12,13 @@ package Csv is
 
    subtype Field_Count_Type is Integer range 1 .. 255;
    package String_Vectors_Pkg is new Ada.Containers.Indefinite_Vectors
-     (Index_Type   => Field_Count_Type,
-      Element_Type => String);
+     (Index_Type => Field_Count_Type, Element_Type => String);
 
    -- codemd: skipbegin
    -- codemd: begin segment=Interface caption=Interface Specification
-   function Open (Name : String; Separator : String ; FieldNames : boolean := true) 
-            return File_Type;
+   function Open
+     (Name : String; Separator : String; FieldNames : Boolean := True)
+      return File_Type;
    procedure Close (File : in File_Type);
    function No_Columns (File : File_Type) return Integer;
    function Field_Name (File : File_Type; Column : Integer) return String;
@@ -27,8 +27,8 @@ package Csv is
    function End_Of_File (File : File_Type) return Boolean;
    function Field (File : File_Type; Column : Integer) return String;
    function Field (File : File_Type; Name : String) return String;
-   procedure Set_Names( file : File_Type ; names : String_Vectors_Pkg.Vector) ;
-   function Names( file : File_Type ) return String_Vectors_Pkg.Vector ;
+   procedure Set_Names (file : File_Type; names : String_Vectors_Pkg.Vector);
+   function Names (file : File_Type) return String_Vectors_Pkg.Vector;
    -- codemd: end
    -- codemd: skipend
 private

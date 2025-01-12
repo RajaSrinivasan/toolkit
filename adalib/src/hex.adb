@@ -1,23 +1,25 @@
-with Ada.Text_Io; use Ada.Text_Io;
+with Ada.Text_IO; use Ada.Text_IO;
 package body Hex is
 
    use System;
 
    Nibble_Hex_UC : constant String := "0123456789ABCDEF";
-   Nibble_Hex : constant String :=    "0123456789abcdef";
+   Nibble_Hex    : constant String := "0123456789abcdef";
 
    function Value (Hex : Character) return Interfaces.Unsigned_8 is
    begin
       if Hex in '0' .. '9' then
-         return Interfaces.Unsigned_8
-             (Character'Pos (Hex) - Character'Pos ('0'));
+         return
+           Interfaces.Unsigned_8 (Character'Pos (Hex) - Character'Pos ('0'));
       end if;
       if Hex in 'a' .. 'f' then
-         return Interfaces.Unsigned_8
+         return
+           Interfaces.Unsigned_8
              (10 + Character'Pos (Hex) - Character'Pos ('a'));
       end if;
       if Hex in 'A' .. 'F' then
-         return Interfaces.Unsigned_8
+         return
+           Interfaces.Unsigned_8
              (10 + Character'Pos (Hex) - Character'Pos ('A'));
       end if;
       raise format_error with "InvalidHex";
@@ -70,20 +72,20 @@ package body Hex is
    end Value;
 
    -- codemd: begin segment=StrBlock caption=String to a memory block
-   function Value
-     (Hex : string) return System.Storage_Elements.Storage_Array is
-     use System.Storage_Elements;
-     result : System.Storage_Elements.Storage_Array(1..Hex'Length/2);
+   function Value (Hex : String) return System.Storage_Elements.Storage_Array
+   is
+      use System.Storage_Elements;
+      result : System.Storage_Elements.Storage_Array (1 .. Hex'Length / 2);
    begin
-      for rptr in result'Range
-      loop
-         result(rptr) := Value(Hex(2*Integer(rptr)-1..2*Integer(rptr)));
-      end loop ;
-      Put_Line(hex);
-     return result;
+      for rptr in result'Range loop
+         result (rptr) :=
+           Value (Hex (2 * Integer (rptr) - 1 .. 2 * Integer (rptr)));
+      end loop;
+      Put_Line (Hex);
+      return result;
    end Value;
    -- codemd: end
-   
+
    -- codemd: begin segment=BinHex caption=Binary to hex string
    function Image (bin : Interfaces.Unsigned_8) return Hexstring is
       use Interfaces;
@@ -96,7 +98,7 @@ package body Hex is
       img (2) := Nibble_Hex (Integer (Lnibble) + 1);
       return img;
    end Image;
--- codemd: end
+   -- codemd: end
 
    function Image (bin : Interfaces.Unsigned_16) return String is
       use Interfaces;

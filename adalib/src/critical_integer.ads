@@ -1,3 +1,3 @@
-with critical ;
+with critical;
 
-package critical_integer is new critical( Integer , "=" );
+package critical_integer is new critical (Integer, "=");

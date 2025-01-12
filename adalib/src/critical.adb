@@ -1,47 +1,43 @@
 package body critical is
 
-    allocate : AllocatorType ;
- 
-    procedure SetAllocators( a : not null AllocatorType ) is
-    begin
-        allocate := a ;
-    end SetAllocators ;
+   allocate : AllocatorType;
 
-    --codemd: begin segment=GetSet caption=GetSet and Setter implementations                  
-    procedure Set(var : in out Variable_Type;  value : Item_Type ) is
-    begin
-        if var.Primary = null
-        then
-            if allocate = null
-            then
-                raise AllocatorError ;
-            end if;
-            var.Primary := ItemPtr_Type(allocate.all) ;
-            var.Primary.all := value ;
+   procedure SetAllocators (a : not null AllocatorType) is
+   begin
+      allocate := a;
+   end SetAllocators;
 
-            var.Secondary := ItemPtr_Type(allocate.all(true)) ;
-            var.Secondary.all := value ;
-            return ;
-        end if ;
+   --codemd: begin segment=GetSet caption=GetSet and Setter implementations
+   procedure Set (var : in out Variable_Type; value : Item_Type) is
+   begin
+      if var.primary = null then
+         if allocate = null then
+            raise AllocatorError;
+         end if;
+         var.primary     := ItemPtr_Type (allocate.all);
+         var.primary.all := value;
 
-        if var.Primary.all = var.Secondary.all
-        then
-            var.Primary.all := value ;
-            var.Secondary.all := value ;
-            return ;
-        end if ;
+         var.secondary     := ItemPtr_Type (allocate.all (True));
+         var.secondary.all := value;
+         return;
+      end if;
 
-        raise VariableCorruption ;
-    end Set ;
+      if var.primary.all = var.secondary.all then
+         var.primary.all   := value;
+         var.secondary.all := value;
+         return;
+      end if;
 
-    function Get( var : Variable_Type ) return Item_Type is
-    begin
-        if var.Primary.all = var.Secondary.all
-        then
-            return var.Primary.all ;
-        end if ;
-        raise VariableCorruption ;
-    end Get ;
-    --codemd: end
+      raise VariableCorruption;
+   end Set;
 
-end critical ;
+   function Get (var : Variable_Type) return Item_Type is
+   begin
+      if var.primary.all = var.secondary.all then
+         return var.primary.all;
+      end if;
+      raise VariableCorruption;
+   end Get;
+   --codemd: end
+
+end critical;
