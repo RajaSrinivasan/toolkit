@@ -65,8 +65,11 @@ package numlib is
      (v        : in out Vector;
       modifier : not null access function (value : RealType) return RealType);
 
+   -- codemd: begin segment=Spec caption=Specification
    type Fx is interface;
    type FxPtr is access all Fx'Class;
 
    function Val (F : Fx; x : RealType) return RealType is abstract;
+   -- codemd: end
+   
 end numlib;
