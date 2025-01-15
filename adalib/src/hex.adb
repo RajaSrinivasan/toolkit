@@ -81,7 +81,7 @@ package body Hex is
          result (rptr) :=
            Value (Hex (2 * Integer (rptr) - 1 .. 2 * Integer (rptr)));
       end loop;
-      Put_Line (Hex);
+      --Put_Line (Hex);
       return result;
    end Value;
    -- codemd: end

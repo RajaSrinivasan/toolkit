@@ -148,13 +148,16 @@ package body server is
       AS.Stream_Element_Array'Write (GS.Stream (sock), pl);
    end Send;
 
+   -- codemd: begin segment=Debugserver caption=Sample Debug Server
    debugServer : SockServer_PtrType;
    procedure CreateDebugServer is
    begin
       debugServer := new server.SockServer_Type;
       debugServer.Serve (1_056, ds'Access);
    end CreateDebugServer;
+   -- codemd: end
 
+   -- codemd: begin segment=Connectserver
    function ConnectDebugServer return GS.Socket_Type is
       result : GS.Socket_Type;
       myaddr : GS.Sock_Addr_Type;
@@ -165,5 +168,6 @@ package body server is
       GS.Connect_Socket (result, myaddr);
       return result;
    end ConnectDebugServer;
-
+   -- codemd: end
+   
 end server;
