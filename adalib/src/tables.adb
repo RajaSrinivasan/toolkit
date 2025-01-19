@@ -1,3 +1,4 @@
+with Ada.Calendar;
 package body tables is
 
    function "=" (Left, Right : Ada.Calendar.Time) return Boolean is
@@ -39,7 +40,7 @@ package body tables is
       end Image;
 
       function Create (name : String) return ColPtrType is
-         result : ColPtrType := new TColumnType;
+         result : constant ColPtrType := new TColumnType;
       begin
          result.name := To_Unbounded_String (name);
          return result;
@@ -55,9 +56,9 @@ package body tables is
 
    end ColumnPkg;
 
-   use Ada.Strings.Unbounded;
+   --use Ada.Strings.Unbounded;
    function CreateStringColumn (name : String) return ColPtrType is
-      result : ColPtrType := new StringColumnType;
+      result : constant ColPtrType := new StringColumnType;
    begin
       result.name := To_Unbounded_String (name);
       return result;

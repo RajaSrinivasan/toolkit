@@ -1,10 +1,7 @@
-with Ada.Calendar;
+--with Ada.Calendar;
 with Ada.Containers.Vectors;
 with Ada.Text_IO;
 
---with Ada.Containers.Indefinite_Vectors ;
---with Ada.Tags ;
---with GNAT.Strings ;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package tables is
@@ -23,7 +20,7 @@ package tables is
    procedure Remove (col : in out ColumnType; idx : Natural) is abstract;
 
    type ColPtrType is access all ColumnType'Class;
-   function Create (name : String) return ColPtrType is abstract;
+   --function Create (name : String) return ColPtrType is abstract;
    package TablePkg is new Ada.Containers.Vectors (Natural, ColPtrType);
    subtype TableType is TablePkg.Vector;
    -- codemd: end

@@ -12,9 +12,9 @@ begin
    loop
       for fld in 0 .. TablePkg.Length (table) - 1 loop
          declare
-            colname : String :=
-              To_String (TablePkg.Element (table, Integer (fld)).name);
-            colval  : String := Csv.Field (tblfile, Integer (fld) + 1);
+            --colname : String :=
+            --  To_String (TablePkg.Element (table, Integer (fld)).name);
+            colval  : constant String := Csv.Field (tblfile, Integer (fld) + 1);
          begin
             TablePkg.Element (table, Integer (fld)).Append (colval);
          end;

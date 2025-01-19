@@ -210,9 +210,9 @@ package body numbers is
 
    function Divisors (num : Natural) return NumbersVector_Pkg.Vector is
       result  : NumbersVector_Pkg.Vector;
-      sqrtnum : Float;
+      --sqrtnum : Float;
    begin
-      sqrtnum := Sqrt (Float (num));
+      --sqrtnum := Sqrt (Float (num));
       for d in 2 .. num / 2 loop
          if num mod d = 0 then
             result.Append (d);
@@ -227,7 +227,7 @@ package body numbers is
 
    function DivisorSum (num : Natural) return Natural is
       use NumbersVector_Pkg;
-      divs   : Vector  := Divisors (num);
+      divs   : constant Vector  := Divisors (num);
       result : Natural := 0;
       procedure Summer (cur : Cursor) is
       begin
@@ -240,7 +240,7 @@ package body numbers is
 
    function Abundance (num : Natural) return AbundancyRatio is
       result : AbundancyRatio;
-      divsum : Natural := DivisorSum (num);
+      divsum : constant Natural := DivisorSum (num);
    begin
       result := AbundancyRatio (Float (divsum) / Float (num));
       return result;
@@ -286,7 +286,7 @@ package body numbers is
    -- codemd: begin segment=Prime caption=Is a number prime
    function IsPrime (num : Natural) return Boolean is
       use Ada.Containers, NumbersVector_Pkg;
-      facs : Vector := Factors (num);
+      facs : constant Vector := Factors (num);
    begin
       if facs.Length > 1 then
          return False;
@@ -296,8 +296,9 @@ package body numbers is
    -- codemd: end
 
    function IsPerfect (num : Natural) return Boolean is
-      use Ada.Containers, NumbersVector_Pkg;
-      divs : Vector  := Divisors (num);
+      --use Ada.Containers, 
+      use NumbersVector_Pkg;
+      divs : constant Vector  := Divisors (num);
       sum  : Natural := 0;
       procedure Summer (cur : Cursor) is
       begin
@@ -313,7 +314,7 @@ package body numbers is
    end IsPerfect;
 
    function IsMultiperfect (num : Natural) return Boolean is
-      divsum : Natural := DivisorSum (num);
+      divsum : constant Natural := DivisorSum (num);
    begin
       if divsum mod num = 0 then
          return True;
@@ -324,12 +325,12 @@ package body numbers is
    --codemd: begin segment=Kaprekar caption=Kaprekar numbers
    function IsKaprekar (num : Natural) return Boolean is
       use Ada.Containers, DecimalVector_Pkg;
-      numsq       : Natural                  := num * num;
-      digs        : DecimalVector_Pkg.Vector := Convert (numsq);
-      total       : Natural                  := Natural (digs.Length);
+      numsq       : constant Natural                  := num * num;
+      digs        : constant DecimalVector_Pkg.Vector := Convert (numsq);
+      total       : constant Natural                  := Natural (digs.Length);
       left, right : Natural                  := 0;
       procedure Summer (cur : Cursor) is
-         idx : Natural := To_Index (cur);
+         idx : constant Natural := To_Index (cur);
       begin
          -- Put("Item "); Put( To_Index(cur)'Image ); New_Line;
          if idx < total / 2 then
@@ -351,7 +352,6 @@ package body numbers is
    --codemd: end
 
    function gcd (left, right : Natural) return Natural is
-      result : Natural;
       temp   : Natural;
    begin
       if left > right then
