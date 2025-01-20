@@ -12,7 +12,7 @@ package git is
    REPO_ERROR : exception ;
    function RepoBaseName( url : String ) return String ;
 
-   function Branches( repo : String ) return wordlistPkg.Vector ;
+   function Branches( repo : String := "." ) return wordlistPkg.Vector ;
    -- List the branches of a checked out repository
    -- @param repo The dir of the repository
    -- @returns A list of branch names
@@ -51,4 +51,7 @@ package git is
    function Clean( dir : String ; exclude : String := "_keep" ) return String;
    function Pull( dir : String ) return String;
 
+   function Tags( dir : String := "." ) return wordlistpkg.Vector ;
+ 
+   procedure Print( vec : wordlistpkg.Vector );
 end git ;

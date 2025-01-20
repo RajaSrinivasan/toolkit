@@ -29,6 +29,58 @@ package body git is
     end End_Of_Line ;
 
 
+   function Get_Line( str : String ; from : Integer ) return Integer is
+      result : Integer ;
+      ptr : Integer := from ;
+   begin
+      while ptr <= str'Last
+      loop
+         if not Is_Line_Terminator(str(ptr))
+         then
+            exit ;
+         end if ;
+         ptr := ptr + 1 ;
+      end loop ;
+      if ptr > str'Last
+      then
+         return from ;
+      end if ;
+      result := ptr + 1 ;
+      while result < str'Last
+      loop
+         if Is_Line_Terminator( str(result) )
+         then
+            result := result - 1;
+            return result ;
+         end if ;
+         result := result + 1 ;
+      end loop ;
+      return result ;
+   end Get_Line ;
+
+   function Get_Lines( str : String ) return wordlistpkg.Vector is
+      result : wordlistpkg.Vector ;
+      from : Integer := str'First ;
+      to : Integer ;
+   begin
+      while from < str'Last
+      loop
+         to := Get_Line( str , from );
+         result.Append( str(from..to) );
+         to := to + 1 ;
+         while to < str'Last
+         loop
+            if not Is_Line_Terminator(str(to))
+            then
+               exit ;
+            end if;
+            to := to + 1 ;
+         end loop ;
+         from := to ;
+      end loop ;
+      return result ;
+   end Get_Lines ;
+
     function RepoBaseName( url : String ) return String is
         gitpos,slpos : Natural ;
     begin
@@ -73,7 +125,7 @@ package body git is
         return "" ;
     end Exec ;
 
-   function RemoteBranches( repo : String ) return wordlistPkg.Vector is
+   function RemoteBranchesOld( repo : String ) return wordlistPkg.Vector is
       result : WordListPkg.Vector ;
 
       arglista : constant Argument_List_Access := Argument_String_To_List("ls-remote --heads " & repo );
@@ -96,7 +148,6 @@ package body git is
       declare
          lsremote : constant string := GNAT.Expect.Get_Command_Output(fullgit.all, arglista.all , "" , Status'Access, Err_To_Out => True);
          startidx, endidx : integer ;
-
       begin
          if status = 0
          then
@@ -117,24 +168,21 @@ package body git is
         end if;
         end ;
         return result ;
-    end RemoteBranches ;
+    end RemoteBranchesOld ;
 
-    function Branches( repo : String ) return wordlistPkg.Vector is
-        result : wordlistpkg.Vector ;
-        cmd : constant String := "branch --list" ;
-        allbranches : constant String := Exec(repo,cmd);
-        from : Integer := 1 ;
-        to : Integer ;
-    begin
-        while from < allbranches'Last 
-        loop
-            to := End_Of_Line(allbranches,from);
-            result.Append(allbranches(from..to));
-            from := to + LF'length;
-        end loop ;
-        return result ;
-    end Branches ;
+   function Branches( repo : String := "." ) return wordlistpkg.Vector is
+      cmd : constant String := "branch --list" ;
+      allbranches : constant String := Exec(repo,cmd);
+   begin
+      return Get_Lines( allbranches ) ;
+   end Branches;
 
+   function RemoteBranches( repo : String ) return wordlistpkg.Vector is
+      cmd : constant String := "ls-remote --heads " & repo ;
+      allbranches : constant String := Exec(repo,cmd);
+   begin
+      return Get_Lines( allbranches ) ;
+   end RemoteBranches;
 
     function DefaultBranch( repo : String ) return String is
         arglista : constant Argument_List_Access := Argument_String_To_List("remote show " & repo );
@@ -276,5 +324,23 @@ package body git is
       return result ;
    end Pull ;
 
+   
+   function Tags( dir : String := "." ) return wordlistpkg.Vector is
+      taglines : constant String := Exec(dir,"tag --list");
+      result : constant wordlistPkg.Vector := Get_Lines(taglines) ;
+   begin
+      return result ;
+   end Tags ;
+
+
+   procedure Print( vec : wordlistpkg.Vector ) is
+      procedure Print( c : wordlistpkg.Cursor ) is
+         val : constant String := wordlistPkg.Element(c) ;
+      begin
+         Put_Line(val) ;
+      end Print ;
+   begin
+      vec.Iterate( Print'access );
+   end Print ;
 
 end git ;
