@@ -5,6 +5,8 @@ with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Directories;         use Ada.Directories;
 with GNAT.Command_Line;
 
+with Semantic_Versioning ;
+
 with cli;
 
 with git;
@@ -35,14 +37,21 @@ begin
    begin
       if arg'Length >= 1 then
          dir := To_Unbounded_String (arg);
-      end if;
-      return;
+      else
+         Put_Line("Please provide a dir. Use '.' for current");
+         return;
+      end if ;
    end;
+
    declare
+      vstring : constant String := 
+               Semantic_Versioning.Image(
+               Semantic_Versioning.Parse( cli.version.all ) ) ;
       argdir       : constant String := To_String (dir);
       specfilename : constant String := cli.outputFile.all;
       specfile     : File_Type;
    begin
+      Put_Line(vstring);
       Create (specfile, Out_File, specfilename & ".ads");
       Set_Output (specfile);
       Put_Line (longcomment);
@@ -55,7 +64,7 @@ begin
       Put_Line (" is");
       StringConstOutput ("dir", Full_Name (argdir));
       New_Line;
-      StringConstOutput ("version", cli.version.all);
+      StringConstOutput ("version", vstring );
       New_Line;
       StringConstOutput ("repo", git.RepoUrl (argdir));
       New_Line;
@@ -74,4 +83,7 @@ begin
 exception
    when GNAT.Command_Line.Exit_From_Command_Line =>
       return;
+   when Semantic_Versioning.Malformed_Input =>
+      Put_Line("Error in version spec");
+      raise;
 end Gitrev;

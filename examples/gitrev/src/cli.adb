@@ -13,8 +13,13 @@ package body cli is
 
    procedure ShowRevision is
    begin
+      Put( name ); Put_Line(" version");
       Put ("Repo ");
       Put_Line (revisions.repo);
+      Put ("Version ");
+      Put_Line (revisions.version);
+      Put("Commit Id ");
+      Put_Line(revisions.commitid);
    end ShowRevision;
    procedure SwitchHandler
      (Switch : String; Parameter : String; Section : String)
@@ -64,6 +69,7 @@ package body cli is
 
    procedure ShowCommandLineArguments is
    begin
+      Put_Line("Command Line Arguments");
       Put ("Verbose ");
       Put (Verbose);
       New_Line;

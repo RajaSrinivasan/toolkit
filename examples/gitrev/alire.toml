@@ -10,3 +10,6 @@ website = ""
 tags = []
 
 executables = ["gitrev"]
+
+[[depends-on]]
+semantic_versioning = "^2.1.0"
