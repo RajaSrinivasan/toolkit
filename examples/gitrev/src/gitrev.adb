@@ -42,7 +42,7 @@ begin
          return;
       end if ;
    end;
-
+--codemd: begin segment=semver caption=Semantic versioning
    declare
       vstring : constant String := 
                Semantic_Versioning.Image(
@@ -51,7 +51,6 @@ begin
       specfilename : constant String := cli.outputFile.all;
       specfile     : File_Type;
    begin
-      Put_Line(vstring);
       Create (specfile, Out_File, specfilename & ".ads");
       Set_Output (specfile);
       Put_Line (longcomment);
@@ -66,6 +65,7 @@ begin
       New_Line;
       StringConstOutput ("version", vstring );
       New_Line;
+      --codemd: end
       StringConstOutput ("repo", git.RepoUrl (argdir));
       New_Line;
       StringConstOutput ("commitid", git.CommitId (argdir));

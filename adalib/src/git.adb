@@ -12,10 +12,9 @@ with GNAT.Expect; -- use GNAT.Expect ;
 
 package body git is
 
+   --codemd: begin segment=Locate caption=locate the exec
    fullgit : constant GNAT.os_lib.String_Access := Locate_Exec_On_Path ("git");
-
-   -- ws : constant Ada.Strings.Maps.Character_Set := To_Set(' ') or To_Set(ASCII.HT) ;
-   -- LF : constant String(1..1) := [others => ASCII.LF];
+   --codemd: end
 
    function Get_Line (str : String; from : Integer) return Integer is
       result : Integer;
@@ -147,21 +146,13 @@ package body git is
    function RepoUrl (dir : String := ".") return String is
       repourlcmd : constant String := "remote get-url origin";
    begin
-      declare
-         url : constant string := Exec (dir, repourlcmd);
-      begin
-         return url;
-      end;
+      return Exec (dir, repourlcmd);
    end RepoUrl;
 
    function CommitId (dir : String := ".") return String is
       cmd : constant String := "rev-parse HEAD";
    begin
-      declare
-         cid : constant string := Exec (dir, cmd);
-      begin
-         return cid;
-      end;
+      return Exec (dir, cmd);
    end CommitId;
 
    function AbbrevCommitId (dir : String := ".") return String is
@@ -174,25 +165,13 @@ package body git is
       return fullcommitid (fullcommitid'First .. fullcommitid'First + 6);
    end Abbrev;
 
-   function CurrentBranch (dir : String := ".") return String is
-      cwd      : constant String := Ada.Directories.Current_Directory;
-      arglista : constant Argument_List_Access :=
-        Argument_String_To_List ("rev-parse --abbrev-ref HEAD");
-      status   : aliased Integer;
+   --codemd: begin segment=CurrentBranch caption=Current branch
+  function CurrentBranch (dir : String := ".") return String is
+      cmd : String := "rev-parse --abbrev-ref HEAD" ;
    begin
-      if dir /= "." then
-         Ada.Directories.Set_Directory (dir);
-      end if;
-      declare
-         brname : constant string :=
-           GNAT.Expect.Get_Command_Output
-             (fullgit.all, arglista.all, "", Status'Access,
-              Err_To_Out => True);
-      begin
-         Ada.Directories.Set_Directory (cwd);
-         return brname;
-      end;
-   end CurrentBranch;
+      return Exec( dir , cmd );
+   end CurrentBranch ;
+   --codemd: end
 
    procedure Clone (dir : string; repo : String; branch : String := "@") is
       cwd    : constant String  := Ada.Directories.Current_Directory;
@@ -261,12 +240,14 @@ package body git is
       return result;
    end Pull;
 
+   --codemd: begin segment=Tags caption=Get tags
    function Tags (dir : String := ".") return wordlistpkg.Vector is
       taglines : constant String             := Exec (dir, "tag --list");
       result   : constant wordlistPkg.Vector := Get_Lines (taglines);
    begin
       return result;
    end Tags;
+   --codemd: end
 
    procedure Print (vec : wordlistpkg.Vector) is
       procedure Print (c : wordlistpkg.Cursor) is

@@ -85,8 +85,9 @@ procedure Csvtest is
    end T2;
    procedure T3 is
    begin
-      Put("External_Name "); Put_Line(tables.IName);
-      Put("External Tag "); Put_Line(tables.ITag);
+      --Put("External_Name "); Put_Line(tables.IName);
+      --Put("External Tag "); Put_Line(tables.ITag);
+      null;
    end T3 ;
 begin
    csv.Debug := verbose;
