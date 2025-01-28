@@ -15,7 +15,7 @@ pushd logs; alr build ; popd
 pushd meals; alr build; popd
 pushd morse; alr build; popd
 pushd num; alr build; popd
-pushd pid; alr build; popd
+#pushd pid; alr build; popd
 pushd print; alr build ; popd
 pushd ptable; alr build ; popd
 pushd revarg; alr build; popd

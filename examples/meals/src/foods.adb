@@ -1,3 +1,4 @@
+pragma Ada_2022;
 with Ada.Text_IO; use Ada.Text_IO;
 with csv;
 package body foods is
