@@ -15,13 +15,6 @@ abstract project examples is
       for Artifacts (".") use ("share");
    end Install;
 
-   package Linker is
-      case adalib_config.Alire_Host_OS is
-         when "macos" =>
-            for Switches("Ada") use ("-L/opt/homebrew/lib","-lgsl","-lgslcblas");
-         when others =>
-            for Switches("Ada") use ("-lgsl","-lgslcblas");
-      end case;
-   end Linker;
+
 
 end examples;
