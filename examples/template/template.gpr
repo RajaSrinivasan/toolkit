@@ -1,16 +1,15 @@
-with "config/num_config.gpr";
+with "config/template_config.gpr";
 with "../examples.gpr" ;
-
-project Num is
+project Template is
 
    for Source_Dirs use ("src/", "config/");
-   for Object_Dir use "obj/" & Num_Config.Build_Profile;
+   for Object_Dir use "obj/" & Template_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Exec_Dir use "../bin";
-   for Main use ("num.adb");
+   for Main use ("template.adb");
 
    package Compiler is
-      for Default_Switches ("Ada") use Num_Config.Ada_Compiler_Switches;
+      for Default_Switches ("Ada") use Template_Config.Ada_Compiler_Switches;
    end Compiler;
 
    package Binder is
@@ -21,4 +20,4 @@ project Num is
       for Artifacts (".") use ("share");
    end Install;
 
-end Num;
+end Template;

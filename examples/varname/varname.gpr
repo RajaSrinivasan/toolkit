@@ -4,7 +4,7 @@ project Varname is
    for Source_Dirs use ("src/", "config/");
    for Object_Dir use "obj/" & Varname_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
-   for Exec_Dir use "bin";
+   for Exec_Dir use "../bin";
    for Main use ("varname.adb");
 
    package Compiler is

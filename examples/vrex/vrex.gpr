@@ -4,7 +4,7 @@ project Vrex is
    for Source_Dirs use ("src/", "config/");
    for Object_Dir use "obj/" & Vrex_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
-   for Exec_Dir use "bin";
+   for Exec_Dir use "../bin";
    for Main use ("vrex.adb");
 
    package Compiler is
