@@ -1,4 +1,4 @@
-pragma Ada_2020;
+pragma Ada_2022;
 with images;
 package body logging.file is
 

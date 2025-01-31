@@ -10,3 +10,6 @@ website = ""
 tags = []
 
 executables = ["cvar"]
+
+[build-switches]
+"*".style_checks = "No"
