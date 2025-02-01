@@ -10,3 +10,7 @@ website = ""
 tags = []
 
 executables = ["clserv"]
+
+[build-switches]
+"*".style_checks = "No"
+

@@ -8,3 +8,7 @@ maintainers-logins = ["rajasrinivasan"]
 licenses = "MIT"
 website = ""
 tags = []
+
+[build-switches]
+"*".style_checks = "No"
+

@@ -1,12 +1,12 @@
-name = "morse"
-description = "Shiny new project"
+name = "pid"
+description = "Example PID control"
 version = "0.1.0-dev"
 
 authors = ["R Srinivasan"]
 maintainers = ["R Srinivasan <rajasrinivasan@hotmail.com>"]
 maintainers-logins = ["rajasrinivasan"]
+licenses = "MIT"
+website = ""
+tags = []
 
-executables = ["morse"]
-
-[build-switches]
-"*".style_checks = "No"
+executables = ["pid"]

@@ -10,3 +10,7 @@ website = ""
 tags = []
 
 executables = ["num"]
+
+[build-switches]
+"*".style_checks = "No"
+

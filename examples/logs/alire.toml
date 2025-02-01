@@ -7,5 +7,9 @@ maintainers = ["R Srinivasan <rajasrinivasan@hotmail.com>"]
 maintainers-logins = ["rajasrinivasan"]
 
 executables = ["logs"]
+
+[build-switches]
+"*".style_checks = "No"
+
 [[depends-on]]
 ansiada = "^1.0.0"

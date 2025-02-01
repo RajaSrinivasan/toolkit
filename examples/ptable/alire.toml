@@ -10,3 +10,6 @@ website = ""
 tags = []
 
 executables = ["ptable"]
+[build-switches]
+"*".style_checks = "No"
+

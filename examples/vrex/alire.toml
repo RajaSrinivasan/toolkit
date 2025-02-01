@@ -10,3 +10,6 @@ website = ""
 tags = []
 
 executables = ["vrex"]
+
+[build-switches]
+"*".style_checks = "No"

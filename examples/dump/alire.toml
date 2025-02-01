@@ -7,3 +7,6 @@ maintainers = ["R Srinivasan <rajasrinivasan@hotmail.com>"]
 maintainers-logins = ["rajasrinivasan"]
 
 executables = ["dump"]
+
+[build-switches]
+"*".style_checks = "No"
