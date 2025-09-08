@@ -11,6 +11,8 @@ with cli;
 
 with git;
 with wordlistpkg;
+with ut ;
+with ut.assertions ;
 
 procedure Gitrev is
    br          : wordlistpkg.Vector;
@@ -18,6 +20,7 @@ procedure Gitrev is
    longcomment : constant String  :=
      "--------------------------------------------";
    comment     : constant String  := "-- ";
+
 
    procedure StringConstOutput (name : String; str : String) is
    begin
@@ -35,6 +38,7 @@ begin
    declare
       arg : constant String := cli.GetNextArgument;
    begin
+      ut.Trace ;
       if arg'Length >= 1 then
          dir := To_Unbounded_String (arg);
       else
@@ -51,6 +55,7 @@ begin
       specfilename : constant String := cli.outputFile.all;
       specfile     : File_Type;
    begin
+      ut.Trace ;
       Create (specfile, Out_File, specfilename & ".ads");
       Set_Output (specfile);
       Put_Line (longcomment);
@@ -80,6 +85,12 @@ begin
       Set_Output (Standard_Output);
       Close (specfile);
    end;
+   ut.assertions.Assert( 1 , 1 );
+   ut.assertions.Assert( 5 , 100 / 20  , " 5 = 100/20 ");
+   ut.assertions.Assert( 3 , 100 / 33  , " 3 = 100/33 ");
+   ut.assertions.Assert( 3 , Integer( 3.0404));
+   ut.assertions.Assert( 3 , 9 / 3 , " 3 = 9/3 ");
+   ut.assertions.Assert( 3 , 8/3 , " 3 = 8/3 ");
 exception
    when GNAT.Command_Line.Exit_From_Command_Line =>
       return;

@@ -21,7 +21,8 @@ RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && \
         tzdata \
         unzip \
         vim \
-        wget && \
+        wget \
+        openssh-server && \
     apt-get clean
 
 RUN cat /etc/os-release && \
@@ -48,4 +49,18 @@ RUN git clone https://gitlab.com/RajaSrinivasan/TechAdaBook.git
 RUN cd TechAdaBook/Prj; ./build.sh; cp bin/* /usr/local/toolkit/bin
 ENV PATH /usr/local/toolkit/bin:$PATH
 #codemd: end
-RUN codemd -h
+
+RUN mkdir /var/run/sshd
+
+# Set root password (change "rootpassword" for security)
+RUN echo "root:rootpassword" | chpasswd
+
+# Allow root login and password authentication
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# Expose SSH port
+EXPOSE 22
+
+# Start SSH daemon
+CMD ["/usr/sbin/sshd", "-D"]
