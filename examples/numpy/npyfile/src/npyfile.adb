@@ -6,4 +6,5 @@ procedure Npyfile is
 begin
    f := npy.Open( Argument(1) );
    npy.Show(f);
+   
 end Npyfile;

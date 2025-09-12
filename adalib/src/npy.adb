@@ -1,4 +1,5 @@
 with Ada.Text_Io; use Ada.Text_Io;
+with npy.dict ;
 package body npy is 
 
    function Open( name : String ) return File_Type is
@@ -24,6 +25,9 @@ package body npy is
       String'Read( stream( result.stream.all ) , result.header.all );
       result.major_v := hdr.major_v ;
       result.minor_v := hdr.minor_v ;
+
+      result.dict := npy.dict.Value( result.header.all );
+      npy.dict.SetShape (result);
       return result ;
    end Open ;
 
@@ -40,6 +44,8 @@ package body npy is
    New_Line ;
    Put_Line("Descriptors");
    Put_Line( file.header.all );
+   npy.dict.Show(file.dict);
+   npy.dict.Show(file.DataShape);
   end Show ;
 
 end npy;

@@ -1,6 +1,9 @@
 with System ;
 with Ada.Streams ; use Ada.Streams;
 with Ada.Streams.Stream_Io ; use Ada.Streams.Stream_Io;
+with Ada.Strings.Unbounded ; use Ada.Strings.Unbounded;
+with Ada.Containers.Vectors; 
+
 with GNAT.Strings ;
 
 package npy is
@@ -71,6 +74,18 @@ package npy is
    procedure Close( file : File_Type );
    procedure Show( file : File_Type );
 
+   type dictentry is
+   record
+      name : Unbounded_String ;
+      value : Unbounded_String ;
+   end record ;
+
+   package dict_pkg is new Ada.Containers.Vectors( Natural , dictentry );
+   subtype Dictionary is dict_pkg.Vector ;
+
+   package shape_pkg is new Ada.Containers.Vectors( Natural , Integer);
+   subtype Shape is shape_pkg.Vector ;
+
    private 
       type File_Type is
       record
@@ -78,5 +93,8 @@ package npy is
          major_v : Stream_Element ;
          minor_v : Stream_Element ;
          header : GNAT.Strings.String_Access ;
+         dict : Dictionary ;
+         DataShape : Shape ;
       end record ;
+
 end npy ;
