@@ -1,5 +1,6 @@
 with Ada.Text_Io; use Ada.Text_Io;
 with npy.dict ;
+with server;
 package body npy is 
 
    function Open( name : String ) return File_Type is
@@ -20,14 +21,20 @@ package body npy is
       Stream_Element'Read( stream(result.stream.all) , lenhigh );
 
       hdr_length := Integer(lenlow + 16#ff# * lenhigh) ;
-      Put( "Header length "); Put(hdr_length'Image); New_Line;
-      result.header := new String( 1..Integer(hdr_length) ) ;
+      if debug
+      then
+         Put( "Header length "); 
+         Put(hdr_length'Image); 
+         New_Line;
+      end if ;
+      result.header := new String( 1..hdr_length ) ;
       String'Read( stream( result.stream.all ) , result.header.all );
       result.major_v := hdr.major_v ;
       result.minor_v := hdr.minor_v ;
 
-      result.dict := npy.dict.Value( result.header.all );
-      npy.dict.SetShape (result);
+      --result.dict := npy.dict.Value( result.header.all );
+      npy.dict.SetDict( result );
+      --npy.dict.SetShape (result , npy.dict.Value( result.header.all ));
       return result ;
    end Open ;
 
@@ -44,8 +51,12 @@ package body npy is
    New_Line ;
    Put_Line("Descriptors");
    Put_Line( file.header.all );
-   npy.dict.Show(file.dict);
-   npy.dict.Show(file.DataShape);
+
+   Put(" descr "); Put_Line( file.descr.all );
+   Put(" fortran_order "); Put_Line( file.fortran_order'Image );
+   Put(" shape "); Put_Line( file.shapestr.all );
+   --npy.dict.Show(file.dict);
+   npy.dict.Show(file.shape);
   end Show ;
 
 end npy;

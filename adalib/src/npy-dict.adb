@@ -1,11 +1,34 @@
 with Ada.Text_IO; use Ada.Text_IO;
-with git;
-with gnat.spitbol.patterns ; use gnat.Spitbol.Patterns ;
+
 with npy.dict;
 
 package body npy.dict is 
 
-   use gnat.spitbol ;
+   procedure SetDict( f : in out File_Type ) is
+      procedure organize( c : dict_pkg.Cursor ) is
+         de : dictentry := dict_pkg.Element(c) ;
+      begin
+         if de.name = "descr"
+         then
+            f.descr := new String'(S(de.value)) ;
+         elsif de.name = "fortran_order"
+         then
+            if de.Value = "True"
+            then
+               f.fortran_order := true ;
+            else
+               f.fortran_order := false ;
+            end if ;
+         elsif de.name = "shape"
+         then
+            f.shapestr := new String'( S( de.value ));
+            SetShape (f , de.value );
+         end if ;
+      end organize ;
+   begin
+      f.dict := Value( f.header.all );
+      f.dict.Iterate( organize'Access );
+   end SetDict ;
 
    function Value( str : String ) return Dictionary is
 
@@ -34,19 +57,28 @@ package body npy.dict is
    begin
       if Match( str , barepat )
       then
-         Put("Extracted dictinary "); 
-         Put_Line( S( baredict ) );
+         if debug
+         then
+            Put("Extracted dictinary "); 
+            Put_Line( S( baredict ) );
+         end if ;
          curString := baredict ;
          loop
             if Match( curString , keypat , "" )
             then
-               Put("Entry Key "); Put(S(entrykey)) ; New_Line ;
+               if debug
+               then
+                  Put("Entry Key "); Put(S(entrykey)) ; New_Line ;
+               end if ;
                newentry.name := entrykey ;
                if entrykey = "shape"
                then
                   if Match( curString , shapepat , "" )
                   then
-                     Put("Found shape "); Put_Line( S(entryval) );
+                     if debug
+                     then
+                        Put("Found shape "); Put_Line( S(entryval) );
+                     end if ;
                      newentry.value := entryval ;
                      result.Append( newentry );
                   else
@@ -55,9 +87,12 @@ package body npy.dict is
                else
                   if Match( curString , valpat , "" )
                   then
+                     if debug
+                     then
                         Put("Found value "); Put_Line( S(entryval)) ;
-                        newentry.value := entryval ;
-                        result.Append( newentry );
+                     end if ;
+                     newentry.value := entryval ;
+                     result.Append( newentry );
                   else
                         raise npy.dict.SYNTAX_ERROR with "cannot establish value" ;
                   end if ;
@@ -80,35 +115,27 @@ package body npy.dict is
    end Image ;
 
 
-   procedure SetShape (f : in out File_Type)  is
-      shape : VString ;
+   procedure SetShape (f : in out File_Type; shapestrarg : VString ) is
+      shapestr : VString := shapestrarg ;
       Digs : constant Pattern := Span("0123456789");
       limstr : VString ;
       limpat : constant Pattern := Digs * limstr ;
-      procedure Find( c : Dict_Pkg.Cursor ) is
-         ce : dictentry := Dict_Pkg.Element(c) ;
-      begin
-         if ce.name = "shape"
-         then
-            shape := ce.value ;
-         end if ;
-      end Find ;
+ 
    begin
-      f.dict.Iterate( Find'Access );
-      loop
-         if Match( shape , limpat , "" )
+
+      if Match( shapestr , limpat , "" )
+      then
+         f.Shape.Append( Integer'Value( S(limstr) ));
+         if Match( shapestr , "," , "")
          then
-            f.DataShape.Append( Integer'Value( S(limstr) ));
-            if Match( shape , "," , "")
-            then
-               null ;
-            else
-               exit ;
-            end if ;
+            null ;
          else
-            exit ;
+            return ;
          end if ;
-      end loop ;
+      else
+         raise npy.dict.SYNTAX_ERROR;
+      end if ;
+
    end SetShape ;
 
 
@@ -131,7 +158,8 @@ package body npy.dict is
       Put( shape_pkg.Element(c)'Image );
       Put(", ");
    end ShowEntry ;
-   procedure Show( s : Shape ) is
+
+   procedure Show( s : ShapeType ) is
    begin
       Put("Shape is : ");
       s.Iterate( showEntry'Access ) ;

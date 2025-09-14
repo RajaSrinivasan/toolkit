@@ -7,7 +7,7 @@ with Ada.Containers.Vectors;
 with GNAT.Strings ;
 
 package npy is
-
+   debug : boolean := false ;
    magic : constant String :=
       character'val( 16#93# ) &
       "NUMPY" ;
@@ -84,7 +84,7 @@ package npy is
    subtype Dictionary is dict_pkg.Vector ;
 
    package shape_pkg is new Ada.Containers.Vectors( Natural , Integer);
-   subtype Shape is shape_pkg.Vector ;
+   subtype ShapeType is shape_pkg.Vector ;
 
    private 
       type File_Type is
@@ -92,9 +92,14 @@ package npy is
          stream : access Ada.Streams.Stream_Io.File_Type ;
          major_v : Stream_Element ;
          minor_v : Stream_Element ;
-         header : GNAT.Strings.String_Access ;
+         header : gnat.Strings.String_Access ;
          dict : Dictionary ;
-         DataShape : Shape ;
+
+         descr : gnat.Strings.String_Access ;
+         fortran_order : boolean ;
+         shapestr : gnat.Strings.String_Access ;
+
+         shape : ShapeType ;
       end record ;
 
 end npy ;
