@@ -120,22 +120,22 @@ package body npy.dict is
       Digs : constant Pattern := Span("0123456789");
       limstr : VString ;
       limpat : constant Pattern := Digs * limstr ;
- 
+      termpat : constant Pattern := Any(",") ;
    begin
-
-      if Match( shapestr , limpat , "" )
-      then
-         f.Shape.Append( Integer'Value( S(limstr) ));
-         if Match( shapestr , "," , "")
+      loop
+         if Match( shapestr , limpat , "" )
          then
-            null ;
+            f.Shape.Append( Integer'Value( S(limstr) ));
+            if Match( shapestr , termpat , "")
+            then
+               null ;
+            else
+               return ;
+            end if ;
          else
             return ;
          end if ;
-      else
-         raise npy.dict.SYNTAX_ERROR;
-      end if ;
-
+      end loop ;
    end SetShape ;
 
 

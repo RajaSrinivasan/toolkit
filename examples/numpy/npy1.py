@@ -1,5 +1,6 @@
 import numpy as np
 a = np.arange(10, dtype=np.int32)
+print( a )
 np.save("array.npy", a)
 m = np.matrix([[1, 2], [3, 4]])
 print( m )
@@ -23,3 +24,7 @@ print("Shape:", m.shape)
 
 # Save to file
 np.save("m3d2.npy", m )
+
+f=np.arange(14 , dtype=np.float32)
+print( f )
+np.save( "f32.npy" , f)

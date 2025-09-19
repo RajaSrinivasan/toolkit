@@ -12,9 +12,6 @@ package npy is
       character'val( 16#93# ) &
       "NUMPY" ;
 
-   function ntoh( v : Short_Integer ) return Short_Integer ;
-   Pragma Import(C,ntoh) ;
-
    type header is
    record
       m : String( magic'range ) ;
@@ -79,6 +76,12 @@ package npy is
       name : Unbounded_String ;
       value : Unbounded_String ;
    end record ;
+
+   function ValueType( f : File_Type ) return data_type ;
+   function ElementSize( f : file_Type ) return Integer ;
+   function ValueSize( f : File_Type ) return Stream_Element_Count ;
+   type ValuesPtr_Type is access Ada.Streams.Stream_Element_Array ;
+   function Values( f : File_Type ) return ValuesPtr_Type ;
 
    package dict_pkg is new Ada.Containers.Vectors( Natural , dictentry );
    subtype Dictionary is dict_pkg.Vector ;

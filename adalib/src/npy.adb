@@ -38,6 +38,55 @@ package body npy is
       return result ;
    end Open ;
 
+
+   function ValueType( f : File_Type ) return data_type is
+      dtypec : character := f.descr.all(4) ;
+   begin
+      case dtypec is
+         when 'b' => return bool ; 
+         when 'i' => return signed_integer ; 
+         when 'u' => return unsigned_integer ; 
+         when 'f' => return floating ; 
+         when 'c' => return complex_floating ;
+         when 'm' => return timedelta ;
+         when 'M' => return datetime ;
+         when 'O' => return object ;
+         when 'S' => return byte_string ;
+         when 'U' => return unicode_string ; 
+         when 'V' => return raw_data ;
+         when others => raise FORMAT_ERROR ;
+      end case ;
+   end ValueType ;
+
+
+   function ElementSize( f : file_Type ) return Integer is
+      esize : Integer ;
+   begin
+      esize := Integer'Value(f.descr.all(5..5)) ;
+      return esize ;
+   end ElementSize ;
+
+   function ValueSize( f : File_Type )  return Stream_Element_Count is
+      vsize : Stream_Element_Count ;
+      procedure Count( c : Shape_Pkg.Cursor ) is
+         n : Integer := Shape_Pkg.Element(c) ;
+      begin
+         vsize := vsize * Stream_Element_Count(n) ;
+      end Count ;
+   begin
+      vsize := 1 ;
+      f.shape.Iterate( Count'access );
+      return vsize * Stream_Element_Count(ElementSize (f)) ;
+   end ValueSize;
+   
+   function Values( f : File_Type ) return ValuesPtr_Type is
+      result : ValuesPtr_Type := new Stream_Element_Array( 1..ValueSize(f) );
+      count : Stream_Element_Count ;
+   begin
+      Read( f.stream.all , result.all , count );
+      return result ;
+   end Values ;
+
    procedure Close( file : File_Type ) is
    begin
       Ada.Streams.Stream_Io.Close( file.stream.all );
