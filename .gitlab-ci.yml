@@ -26,10 +26,10 @@ build:
     - export PATH=$PATH:$ALIRE_PATH/bin
     - cd $EXAMPLES_PATH/print
     - alr -n build
-    - cd $EXAMPLES_PATH/print/test
-    - source test.sh
+    - cd $EXAMPLES_PATH
+    - source build.sh
 
   artifacts:
     paths:
-      - $EXAMPLES_PATH/print/bin/*
+      - $EXAMPLES_PATH/bin/*
 
