@@ -4,11 +4,16 @@ pushd button; alr build; popd
 pushd clserv; alr build; popd
 pushd csvtest; alr build; popd
 pushd cvar; alr build; popd
+pushd bday; alr build; popd
 pushd dglogs; alr build; popd
 pushd diffint; alr build; popd
 pushd dump; alr build; popd
+pushd dstruct; alr build; popd
+pushd dtypes; alr build; popd
+pushd fileio; alr build; popd
 pushd frep; alr build; popd
 pushd gitrev; alr build; popd
+pushd hello; alr build; popd
 pushd integ; alr build; popd
 # pushd interf; alr build; popd
 pushd logs; alr build ; popd
