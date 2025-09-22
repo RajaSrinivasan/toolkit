@@ -1,0 +1,15 @@
+name = "dtypes"
+description = "Fundamental Datatypes"
+version = "0.1.0-dev"
+
+authors = ["R Srinivasan"]
+maintainers = ["R Srinivasan <rajasrinivasan@hotmail.com>"]
+maintainers-logins = ["rajasrinivasan"]
+licenses = "MIT"
+website = ""
+tags = []
+
+executables = ["dtypes"]
+
+[build-switches]
+"*".style_checks = "No"
