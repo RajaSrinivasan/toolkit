@@ -1,4 +1,5 @@
 stages:
+  - getcodemd
   - build
 
 variables:
@@ -29,7 +30,7 @@ build:
     - cd $EXAMPLES_PATH
     - source build.sh
 
-download-other-project:
+getcodemd:
   stage: prepare
   image: curlimages/curl:8.5.0
   script:
