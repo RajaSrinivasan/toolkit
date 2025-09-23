@@ -4,6 +4,7 @@ stages:
 
 variables:
   ADA_PROJECT_PATH: $CI_PROJECT_DIR/adalib
+  TOOLS_PATH: $CI_PROJECT_DIR/bin
   EXAMPLES_PATH: $CI_PROJECT_DIR/examples
   ARTIFACTS_PATH: $ADA_PROJECT_PATH/bin
   ALIRE_PATH: $CI_PROJECT_DIR/alire
@@ -26,10 +27,11 @@ build:
     - cd $ADA_PROJECT_PATH/
     - $ALIRE_PATH/bin/alr -n build
     - export PATH=$PATH:$ALIRE_PATH/bin
-    - cd $EXAMPLES_PATH/print
-    - alr -n build
     - cd $EXAMPLES_PATH
     - source build.sh
+  artifacts:
+    paths:
+      - $EXAMPLES_PATH/bin/*
 
 getcodemd:
   stage: gettools
@@ -39,9 +41,4 @@ getcodemd:
            --location \
            "https://gitlab.com/api/v4/projects/ada23%2Fcodemd/jobs/artifacts/main/download?job=build" \
            --output other.zip
-    - unzip other.zip
-
-  artifacts:
-    paths:
-      - $EXAMPLES_PATH/bin/*
-
+    - unzip other.zip -d $TOOLSPATH
