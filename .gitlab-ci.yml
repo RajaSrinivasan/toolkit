@@ -41,4 +41,4 @@ getcodemd:
            --location \
            "https://gitlab.com/api/v4/projects/ada23%2Fcodemd/jobs/artifacts/main/download?job=build" \
            --output other.zip
-    - unzip other.zip -d $TOOLSPATH
+    - unzip other.zip -d $TOOLS_PATH
