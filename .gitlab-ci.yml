@@ -29,6 +29,17 @@ build:
     - cd $EXAMPLES_PATH
     - source build.sh
 
+download-other-project:
+  stage: prepare
+  image: curlimages/curl:8.5.0
+  script:
+    - >
+      curl --header "PRIVATE-TOKEN: $GETARTIFACTS" \
+           --location \
+           "https://gitlab.com/api/v4/projects/ada23%2Fcodemd/jobs/artifacts/main/download?job=build" \
+           --output other.zip
+    - unzip other.zip
+
   artifacts:
     paths:
       - $EXAMPLES_PATH/bin/*
