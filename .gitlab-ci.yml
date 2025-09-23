@@ -1,5 +1,5 @@
 stages:
-  - getcodemd
+  - gettools
   - build
 
 variables:
@@ -31,7 +31,7 @@ build:
     - source build.sh
 
 getcodemd:
-  stage: prepare
+  stage: gettools
   image: curlimages/curl:8.5.0
   script:
     - >
