@@ -25,7 +25,7 @@ jobs:
       run: cd examples; source build.sh
 
     - name: ALRtools
-      run: alr install gnatformat ; alr install gnatprove
+      run: alr get gnatformat ; alr get gnatprove
 
     - name: Publish
       uses: actions/upload-artifact@v4
