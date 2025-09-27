@@ -23,3 +23,11 @@ jobs:
 
     - name: Examples
       run: cd examples; source build.sh
+
+    
+    - name: Publish
+      uses: actions/upload-artifact@v4
+      with:
+          name: "artifacts"
+          path: |
+            ./examples/bin/*
