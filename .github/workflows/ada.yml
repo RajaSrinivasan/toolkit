@@ -14,6 +14,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        submodules: recursive   # fetch all submodules recursively
 
     - name: Setup alr
       uses: alire-project/setup-alire@v4
@@ -21,11 +23,17 @@ jobs:
     - name: Build
       run: cd adalib ; alr build
 
+    - name: Codemd
+      run: cd codemd ; alr build
     - name: Examples
       run: cd examples; source build.sh
 
     - name: ALRTools
-      run: alr install gnatformat; alr install gnatprove
+      run: |
+        alr install gnatformat
+        alr install gnatprove
+        gnatformat --version
+        gnatprove --version
     - name: Publish
       uses: actions/upload-artifact@v4
       with:
