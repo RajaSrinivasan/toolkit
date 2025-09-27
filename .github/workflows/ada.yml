@@ -8,12 +8,9 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-      - name: Add custom dir to PATH
-        run: echo "$HOME/.alire/bin:$HOME/bin" >> $GITHUB_PATH
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -31,6 +28,8 @@ jobs:
     - name: Examples
       run: cd examples; source build.sh
 
+    - name: UpdatePath
+      run: echo "$HOME/.local/bin" >> $GITHUB_PATH
     - name: ALRTools
       run: |
         alr install gnatformat
