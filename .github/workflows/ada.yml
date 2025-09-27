@@ -29,7 +29,7 @@ jobs:
       run: cd examples; source build.sh
 
     - name: UpdatePath
-      run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+      run: echo "$HOME/.local/bin:$HOME/.alire/bin" >> $GITHUB_PATH
     - name: ALRTools
       run: |
         alr install gnatformat
