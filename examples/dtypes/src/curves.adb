@@ -5,14 +5,15 @@ with Ada.Float_Text_IO; use Ada.Float_Text_IO;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Numerics.Elementary_Functions;
 
-with GNAT.Source_Info; use GNAT.Source_Info;
+with GNAT.Source_Info;
+use GNAT.Source_Info;
 -- codemd: end
 
 procedure curves is
 
    verbose : constant Boolean := True;
-   myname  : constant String  := Enclosing_Entity;
-   marker  : constant String  := "--------- ";
+   myname  : constant String := Enclosing_Entity;
+   marker  : constant String := "--------- ";
 
    procedure Annotation (operation : String) is
    begin
@@ -109,9 +110,9 @@ procedure curves is
       use Elementary_Functions;
       myname   : constant String := Enclosing_Entity;
       outfile  : File_Type;
-      fixedR   : constant Float  := 5.0;
-      rollingR : constant Float  := 3.0;
-      d        : constant Float  := 5.0;
+      fixedR   : constant Float := 5.0;
+      rollingR : constant Float := 3.0;
+      d        : constant Float := 5.0;
       x, y     : Float;
    begin
       if verbose then
@@ -122,11 +123,11 @@ procedure curves is
       -- codemd: begin segment=Hypo caption=Generate the coordinates
       for theta in 0 .. 3 * 360 loop
          x :=
-           (fixedR - rollingR) * Cos (Radians (theta)) +
-           d * Cos (Radians (theta) * (fixedR - rollingR) / rollingR);
+           (fixedR - rollingR) * Cos (Radians (theta))
+           + d * Cos (Radians (theta) * (fixedR - rollingR) / rollingR);
          y :=
-           (fixedR - rollingR) * Sin (Radians (theta)) -
-           d * Sin (Radians (theta) * (fixedR - rollingR) / rollingR);
+           (fixedR - rollingR) * Sin (Radians (theta))
+           - d * Sin (Radians (theta) * (fixedR - rollingR) / rollingR);
          Put (Float (Radians (theta))'Image);
          Put (" ; ");
          Put (x'Image);

@@ -8,14 +8,15 @@ with Ada.Strings.Maps.Constants;
 
 with Ada.Calendar.Formatting;
 
-with GNAT.Source_Info; use GNAT.Source_Info;
+with GNAT.Source_Info;
+use GNAT.Source_Info;
 -- codemd: end
 
 procedure arr is
 
    verbose : constant Boolean := True;
-   myname  : constant String  := Enclosing_Entity;
-   marker  : constant String  := "--------- ";
+   myname  : constant String := Enclosing_Entity;
+   marker  : constant String := "--------- ";
 
    procedure Annotation (operation : String) is
    begin
@@ -38,9 +39,9 @@ procedure arr is
       charcounts : array (Character'First .. Character'Last) of Integer :=
         (others => 0);
       -- codemd: end
-      quote      : constant String                                      :=
-        "Shakespeare remains arguably the most influential writer in the English language," &
-        " and his works continue to be studied and reinterpreted.";
+      quote      : constant String :=
+        "Shakespeare remains arguably the most influential writer in the English language,"
+        & " and his works continue to be studied and reinterpreted.";
 
    begin
       if verbose then
@@ -66,7 +67,7 @@ procedure arr is
       myname : constant String := Enclosing_Entity;
       -- codemd: begin segment=ArrTypeFloat caption=Named array type
       type Real_Array is array (Integer range <>) of Float;
-      args : Real_Array := (1 => 1.0, 2 => 10.0, 3 => 100.0, 4 => 1_000.0);
+      args   : Real_Array := (1 => 1.0, 2 => 10.0, 3 => 100.0, 4 => 1_000.0);
       procedure Show_Powers (vals : Real_Array; p : Integer) is
       begin
          for v in vals'Range loop
@@ -74,7 +75,7 @@ procedure arr is
             Put (ASCII.HT);
             Put (vals (v)'Image);
             Put (ASCII.HT);
-            Put (Float'(vals (v)**p)'Image);
+            Put (Float'(vals (v) ** p)'Image);
             New_Line;
          end loop;
       end Show_Powers;
@@ -100,7 +101,7 @@ procedure arr is
    end Real_Array;
 
    procedure Unsigned_Array is
-      myname : constant String := Enclosing_Entity;
+      myname     : constant String := Enclosing_Entity;
       -- codemd: begin segment=ArrTypeUns caption=Named array type
       type Unsigned_Array is array (Integer range <>) of Unsigned_8;
       subtype DecimalDigits_Array is Unsigned_Array (1 .. 11);
@@ -108,13 +109,13 @@ procedure arr is
 
       function Digitize (val : Unsigned_8) return DecimalDigits_Array is
          result : DecimalDigits_Array := (others => 0);
-         dp     : Integer             := 0;
-         valnow : Unsigned_8          := val;
+         dp     : Integer := 0;
+         valnow : Unsigned_8 := val;
       begin
          while valnow > 0 loop
             result (result'Last - dp) := valnow rem 10;
-            dp                        := dp + 1;
-            valnow                    := valnow / 10;
+            dp := dp + 1;
+            valnow := valnow / 10;
          end loop;
          return result;
       end Digitize;

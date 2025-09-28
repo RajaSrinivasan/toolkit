@@ -8,13 +8,14 @@ with Ada.Strings.Maps.Constants;
 
 with Ada.Calendar.Formatting;
 
-with GNAT.Source_Info; use GNAT.Source_Info;
+with GNAT.Source_Info;
+use GNAT.Source_Info;
 -- codemd: end
 
 procedure dtypes is
    verbose : constant Boolean := True;
-   myname  : constant String  := Enclosing_Entity;
-   marker  : constant String  := "--------- ";
+   myname  : constant String := Enclosing_Entity;
+   marker  : constant String := "--------- ";
 
    procedure Annotation (operation : String) is
    begin
