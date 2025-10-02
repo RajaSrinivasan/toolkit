@@ -3,6 +3,8 @@ with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Calendar;            use Ada.Calendar;
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Directories;         use Ada.Directories;
+with Ada.Containers; use Ada.Containers;
+
 with GNAT.Command_Line;
 
 with Semantic_Versioning ;
@@ -15,7 +17,7 @@ with ut ;
 with ut.assertions ;
 
 procedure Gitrev is
-   br          : wordlistpkg.Vector;
+
    dir         : Unbounded_String := To_Unbounded_String (".");
    longcomment : constant String  :=
      "--------------------------------------------";
@@ -76,6 +78,29 @@ begin
       StringConstOutput ("commitid", git.CommitId (argdir));
       New_Line;
       StringConstOutput ("abbrev_commitid", git.AbbrevCommitId (argdir));
+      New_Line;
+      declare
+         tags : constant wordlistpkg.Vector := git.Tags( argdir );
+         tagstr : Unbounded_String := Null_Unbounded_String ;
+         procedure collect ( c : wordlistpkg.Cursor ) is
+            t : constant String :=  wordlistpkg.Element(c) ;
+         begin
+            if Length(tagstr) > 1
+            then
+               Append(tagstr , " , " & t ) ;
+            else
+               tagstr := To_Unbounded_String(t) ;
+            end if ;
+         end collect ;
+      begin
+         if tags.Length < 1
+         then
+            StringConstOutput ("tags", "" ) ;
+         else
+            tags.Iterate( collect'access );
+            StringConstOutput ("tags",To_String(tagstr) );
+         end if ;
+      end ;
       New_Line;
       StringConstOutput ("branch", git.CurrentBranch (argdir));
       New_Line;

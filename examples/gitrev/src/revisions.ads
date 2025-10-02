@@ -1,11 +1,11 @@
 --------------------------------------------
--- Created 2025-01-20 10:40:22
+-- Created 2025-10-02 15:17:22
 --------------------------------------------
 package revisions is
-	dir : constant String := "/Users/rajasrinivasan/Prj/GitLab/toolkit/examples/gitrev" ;
-	version : constant String := "0.0.2" ;
-	repo : constant String := "git@gitlab.com:ada23/toolkit.git" ;
-	commitid : constant String := "bbc1d79bdac1eacd0c3fd7cac22dd01022eff956" ;
-	abbrev_commitid : constant String := "bbc1d79" ;
+	dir : constant String := "/Users/rajasrinivasan/Prj/GitHub/toolkit/examples/gitrev" ;
+	version : constant String := "0.0.3" ;
+	repo : constant String := "git@github.com:RajaSrinivasan/toolkit.git" ;
+	commitid : constant String := "bd7755ffe74522ebee143dce23152262d8fa33da" ;
+	abbrev_commitid : constant String := "bd7755f" ;
 	branch : constant String := "main" ;
 end revisions ;
