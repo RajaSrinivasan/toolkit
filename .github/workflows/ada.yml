@@ -29,16 +29,12 @@ jobs:
       run: cd examples; source build.sh
 
     - name: UpdatePath
-      run: echo "$HOME/.local/bin:$HOME/.alire/bin" >> $GITHUB_PATH
-    - name: ALRTools
-      run: |
-        alr install gnatformat
-        alr install gnatprove
-        gnatformat --version
-        gnatprove --version
+      run: echo "$HOME/toolkit/examples/bin:$HOME/codemd/bin" >> $GITHUB_PATH
+
     - name: Publish
       uses: actions/upload-artifact@v4
       with:
-          name: "artifacts"
-          path: |
-            ./examples/bin/*
+        name: "artifacts"
+        path: |
+          ./examples/bin/*
+          ./codemd/bin/*
