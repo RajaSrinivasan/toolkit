@@ -1,5 +1,4 @@
 with Ada.Text_IO;         use Ada.Text_IO;
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 
 with GNAT.Command_Line;
 with GNAT.Source_Info; use GNAT.Source_Info;
@@ -21,15 +20,6 @@ package body cli is
       Put("Commit Id ");
       Put_Line(revisions.commitid);
    end ShowRevision;
-   procedure SwitchHandler
-     (Switch : String; Parameter : String; Section : String)
-   is
-   begin
-      Put ("SwitchHandler " & Switch);
-      Put (" Parameter " & Parameter);
-      Put (" Section " & Section);
-      New_Line;
-   end SwitchHandler;
 
    procedure ProcessCommandLine is
       Config : GNAT.Command_Line.Command_Line_Configuration;
@@ -53,13 +43,23 @@ package body cli is
         (Config, Version'Access, Switch => "-r:", Long_Switch => "--revision:",
          Help => "Semantic version spec <major>.<minor>.<patch>");
 
-      GNAT.Command_Line.Getopt (Config, SwitchHandler'Access);
+
+      GNAT.Command_Line.Define_Switch
+        (Config, ci_env'Access, Switch => "-e:", Long_Switch => "--environment:",
+         Help => "Additional CI build references. GitLab|GitHub|codeberg");
+
+      GNAT.Command_Line.Getopt (Config);
 
       if Verbose then
          ShowCommandLineArguments;
          ShowRevision;
       end if;
 
+      if ci_env.all /= "GitLab"
+      then
+         Put_Line("CI Environment is unknown|unsupported. Ignored");
+      end if ;
+      
    end ProcessCommandLine;
 
    function GetNextArgument return String is

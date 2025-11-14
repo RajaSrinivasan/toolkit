@@ -36,6 +36,7 @@ build:
 getcodemd:
   stage: gettools
   script:
+    - env | sort
     - >
       curl --header "PRIVATE-TOKEN: $GETARTIFACTS" \
            --location \

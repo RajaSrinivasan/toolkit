@@ -9,6 +9,8 @@ package cli is
    outputFile : aliased GNAT.Strings.String_Access := new String'("revisions");
    version    : aliased GNAT.Strings.String_Access := new String'("0.0.1");
 
+   ci_env : aliased GNAT.Strings.String_Access ;
+
    procedure ProcessCommandLine;
    function GetNextArgument return String;
    procedure ShowCommandLineArguments;

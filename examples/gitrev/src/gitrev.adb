@@ -13,8 +13,7 @@ with cli;
 
 with git;
 with wordlistpkg;
-with ut ;
-with ut.assertions ;
+
 
 procedure Gitrev is
 
@@ -40,7 +39,6 @@ begin
    declare
       arg : constant String := cli.GetNextArgument;
    begin
-      ut.Trace ;
       if arg'Length >= 1 then
          dir := To_Unbounded_String (arg);
       else
@@ -57,7 +55,6 @@ begin
       specfilename : constant String := cli.outputFile.all;
       specfile     : File_Type;
    begin
-      ut.Trace ;
       Create (specfile, Out_File, specfilename & ".ads");
       Set_Output (specfile);
       Put_Line (longcomment);
@@ -104,18 +101,18 @@ begin
       New_Line;
       StringConstOutput ("branch", git.CurrentBranch (argdir));
       New_Line;
+      if cli.ci_env.all = "GitLab"
+      then
+         New_Line ;
+         Put(Comment); Put("GitLab CI"); New_Line ;
+         New_Line ;
+      end if ;
       Put ("end ");
       Put (specfilename);
       Put_Line (" ;");
       Set_Output (Standard_Output);
       Close (specfile);
    end;
-   ut.assertions.Assert( 1 , 1 );
-   ut.assertions.Assert( 5 , 100 / 20  , " 5 = 100/20 ");
-   ut.assertions.Assert( 3 , 100 / 33  , " 3 = 100/33 ");
-   ut.assertions.Assert( 3 , Integer( 3.0404));
-   ut.assertions.Assert( 3 , 9 / 3 , " 3 = 9/3 ");
-   ut.assertions.Assert( 3 , 8/3 , " 3 = 8/3 ");
 exception
    when GNAT.Command_Line.Exit_From_Command_Line =>
       return;
