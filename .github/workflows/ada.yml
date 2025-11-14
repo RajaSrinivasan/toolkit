@@ -20,6 +20,9 @@ jobs:
     - name: Setup alr
       uses: alire-project/setup-alire@v4
 
+    - name: Preparations
+      run: env | sort
+
     - name: Build
       run: cd adalib ; alr build
 
