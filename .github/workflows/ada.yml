@@ -21,10 +21,16 @@ jobs:
       uses: alire-project/setup-alire@v4
 
     - name: Preparations
-      run: env | sort
+      run: env | grep GITHUB | sort
 
     - name: Build
-      run: cd adalib ; alr build
+      run: |
+        cd adalib 
+        alr build
+        cd ../examples/gitrev
+        alr build
+        ../bin/gitrev -r 0.0.1 -e GitHub .
+        cat revisions.ads
 
     - name: Codemd
       run: cd codemd ; alr build
