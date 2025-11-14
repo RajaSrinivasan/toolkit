@@ -4,6 +4,7 @@ with Ada.Calendar;            use Ada.Calendar;
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Directories;         use Ada.Directories;
 with Ada.Containers; use Ada.Containers;
+with Ada.Environment_Variables ;
 
 with GNAT.Command_Line;
 
@@ -16,6 +17,8 @@ with wordlistpkg;
 
 
 procedure Gitrev is
+
+   package EnvPkg renames Ada.Environment_Variables ;
 
    dir         : Unbounded_String := To_Unbounded_String (".");
    longcomment : constant String  :=
@@ -34,6 +37,11 @@ procedure Gitrev is
       Put (" ;");
    end StringConstOutput;
 
+   procedure CaptureEnv( name : String; envname : String ) is
+   begin
+      StringConstOutput (name, EnvPkg.Value(envname,"unknown") );
+      New_Line;
+   end CaptureEnv;
 begin
    cli.ProcessCommandLine;
    declare
@@ -105,6 +113,15 @@ begin
       then
          New_Line ;
          Put(Comment); Put("GitLab CI"); New_Line ;
+         New_Line ;
+      elsif cli.ci_env.all = "GitHub"
+      then
+         New_Line ;
+         Put(Comment); Put("GitHub CI"); New_Line ;
+         CaptureEnv("gh_sha" , "GITHUB_SHA" );
+         CaptureEnv("gh_ref_name" , "GITHUB_REF_NAME") ;
+         CaptureEnv("gh_run_id" , "GITHUB_RUN_ID");
+         CaptureEnv("gh_run_number","GITHUB_RUN_NUMBER");
          New_Line ;
       end if ;
       Put ("end ");

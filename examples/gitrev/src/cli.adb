@@ -55,11 +55,12 @@ package body cli is
          ShowRevision;
       end if;
 
-      if ci_env.all /= "GitLab"
+      if ci_env.all /= "GitLab" and
+         ci_env.all /= "GitHub"
       then
          Put_Line("CI Environment is unknown|unsupported. Ignored");
       end if ;
-      
+
    end ProcessCommandLine;
 
    function GetNextArgument return String is
