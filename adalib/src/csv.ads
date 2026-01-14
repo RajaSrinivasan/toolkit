@@ -4,6 +4,7 @@ with GNAT.AWK;
 -- codemd: end
 
 -- codemd: begin segment=Spec caption=Specification
+
 package Csv is
    Debug : Boolean := True;
    Duplicate_Column : exception;
@@ -11,8 +12,10 @@ package Csv is
    type File_Type is access File_Object_Type;
 
    subtype Field_Count_Type is Integer range 1 .. 255;
-   package String_Vectors_Pkg is new Ada.Containers.Indefinite_Vectors
-     (Index_Type => Field_Count_Type, Element_Type => String);
+   package String_Vectors_Pkg is new
+     Ada.Containers.Indefinite_Vectors
+       (Index_Type   => Field_Count_Type,
+        Element_Type => String);
 
    -- codemd: skipbegin
    -- codemd: begin segment=Interface caption=Interface Specification
@@ -39,4 +42,5 @@ private
       Field_Names  : String_Vectors_Pkg.Vector;
    end record;
 end Csv;
+
 -- codemd: end

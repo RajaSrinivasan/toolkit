@@ -1,12 +1,14 @@
 -- codemd: begin segment=Generic caption=Spec of the generic package
+
 generic
 
    type Item_Type is private;
    with function "=" (left, right : Item_Type) return Boolean;
 
-package critical is
+package critical
+is
 
-   AllocatorError     : exception;
+   AllocatorError : exception;
    VariableCorruption : exception;
 
    type AllocatorType is
@@ -24,4 +26,5 @@ private
       secondary : ItemPtr_Type;
    end record;
 end critical;
+
 --codemd: end

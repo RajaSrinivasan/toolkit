@@ -9,7 +9,7 @@ package fifo is
       count     : Integer := 0;
    end record;
 
-   empty_Error    : exception;
+   empty_Error : exception;
    overflow_Error : exception;
 
    function Create (cap : Integer := 64) return Buffer_Type;

@@ -15,14 +15,14 @@ package body Stacks is
          raise Overflow;
       end if;
       Stk.contents (Stk.top) := Item;
-      Stk.top                := Stk.top + 1;
+      Stk.top := Stk.top + 1;
    end Push;
 
    procedure Pop (Stk : in out Stack; Item : out Item_Type) is
    begin
       if not Empty (Stk) then
          Stk.top := Stk.top - 1;
-         Item    := Stk.contents (Stk.top);
+         Item := Stk.contents (Stk.top);
       end if;
    end Pop;
 

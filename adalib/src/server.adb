@@ -58,14 +58,15 @@ package body server is
    begin
 
       accept Serve
-        (handler : ServicePtr_Type; sock : GS.Socket_Type;
+        (handler : ServicePtr_Type;
+         sock    : GS.Socket_Type;
          addr    : GS.Sock_Addr_Type)
       do
          myhandler := handler;
-         mysock    := sock;
-         myaddr    := addr;
+         mysock := sock;
+         myaddr := addr;
       end Serve;
-   -- codemd: begin segment=Clientproxy caption=Basic Socket handling
+      -- codemd: begin segment=Clientproxy caption=Basic Socket handling
       -- Let the handler do its thing
       myhandler.ServiceConnection (mysock, myaddr);
       loop
@@ -76,7 +77,7 @@ package body server is
          myhandler.Message
            (buffer (1 .. AS.Stream_Element_Offset (msglen)), mysock, myaddr);
       end loop;
-   -- codemd: end
+      -- codemd: end
 
    end ClientSock_Type;
 
@@ -84,9 +85,9 @@ package body server is
 
    -- codemd: begin segment=Debugserv caption=Example for Service
    procedure ServiceConnection
-     (svc  : in out DebugService; Sock : GS.Socket_Type;
-      From :        GS.Sock_Addr_Type)
-   is
+     (svc  : in out DebugService;
+      Sock : GS.Socket_Type;
+      From : GS.Sock_Addr_Type) is
    begin
       Put (GSI.Source_Location);
       Put (" > New Connection from ");
@@ -96,8 +97,10 @@ package body server is
    end ServiceConnection;
 
    procedure Message
-     (svc  : in out DebugService; msgbytes : AS.Stream_Element_Array;
-      Sock :        GS.Socket_Type; From : GS.Sock_Addr_Type)
+     (svc      : in out DebugService;
+      msgbytes : AS.Stream_Element_Array;
+      Sock     : GS.Socket_Type;
+      From     : GS.Sock_Addr_Type)
    is
       resp : aliased constant String :=
         Hex.Image (msgbytes'Address, msgbytes'Length);
@@ -169,5 +172,5 @@ package body server is
       return result;
    end ConnectDebugServer;
    -- codemd: end
-   
+
 end server;

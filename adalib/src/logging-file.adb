@@ -1,5 +1,6 @@
 pragma Ada_2022;
 with images;
+
 package body logging.file is
 
    procedure Create (fd : in out FileDestination_Type) is
@@ -8,8 +9,9 @@ package body logging.file is
       if fd.cadence > 0.0 then
          filename :=
            To_Unbounded_String
-             (To_String (fd.basename) & images.Image (".%04d", fd.filenumber) &
-              To_String (fd.basetype));
+             (To_String (fd.basename)
+              & images.Image (".%04d", fd.filenumber)
+              & To_String (fd.basetype));
       else
          filename :=
            To_Unbounded_String
@@ -21,15 +23,17 @@ package body logging.file is
    end Create;
 
    function Create
-     (name   : String; filetype : String := ".log"; number : Integer := 0;
-      rotate : Duration := 0.0) return FileDestinationPtr_Type
+     (name     : String;
+      filetype : String := ".log";
+      number   : Integer := 0;
+      rotate   : Duration := 0.0) return FileDestinationPtr_Type
    is
       result : FileDestinationPtr_Type;
    begin
-      result            := new FileDestination_Type;
-      result.basename   := To_Unbounded_String (name);
-      result.basetype   := To_Unbounded_String (filetype);
-      result.cadence    := rotate;
+      result := new FileDestination_Type;
+      result.basename := To_Unbounded_String (name);
+      result.basetype := To_Unbounded_String (filetype);
+      result.cadence := rotate;
       result.filenumber := number;
 
       result.f := new Ada.Text_IO.File_Type;
@@ -38,12 +42,13 @@ package body logging.file is
       return result;
    end Create;
 
-   overriding procedure SendMessage
-     (dest   : in out FileDestination_Type; message : String;
-      level  :        message_level_type := INFORMATIONAL;
-      source :        String             := Default_Source_Name;
-      class  :        String             := Default_Message_Class)
-   is
+   overriding
+   procedure SendMessage
+     (dest    : in out FileDestination_Type;
+      message : String;
+      level   : message_level_type := INFORMATIONAL;
+      source  : String := Default_Source_Name;
+      class   : String := Default_Message_Class) is
    begin
       if dest.cadence > 0.0 and then Clock - dest.filestarted > dest.cadence
       then
@@ -55,8 +60,7 @@ package body logging.file is
    end SendMessage;
 
    procedure SendMessage
-     (dest : in out FileDestination_Type; prefix : String; message : String)
-   is
+     (dest : in out FileDestination_Type; prefix : String; message : String) is
    begin
       if dest.cadence > 0.0 and then Clock - dest.filestarted > dest.cadence
       then
@@ -71,7 +75,8 @@ package body logging.file is
       --Put_Line(message);
    end SendMessage;
 
-   overriding procedure Close (dest : FileDestination_Type) is
+   overriding
+   procedure Close (dest : FileDestination_Type) is
    begin
       Ada.Text_IO.Put_Line
         (dest.f.all, "************End of File*****************");

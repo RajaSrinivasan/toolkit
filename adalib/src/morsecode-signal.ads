@@ -1,4 +1,5 @@
 with realtime;
+
 package Morsecode.signal is
    pragma Elaborate_Body;
    simled : realtime.SimLED_Type;

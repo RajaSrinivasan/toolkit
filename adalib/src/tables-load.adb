@@ -1,5 +1,6 @@
 with Ada.Containers;
 with Csv;
+
 separate (tables)
 --codemd: begin segment=Load caption=Load the table from csv
 procedure Load
@@ -14,7 +15,7 @@ begin
          declare
             --colname : String :=
             --  To_String (TablePkg.Element (table, Integer (fld)).name);
-            colval  : constant String := Csv.Field (tblfile, Integer (fld) + 1);
+            colval : constant String := Csv.Field (tblfile, Integer (fld) + 1);
          begin
             TablePkg.Element (table, Integer (fld)).Append (colval);
          end;
@@ -26,4 +27,5 @@ begin
    end loop;
    Csv.Close (tblfile);
 end Load;
+
 --codemd: end

@@ -1,4 +1,5 @@
 -- with Ada.Text_IO; -- use Ada.Text_IO;
+
 package body Hex is
 
    use System;
@@ -31,7 +32,7 @@ package body Hex is
       Vhigh, Vlow : Interfaces.Unsigned_8;
    begin
       Vhigh := Value (Hex (1));
-      Vlow  := Value (Hex (2));
+      Vlow := Value (Hex (2));
       return Vhigh * 16 + Vlow;
    end Value;
    -- codemd: end
@@ -129,8 +130,8 @@ package body Hex is
    -- codemd: begin segment=BlockHex caption=Block of memory to hex
    function Image (binptr : System.Address; Length : Integer) return String is
       -- use Interfaces;
-      img   : String (1 .. 2 * Length);
-      bytes : array (1 .. Length) of Interfaces.Unsigned_8;
+      img    : String (1 .. 2 * Length);
+      bytes  : array (1 .. Length) of Interfaces.Unsigned_8;
       for bytes'Address use binptr;
       hexstr : Hexstring;
    begin
@@ -143,8 +144,7 @@ package body Hex is
    --codemd: end
 
    function Image
-     (bin : System.Storage_Elements.Storage_Element) return Hexstring
-   is
+     (bin : System.Storage_Elements.Storage_Element) return Hexstring is
    begin
       return Image (Interfaces.Unsigned_8 (bin));
    end Image;

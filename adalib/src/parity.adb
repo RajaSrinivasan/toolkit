@@ -2,7 +2,7 @@ package body parity is
 
    -- codemd: begin segment=Count caption=count of 1's
    function BitCount (byte : Unsigned_8) return BitCountType is
-      result : Natural    := 0;
+      result : Natural := 0;
       mask   : Unsigned_8 := 1;
    begin
       for b in 1 .. 8 loop
@@ -26,6 +26,7 @@ package body parity is
          case spec is
             when Odd =>
                return Low;
+
             when Even =>
                return High;
          end case;
@@ -33,6 +34,7 @@ package body parity is
          case spec is
             when Odd =>
                return High;
+
             when Even =>
                return Low;
          end case;

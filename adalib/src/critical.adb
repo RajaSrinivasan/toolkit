@@ -14,16 +14,16 @@ package body critical is
          if allocate = null then
             raise AllocatorError;
          end if;
-         var.primary     := ItemPtr_Type (allocate.all);
+         var.primary := ItemPtr_Type (allocate.all);
          var.primary.all := value;
 
-         var.secondary     := ItemPtr_Type (allocate.all (True));
+         var.secondary := ItemPtr_Type (allocate.all (True));
          var.secondary.all := value;
          return;
       end if;
 
       if var.primary.all = var.secondary.all then
-         var.primary.all   := value;
+         var.primary.all := value;
          var.secondary.all := value;
          return;
       end if;

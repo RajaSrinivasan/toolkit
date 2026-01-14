@@ -4,7 +4,8 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories;
 
 with Ada.Strings.Fixed; -- use Ada.Strings.Fixed ;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;
+use Ada.Strings.Unbounded;
 -- with Ada.Strings.Maps ; use Ada.Strings.Maps ;
 
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -113,10 +114,10 @@ package body git is
       arglista   : constant Argument_List_Access :=
         Argument_String_To_List ("remote show " & repo);
       status     : aliased Integer;
-      showremote : constant string               :=
+      showremote : constant string :=
         GNAT.Expect.Get_Command_Output
           (fullgit.all, arglista.all, "", Status'Access, Err_To_Out => True);
-      headword   : constant String               := "HEAD branch: ";
+      headword   : constant String := "HEAD branch: ";
       hidx       : integer;
    begin
       if status = 0 then
@@ -166,15 +167,15 @@ package body git is
    end Abbrev;
 
    --codemd: begin segment=CurrentBranch caption=Current branch
-  function CurrentBranch (dir : String := ".") return String is
-      cmd : String := "rev-parse --abbrev-ref HEAD" ;
+   function CurrentBranch (dir : String := ".") return String is
+      cmd : String := "rev-parse --abbrev-ref HEAD";
    begin
-      return Exec( dir , cmd );
-   end CurrentBranch ;
+      return Exec (dir, cmd);
+   end CurrentBranch;
    --codemd: end
 
    procedure Clone (dir : string; repo : String; branch : String := "@") is
-      cwd    : constant String  := Ada.Directories.Current_Directory;
+      cwd    : constant String := Ada.Directories.Current_Directory;
       brname : Unbounded_String := To_Unbounded_String (branch);
       status : aliased Integer;
       use Ada.Directories;
@@ -209,12 +210,12 @@ package body git is
       end;
       Ada.Directories.Set_Directory (dir);
       declare
-         brnamestr : constant String               := To_String (brname);
-         clonecmd  : constant String               :=
+         brnamestr : constant String := To_String (brname);
+         clonecmd  : constant String :=
            "clone --branch " & brnamestr & " " & repo & " " & brnamestr;
          arglist   : constant Argument_List_Access :=
            Argument_String_To_List (clonecmd);
-         result    : constant string               :=
+         result    : constant string :=
            GNAT.Expect.Get_Command_Output
              (fullgit.all, arglist.all, "", Status'Access, Err_To_Out => True);
       begin
@@ -242,7 +243,7 @@ package body git is
 
    --codemd: begin segment=Tags caption=Get tags
    function Tags (dir : String := ".") return wordlistpkg.Vector is
-      taglines : constant String             := Exec (dir, "tag --list");
+      taglines : constant String := Exec (dir, "tag --list");
       result   : constant wordlistPkg.Vector := Get_Lines (taglines);
    begin
       return result;

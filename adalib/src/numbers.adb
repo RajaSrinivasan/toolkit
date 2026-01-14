@@ -78,7 +78,7 @@ package body numbers is
    function Value (digs : OctalVector_Pkg.Vector) return Natural is
       use OctalVector_Pkg;
       result : Natural := 0;
-      curs   : Cursor  := digs.First;
+      curs   : Cursor := digs.First;
    begin
       loop
          result := result * 8 + Element (curs);
@@ -97,7 +97,7 @@ package body numbers is
    function Value (digs : DecimalVector_Pkg.Vector) return Natural is
       use DecimalVector_Pkg;
       result : Natural := 0;
-      curs   : Cursor  := digs.First;
+      curs   : Cursor := digs.First;
    begin
       loop
          result := result * 10 + Element (curs);
@@ -117,7 +117,7 @@ package body numbers is
    function Value (digs : HexadecimalVector_Pkg.Vector) return Natural is
       use HexadecimalVector_Pkg;
       result : Natural := 0;
-      curs   : Cursor  := digs.First;
+      curs   : Cursor := digs.First;
    begin
       loop
          result := result * 16 + Element (curs);
@@ -141,7 +141,7 @@ package body numbers is
    begin
       curs := First (digs);
       loop
-         i          := i + 1;
+         i := i + 1;
          result (i) := octalChars (1 + Integer (Element (curs)));
          if curs = Last (digs) then
             exit;
@@ -163,7 +163,7 @@ package body numbers is
    begin
       curs := First (digs);
       loop
-         i          := i + 1;
+         i := i + 1;
          result (i) := decimalChars (1 + Integer (Element (curs)));
          if curs = Last (digs) then
             exit;
@@ -185,7 +185,7 @@ package body numbers is
    begin
       curs := First (digs);
       loop
-         i          := i + 1;
+         i := i + 1;
          result (i) := hexChars (1 + Integer (Element (curs)));
          if curs = Last (digs) then
             exit;
@@ -209,7 +209,7 @@ package body numbers is
    --codemd: end
 
    function Divisors (num : Natural) return NumbersVector_Pkg.Vector is
-      result  : NumbersVector_Pkg.Vector;
+      result : NumbersVector_Pkg.Vector;
       --sqrtnum : Float;
    begin
       --sqrtnum := Sqrt (Float (num));
@@ -227,7 +227,7 @@ package body numbers is
 
    function DivisorSum (num : Natural) return Natural is
       use NumbersVector_Pkg;
-      divs   : constant Vector  := Divisors (num);
+      divs   : constant Vector := Divisors (num);
       result : Natural := 0;
       procedure Summer (cur : Cursor) is
       begin
@@ -296,9 +296,9 @@ package body numbers is
    -- codemd: end
 
    function IsPerfect (num : Natural) return Boolean is
-      --use Ada.Containers, 
+      --use Ada.Containers,
       use NumbersVector_Pkg;
-      divs : constant Vector  := Divisors (num);
+      divs : constant Vector := Divisors (num);
       sum  : Natural := 0;
       procedure Summer (cur : Cursor) is
       begin
@@ -325,10 +325,10 @@ package body numbers is
    --codemd: begin segment=Kaprekar caption=Kaprekar numbers
    function IsKaprekar (num : Natural) return Boolean is
       use Ada.Containers, DecimalVector_Pkg;
-      numsq       : constant Natural                  := num * num;
+      numsq       : constant Natural := num * num;
       digs        : constant DecimalVector_Pkg.Vector := Convert (numsq);
-      total       : constant Natural                  := Natural (digs.Length);
-      left, right : Natural                  := 0;
+      total       : constant Natural := Natural (digs.Length);
+      left, right : Natural := 0;
       procedure Summer (cur : Cursor) is
          idx : constant Natural := To_Index (cur);
       begin
@@ -352,7 +352,7 @@ package body numbers is
    --codemd: end
 
    function gcd (left, right : Natural) return Natural is
-      temp   : Natural;
+      temp : Natural;
    begin
       if left > right then
          if left mod right = 0 then

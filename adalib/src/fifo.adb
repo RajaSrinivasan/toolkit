@@ -14,7 +14,7 @@ package body fifo is
       end if;
 
       buf.contents (buf.push_to) := item;
-      buf.count                  := @ + 1;
+      buf.count := @ + 1;
       if buf.pull_from < buf.contents'First then
          buf.pull_from := buf.push_to;
       end if;
@@ -34,7 +34,7 @@ package body fifo is
          raise empty_Error;
       end if;
 
-      item      := buf.contents (buf.pull_from);
+      item := buf.contents (buf.pull_from);
       buf.count := @ - 1;
       if buf.pull_from = buf.contents'Last then
          buf.pull_from := buf.contents'First;

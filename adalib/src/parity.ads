@@ -1,4 +1,5 @@
 with Interfaces; use Interfaces;
+
 package parity is
 
    -- codemd: begin segment=Basic caption=basic definitions

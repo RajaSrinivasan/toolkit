@@ -13,31 +13,31 @@ package numlib.constants is
      (1.0e15);    --  /usr/include/gsl/gsl_const_num.h:29
    TERA_F : constant Long_Float :=
      (1.0e12);  --  /usr/include/gsl/gsl_const_num.h:30
-   TERA   : constant            := 1_000_000_000_000;
+   TERA : constant := 1_000_000_000_000;
    GIGA_F : constant Long_Float :=
      (1.0e9);  --  /usr/include/gsl/gsl_const_num.h:31
-   GIGA   : constant            := 1_000_000_000;
+   GIGA : constant := 1_000_000_000;
    MEGA_F : constant Long_Float :=
      (1.0e6);  --  /usr/include/gsl/gsl_const_num.h:32
-   MEGA   : constant            := 1_000_000;
+   MEGA : constant := 1_000_000;
    KILO_F : constant Long_Float :=
      (1.0e3);  --  /usr/include/gsl/gsl_const_num.h:33
-   KILO  : constant            := 1_000;
-   MILLI : constant Long_Float :=
+   KILO : constant := 1_000;
+   MILLI  : constant Long_Float :=
      (1.0e-3);  --  /usr/include/gsl/gsl_const_num.h:34
-   MICRO : constant Long_Float :=
+   MICRO  : constant Long_Float :=
      (1.0e-6);  --  /usr/include/gsl/gsl_const_num.h:35
-   NANO  : constant Long_Float :=
+   NANO   : constant Long_Float :=
      (1.0e-9);  --  /usr/include/gsl/gsl_const_num.h:36
-   PICO  : constant Long_Float :=
+   PICO   : constant Long_Float :=
      (1.0e-12);  --  /usr/include/gsl/gsl_const_num.h:37
-   FEMTO : constant Long_Float :=
+   FEMTO  : constant Long_Float :=
      (1.0e-15);  --  /usr/include/gsl/gsl_const_num.h:38
-   ATTO  : constant Long_Float :=
+   ATTO   : constant Long_Float :=
      (1.0e-18);  --  /usr/include/gsl/gsl_const_num.h:39
-   ZEPTO : constant Long_Float :=
+   ZEPTO  : constant Long_Float :=
      (1.0e-21);  --  /usr/include/gsl/gsl_const_num.h:40
-   YOCTO : constant Long_Float :=
+   YOCTO  : constant Long_Float :=
      (1.0e-24);  --  /usr/include/gsl/gsl_const_num.h:41
 
 end numlib.constants;

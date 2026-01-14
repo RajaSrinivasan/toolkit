@@ -6,6 +6,7 @@ with wordlistPkg;
 -- @descriptionn
 -- Uses git command line to perform common functions
 -- Requires git to be locatable in the path
+
 package git is
 
    verbose : Boolean := False;

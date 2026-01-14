@@ -12,12 +12,16 @@ package body logging is
       case level is
          when CRITICAL =>
             return "[C]";
+
          when ERROR =>
             return "[E]";
+
          when WARNING =>
             return "[W]";
+
          when INFORMATIONAL =>
             return "[I]";
+
          when others =>
             return "[" & message_level_type'Image (level) & "]";
       end case;
@@ -26,7 +30,7 @@ package body logging is
    function Time_Stamp return String is
       ts        : Unbounded_String :=
         To_Unbounded_String (GNAT.Time_Stamp.Current_Time);
-      pos       : Natural          := 0;
+      pos       : Natural := 0;
       removeset : Ada.Strings.Maps.Character_Set;
    begin
       removeset := Ada.Strings.Maps.To_Set ("-:. ");
@@ -51,38 +55,47 @@ package body logging is
 
    -- codemd: begin segment=Dispatch caption=Dispatch
    procedure SendMessage
-     (message : String; level : message_level_type := INFORMATIONAL;
+     (message : String;
+      level   : message_level_type := INFORMATIONAL;
       source  : String := Default_Source_Name;
-      class   : String := Default_Message_Class)
-   is
+      class   : String := Default_Message_Class) is
    begin
       SendMessage (Current_Destination.all, message, level, source, class);
    end SendMessage;
    -- codemd: end
 
-   overriding procedure SendMessage
-     (dest   : in out StdOutDestination_Type; message : String;
-      level  :        message_level_type := INFORMATIONAL;
-      source :        String             := Default_Source_Name;
-      class  :        String             := Default_Message_Class)
-   is
+   overriding
+   procedure SendMessage
+     (dest    : in out StdOutDestination_Type;
+      message : String;
+      level   : message_level_type := INFORMATIONAL;
+      source  : String := Default_Source_Name;
+      class   : String := Default_Message_Class) is
    begin
       Put_Line (Image (message, level, source, class));
    end SendMessage;
-   overriding procedure Close (desg : StdOutDestination_Type) is
+   overriding
+   procedure Close (desg : StdOutDestination_Type) is
    begin
       null;
    end Close;
 
    function Image
-     (message : String; level : message_level_type := INFORMATIONAL;
+     (message : String;
+      level   : message_level_type := INFORMATIONAL;
       source  : String := Default_Source_Name;
-      class   : String := Default_Message_Class) return String
-   is
+      class   : String := Default_Message_Class) return String is
    begin
       return
-        Ada.Calendar.Formatting.Local_Image (Ada.Calendar.Clock) & " " &
-        source & " " & class & " " & Image (level) & " " & message;
+        Ada.Calendar.Formatting.Local_Image (Ada.Calendar.Clock)
+        & " "
+        & source
+        & " "
+        & class
+        & " "
+        & Image (level)
+        & " "
+        & message;
    end Image;
 
    procedure SelfTest is

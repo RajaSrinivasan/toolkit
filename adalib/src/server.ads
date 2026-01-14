@@ -15,11 +15,16 @@ package server is
 
    -- Services that can be provided by a server
    procedure ServiceConnection
-     (svc  : in out ServiceType; Sock : GS.Socket_Type;
-      From :        GS.Sock_Addr_Type) is null;
+     (svc  : in out ServiceType;
+      Sock : GS.Socket_Type;
+      From : GS.Sock_Addr_Type)
+   is null;
    procedure Message
-     (svc  : in out ServiceType; msgbytes : AS.Stream_Element_Array;
-      Sock :        GS.Socket_Type; From : GS.Sock_Addr_Type) is null;
+     (svc      : in out ServiceType;
+      msgbytes : AS.Stream_Element_Array;
+      Sock     : GS.Socket_Type;
+      From     : GS.Sock_Addr_Type)
+   is null;
    -- codemd: end
 
    -- codemd: begin segment=Server caption=serverframework
@@ -31,12 +36,13 @@ package server is
    -- proxy for each client
    task type ClientSock_Type is
       entry Serve
-        (handler : ServicePtr_Type; sock : GS.Socket_Type;
+        (handler : ServicePtr_Type;
+         sock    : GS.Socket_Type;
          addr    : GS.Sock_Addr_Type);
    end ClientSock_Type;
    type ClientSockPtr_Type is access all ClientSock_Type;
    -- codemd: end
-   
+
    -- Compatible with the server design.
    -- Use to send to server or
    -- as reply from servers
@@ -60,9 +66,12 @@ private
    end record;
 
    procedure ServiceConnection
-     (svc  : in out DebugService; Sock : GS.Socket_Type;
-      From :        GS.Sock_Addr_Type);
+     (svc  : in out DebugService;
+      Sock : GS.Socket_Type;
+      From : GS.Sock_Addr_Type);
    procedure Message
-     (svc  : in out DebugService; msgbytes : AS.Stream_Element_Array;
-      Sock :        GS.Socket_Type; From : GS.Sock_Addr_Type);
+     (svc      : in out DebugService;
+      msgbytes : AS.Stream_Element_Array;
+      Sock     : GS.Socket_Type;
+      From     : GS.Sock_Addr_Type);
 end server;

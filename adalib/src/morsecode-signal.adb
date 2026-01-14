@@ -27,6 +27,7 @@ package body Morsecode.signal is
                realtime.Set (led, False);
                About (led, " -");
                delay Span (minigap);
+
             when others =>
                null;
          end case;

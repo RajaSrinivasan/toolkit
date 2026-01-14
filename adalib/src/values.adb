@@ -1,12 +1,14 @@
 with Interfaces.C;      use Interfaces.C;
 with Ada.Text_IO;       use Ada.Text_IO;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+
 package body values is
    use Interfaces;
    function sscanf
-     (v   : Interfaces.C.char_array; f : Interfaces.C.char_array;
-      val : access Interfaces.C.int) return Interfaces.C.int with
-     Import, Convention => C_Variadic_2, External_Name => "sscanf";
+     (v   : Interfaces.C.char_array;
+      f   : Interfaces.C.char_array;
+      val : access Interfaces.C.int) return Interfaces.C.int
+   with Import, Convention => C_Variadic_2, External_Name => "sscanf";
 
    function Value (format : String; value : String) return Integer is
       ival   : aliased Interfaces.C.int;
@@ -14,8 +16,9 @@ package body values is
    begin
       status :=
         sscanf
-          (Interfaces.C.To_C (value), f => Interfaces.C.To_C (format),
-           val                          => ival'Access);
+          (Interfaces.C.To_C (value),
+           f   => Interfaces.C.To_C (format),
+           val => ival'Access);
       if status /= 1 then
          raise FORMAT_ERROR;
       end if;
@@ -24,9 +27,10 @@ package body values is
    end Value;
 
    function sscanf
-     (v   : Interfaces.C.char_array; f : Interfaces.C.char_array;
-      val : access Interfaces.C.unsigned) return Interfaces.C.int with
-     Import, Convention => C_Variadic_2, External_Name => "sscanf";
+     (v   : Interfaces.C.char_array;
+      f   : Interfaces.C.char_array;
+      val : access Interfaces.C.unsigned) return Interfaces.C.int
+   with Import, Convention => C_Variadic_2, External_Name => "sscanf";
 
    function Value
      (format : String; value : String) return Interfaces.Unsigned_32
@@ -36,8 +40,9 @@ package body values is
    begin
       status :=
         sscanf
-          (Interfaces.C.To_C (value), f => Interfaces.C.To_C (format),
-           val                          => uval'Access);
+          (Interfaces.C.To_C (value),
+           f   => Interfaces.C.To_C (format),
+           val => uval'Access);
       if status /= 1 then
          raise FORMAT_ERROR;
       end if;
@@ -45,9 +50,10 @@ package body values is
    end Value;
 
    function sscanf
-     (v   : Interfaces.C.char_array; f : Interfaces.C.char_array;
-      val : access Interfaces.C.C_float) return Interfaces.C.int with
-     Import, Convention => C_Variadic_2, External_Name => "sscanf";
+     (v   : Interfaces.C.char_array;
+      f   : Interfaces.C.char_array;
+      val : access Interfaces.C.C_float) return Interfaces.C.int
+   with Import, Convention => C_Variadic_2, External_Name => "sscanf";
 
    function Value (format : String; value : String) return Float is
       fval   : aliased Interfaces.C.C_float;
@@ -55,8 +61,9 @@ package body values is
    begin
       status :=
         sscanf
-          (Interfaces.C.To_C (value), f => Interfaces.C.To_C (format),
-           val                          => fval'Access);
+          (Interfaces.C.To_C (value),
+           f   => Interfaces.C.To_C (format),
+           val => fval'Access);
       if status /= 1 then
          raise FORMAT_ERROR;
       end if;
@@ -70,8 +77,9 @@ package body values is
    begin
       status :=
         sscanf
-          (Interfaces.C.To_C (value), f => Interfaces.C.To_C (format),
-           val                          => fval'Access);
+          (Interfaces.C.To_C (value),
+           f   => Interfaces.C.To_C (format),
+           val => fval'Access);
       if status /= 1 then
          raise FORMAT_ERROR;
       end if;
@@ -86,8 +94,9 @@ package body values is
    begin
       status :=
         sscanf
-          (Interfaces.C.To_C (value), f => Interfaces.C.To_C (format),
-           val                          => fval'Access);
+          (Interfaces.C.To_C (value),
+           f   => Interfaces.C.To_C (format),
+           val => fval'Access);
       if status /= 1 then
          raise FORMAT_ERROR;
       end if;
@@ -108,9 +117,10 @@ package body values is
    end record;
 
    function strftime
-     (str    : Interfaces.C.char_array; maxsize : size_t;
-      format : Interfaces.C.char_array; timptr : access struct_tm)
-      return size_t with
-     Import, Convention => C, External_Name => "strftime";
+     (str     : Interfaces.C.char_array;
+      maxsize : size_t;
+      format  : Interfaces.C.char_array;
+      timptr  : access struct_tm) return size_t
+   with Import, Convention => C, External_Name => "strftime";
 
 end values;

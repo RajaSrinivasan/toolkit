@@ -1,7 +1,7 @@
 package logging.socket.stream is
 
-   type SocketDestination_Type is
-   new logging.socket.SocketDestination_Type with record
+   type SocketDestination_Type is new logging.socket.SocketDestination_Type
+   with record
       connected : Boolean := False;             -- Remote Socket
    end record;
    type SocketDestinationPtr_Type is access all SocketDestination_Type;
@@ -11,13 +11,16 @@ package logging.socket.stream is
      (port : GNAT.Sockets.Port_Type; host : String := "127.0.0.1")
       return SocketDestinationPtr_Type;
 
-   overriding procedure SendMessage
-     (dest   : in out SocketDestination_Type; message : String;
-      level  :        message_level_type := INFORMATIONAL;
-      source :        String             := Default_Source_Name;
-      class  :        String             := Default_Message_Class);
+   overriding
+   procedure SendMessage
+     (dest    : in out SocketDestination_Type;
+      message : String;
+      level   : message_level_type := INFORMATIONAL;
+      source  : String := Default_Source_Name;
+      class   : String := Default_Message_Class);
 
-   overriding procedure Close (dest : SocketDestination_Type);
+   overriding
+   procedure Close (dest : SocketDestination_Type);
 
    type Message_Header_Type is record
       ms : Short_Short_Integer;

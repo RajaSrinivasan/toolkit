@@ -91,7 +91,7 @@ package body numlib.statistics is
       avg    : constant RealType := mean (v);
       procedure sumsq (c : Cursor) is
       begin
-         result := result + (Element (c) - avg)**2;
+         result := result + (Element (c) - avg) ** 2;
       end sumsq;
    begin
       v.Iterate (sumsq'Access);
@@ -126,9 +126,9 @@ package body numlib.statistics is
          Put (v2.Element (Integer (idx))'Image);
          Put (" ");
          result :=
-           result +
-           (v1.Element (Integer (idx)) - v1mean) *
-             (v2.Element (Integer (idx)) - v2mean);
+           result
+           + (v1.Element (Integer (idx)) - v1mean)
+             * (v2.Element (Integer (idx)) - v2mean);
          Put (result'Image);
          New_Line;
       end loop;

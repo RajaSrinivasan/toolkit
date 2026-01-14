@@ -2,7 +2,7 @@ generic
    type Item_Type is private;
 package Stacks is
 
-   Overflow    : exception;
+   Overflow : exception;
    Empty_Stack : exception;
 
    type Contents_Type is array (Integer range <>) of aliased Item_Type;

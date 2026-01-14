@@ -9,9 +9,12 @@ with GNAT.Debug_Utilities;
 
 package body Hex.dump is
    procedure Dump
-     (Adr : System.Address; Length : Integer; show_offset : Boolean := True;
-      bare    : Boolean := False; Blocklen : Integer := DEFAULT_BLOCK_LENGTH;
-      Outfile : Ada.Text_IO.File_Type := Ada.Text_IO.Standard_Output)
+     (Adr         : System.Address;
+      Length      : Integer;
+      show_offset : Boolean := True;
+      bare        : Boolean := False;
+      Blocklen    : Integer := DEFAULT_BLOCK_LENGTH;
+      Outfile     : Ada.Text_IO.File_Type := Ada.Text_IO.Standard_Output)
    is
       blockadr : System.Address := Adr;
       bigBlock : array (1 .. Length) of Interfaces.Unsigned_8;
@@ -19,7 +22,7 @@ package body Hex.dump is
 
       No_Blocks    : constant Integer := Length / Blocklen + 1;
       Blockstart   : Integer;
-      Lengthleft   : Integer          := Length;
+      Lengthleft   : Integer := Length;
       Lengthtodump : Integer;
 
       adrcol : constant Integer := 1;
@@ -82,16 +85,18 @@ package body Hex.dump is
               (Outfile, Count (piccol + Blocklen + 3 + Blocklen * 2 + 3));
             Put_Line (" *");
          end if;
-         blockadr   := blockadr + Storage_Offset (Lengthtodump);
+         blockadr := blockadr + Storage_Offset (Lengthtodump);
          Lengthleft := Lengthleft - Lengthtodump;
          exit when Lengthleft = 0;
       end loop;
    end Dump;
 
    procedure Dump
-     (filename : String; show_offset : Boolean := True;
-      bare     : Boolean := False; Blocklen : Integer := DEFAULT_BLOCK_LENGTH;
-      Outfile  : Ada.Text_IO.File_Type := Ada.Text_IO.Standard_Output)
+     (filename    : String;
+      show_offset : Boolean := True;
+      bare        : Boolean := False;
+      Blocklen    : Integer := DEFAULT_BLOCK_LENGTH;
+      Outfile     : Ada.Text_IO.File_Type := Ada.Text_IO.Standard_Output)
    is
       use Ada.Streams;
       file     : Ada.Streams.Stream_IO.File_Type;
@@ -107,6 +112,7 @@ package body Hex.dump is
          Ada.Text_IO.Put (Outfile, Integer'Image (Integer (filesize)));
          Ada.Text_IO.New_Line;
          --Ada.Text_IO.Put_Line (Outfile, " *********************************");
+
       end if;
 
       -- codemd: begin segment=DumpFile caption=Dump a file
@@ -122,9 +128,12 @@ package body Hex.dump is
          stream.Read (buffer, bufferlen);
          if bufferlen > 0 then
             Hex.dump.Dump
-              (buffer'Address, Integer (bufferlen), bare => bare,
-               show_offset => show_offset, Blocklen => Blocklen,
-               Outfile                                   => Outfile);
+              (buffer'Address,
+               Integer (bufferlen),
+               bare        => bare,
+               show_offset => show_offset,
+               Blocklen    => Blocklen,
+               Outfile     => Outfile);
          end if;
       end;
       -- codemd: end

@@ -2,6 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers.Vectors;
 
 -- codemd: begin segment=Core caption=basic core definitions
+
 package numlib is
 
    subtype RealType is Float;
@@ -24,13 +25,15 @@ package numlib is
 
    function Create
      (length   : Natural;
-      populate : not null access function
-        (length, idx : Natural) return RealType)
+      populate :
+        not null access function (length, idx : Natural) return RealType)
       return Vector;
    procedure Set (v : in out Vector; value : RealType);
    procedure Print
-     (v    : Vector; sep : String := ","; linelen : Positive_Count := 80;
-      dest : File_Type := Standard_Output);
+     (v       : Vector;
+      sep     : String := ",";
+      linelen : Positive_Count := 80;
+      dest    : File_Type := Standard_Output);
 
    function Rev (v : Vector) return Vector;
 
@@ -47,8 +50,8 @@ package numlib is
    procedure Mult (v : in out Vector; value : Vector);
    procedure Div (v : in out Vector; value : Vector);
 
-   procedure Append (v1 : in out Vector; v2 : Vector) renames
-     RealVectors_Pkg.Append_Vector;
+   procedure Append (v1 : in out Vector; v2 : Vector)
+   renames RealVectors_Pkg.Append_Vector;
    function Append (v1 : Vector; v2 : Vector) return Vector;
    -- codemd: end
 
@@ -71,5 +74,5 @@ package numlib is
 
    function Val (F : Fx; x : RealType) return RealType is abstract;
    -- codemd: end
-   
+
 end numlib;

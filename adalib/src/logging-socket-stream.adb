@@ -19,11 +19,13 @@ package body logging.socket.stream is
       return result;
    end Create;
 
-   overriding procedure SendMessage
-     (dest   : in out SocketDestination_Type; message : String;
-      level  :        message_level_type := INFORMATIONAL;
-      source :        String             := Default_Source_Name;
-      class  :        String             := Default_Message_Class)
+   overriding
+   procedure SendMessage
+     (dest    : in out SocketDestination_Type;
+      message : String;
+      level   : message_level_type := INFORMATIONAL;
+      source  : String := Default_Source_Name;
+      class   : String := Default_Message_Class)
    is
       hdr     : Message_Header_Type;
       hdrsize : constant Short_Integer := hdr'Size / 8;
@@ -38,7 +40,8 @@ package body logging.socket.stream is
       String'Write (GS.Stream (dest.s), message);
    end SendMessage;
 
-   overriding procedure Close (dest : SocketDestination_Type) is
+   overriding
+   procedure Close (dest : SocketDestination_Type) is
    begin
       GS.Close_Socket (dest.s);
    end Close;

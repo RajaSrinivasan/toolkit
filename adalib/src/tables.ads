@@ -12,10 +12,10 @@ package tables is
    end record;
 
    procedure Append (col : in out ColumnType; value : String) is abstract;
-   procedure Set
-     (col : in out ColumnType; idx : Natural; value : String) is abstract;
-   function Image
-     (col : in out ColumnType; idx : Natural) return String is abstract;
+   procedure Set (col : in out ColumnType; idx : Natural; value : String)
+   is abstract;
+   function Image (col : in out ColumnType; idx : Natural) return String
+   is abstract;
    function Length (col : ColumnType) return Natural is abstract;
    procedure Remove (col : in out ColumnType; idx : Natural) is abstract;
 
@@ -52,8 +52,8 @@ package tables is
    -- codemd: end
 
    --codemd: begin segment=StrCol caption=String Columns
-   package StringColumnValues_Pkg is new Ada.Containers.Vectors
-     (Natural, Unbounded_String);
+   package StringColumnValues_Pkg is new
+     Ada.Containers.Vectors (Natural, Unbounded_String);
    type StringColumnType is new ColumnType with record
       values : StringColumnValues_Pkg.Vector;
    end record;
@@ -75,10 +75,14 @@ package tables is
    procedure Load
      (filename : String; table : in out TableType; sep : String := ";");
    procedure Print
-     (table   : TableType; sep : String := " ; "; header : Boolean := False;
+     (table   : TableType;
+      sep     : String := " ; ";
+      header  : Boolean := False;
       outfile : Ada.Text_IO.File_Type := Ada.Text_IO.Standard_Output);
    procedure Save
-     (filename : String; table : TableType; sep : String := ";";
+     (filename : String;
+      table    : TableType;
+      sep      : String := ";";
       header   : Boolean := False);
 
    function Rows (table : TableType) return Natural;
@@ -91,13 +95,18 @@ package tables is
       proc  : not null access procedure (table : TableType; rownum : Natural));
 
    procedure Mutate
-     (table : in out TableType; col : in out ColPtrType;
-      proc  :        not null access procedure
-        (table : in out TableType; rownum : Natural; col : in out ColPtrType));
+     (table : in out TableType;
+      col   : in out ColPtrType;
+      proc  :
+        not null access procedure
+          (table  : in out TableType;
+           rownum : Natural;
+           col    : in out ColPtrType));
 
    procedure Filter
      (table  : in out TableType;
-      remove :        not null access function
-        (table : in out TableType; rownum : Natural) return Boolean);
+      remove :
+        not null access function
+          (table : in out TableType; rownum : Natural) return Boolean);
    -- codemd: end
 end tables;

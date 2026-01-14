@@ -10,8 +10,8 @@ package body numlib.integration is
       Y1, Y2, MIDY : RealType;
       H            : constant RealType := MIDX - X1;
    begin
-      Y1   := f.Val (X1);
-      Y2   := f.Val (X2);
+      Y1 := f.Val (X1);
+      Y2 := f.Val (X2);
       MIDY := f.Val (MIDX);
 
       return H * (W1 * Y1 + W2 * MIDY + W3 * Y2);
@@ -29,9 +29,9 @@ package body numlib.integration is
 
    begin
       return
-        H *
-        (W1 * f.Val (X1) + W2 * f.Val (X1 + H) + W3 * f.Val (X1 + H * 2.0) +
-         W4 * f.Val (X2));
+        H
+        * (W1 * f.Val (X1) + W2 * f.Val (X1 + H) + W3 * f.Val (X1 + H * 2.0)
+           + W4 * f.Val (X2));
    end Newton_Coates_4;
 
    function Newton_Coates_5 (f : FxPtr; X1, X2 : RealType) return RealType is
@@ -45,9 +45,10 @@ package body numlib.integration is
       H  : constant RealType := (X2 - X1) / 4.0;
    begin
       return
-        H *
-        (W1 * f.Val (X1) + W2 * f.Val (X1 + H) + W3 * f.Val (X1 + H * 2.0) +
-         W4 * f.Val (X1 + H * 3.0) + W5 * f.Val (X2));
+        H
+        * (W1 * f.Val (X1) + W2 * f.Val (X1 + H) + W3 * f.Val (X1 + H * 2.0)
+           + W4 * f.Val (X1 + H * 3.0)
+           + W5 * f.Val (X2));
 
       --W5 * f.Val X2) ) ;
    end Newton_Coates_5;

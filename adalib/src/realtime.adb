@@ -2,7 +2,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body realtime is
 
-   overriding procedure Set (led : SimLED_Type; state : Boolean) is
+   overriding
+   procedure Set (led : SimLED_Type; state : Boolean) is
    begin
       Put (To_String (led.name));
       Put (" : ");
@@ -12,7 +13,8 @@ package body realtime is
          Put ("Off");
       end if;
    end Set;
-   overriding procedure About (led : SimLED_Type; s : String) is
+   overriding
+   procedure About (led : SimLED_Type; s : String) is
    begin
       Put (To_String (led.name));
       Put (" ");
@@ -29,14 +31,17 @@ package body realtime is
       me        : Unbounded_String;
    begin
       accept Monitor
-        (name : String; cadence : Duration; handle : Integer;
-         acq  : not null acquire; st : not null statechange)
+        (name    : String;
+         cadence : Duration;
+         handle  : Integer;
+         acq     : not null acquire;
+         st      : not null statechange)
       do
-         d         := cadence;
-         h         := handle;
-         a         := acq;
-         s         := st;
-         me        := To_Unbounded_String (name);
+         d := cadence;
+         h := handle;
+         a := acq;
+         s := st;
+         me := To_Unbounded_String (name);
          laststate := a.all (h);
       end Monitor;
       Put ("Started monitoring button ");

@@ -2,6 +2,7 @@ with Ada.Text_IO;      use Ada.Text_IO;
 with Ada.Exceptions;   use Ada.Exceptions;
 with Ada.Streams;      use Ada.Streams;
 with GNAT.Source_Info; use GNAT.Source_Info;
+
 package body logging.socket is
    package GS renames GNAT.Sockets;
 
@@ -9,13 +10,15 @@ package body logging.socket is
      (port : GNAT.Sockets.Port_Type; host : String := "127.0.0.1")
       return SocketDestinationPtr_Type
    is
-      result : constant SocketDestinationPtr_Type    :=
+      result : constant SocketDestinationPtr_Type :=
         new SocketDestination_Type;
-      he : constant GNAT.Sockets.Host_Entry_Type := GS.Get_Host_By_Name (host);
+      he     : constant GNAT.Sockets.Host_Entry_Type :=
+        GS.Get_Host_By_Name (host);
    begin
       GS.Create_Socket
-        (result.s, Mode => GS.Socket_Datagram,
-         Level          => GS.IP_Protocol_For_UDP_Level);
+        (result.s,
+         Mode  => GS.Socket_Datagram,
+         Level => GS.IP_Protocol_For_UDP_Level);
       result.dest := new GS.Sock_Addr_Type;
 
       if GS.Addresses_Length (he) < 1 then
@@ -36,27 +39,29 @@ package body logging.socket is
    end Create;
 
    -- codemd: begin segment=SockDest caption=Socket destination
-   overriding procedure SendMessage
-     (dest   : in out SocketDestination_Type; message : String;
-      level  :        message_level_type := INFORMATIONAL;
-      source :        String             := Default_Source_Name;
-      class  :        String             := Default_Message_Class)
+   overriding
+   procedure SendMessage
+     (dest    : in out SocketDestination_Type;
+      message : String;
+      level   : message_level_type := INFORMATIONAL;
+      source  : String := Default_Source_Name;
+      class   : String := Default_Message_Class)
    is
       m       : aliased Message_Type;
       payload : Ada.Streams.Stream_Element_Array (1 .. m'Size / 8);
       for payload'Address use m'Address;
-      last : Ada.Streams.Stream_Element_Offset;
+      last    : Ada.Streams.Stream_Element_Offset;
    begin
-      m.t   := Ada.Calendar.Clock;
+      m.t := Ada.Calendar.Clock;
       m.Seq := dest.Count + 1;
-      m.l   := level;
-      m.s   := source;
-      m.c   := class;
+      m.l := level;
+      m.s := source;
+      m.c := class;
       if message'Length > MAX_MESSAGE_SIZE then
          m.ml := MAX_MESSAGE_SIZE;
          m.mt := message (1 .. MAX_MESSAGE_SIZE);
       else
-         m.ml                       := message'Length;
+         m.ml := message'Length;
          m.mt (1 .. message'Length) := message;
       end if;
       GS.Send_Socket (dest.s, payload, last, To => dest.dest);
@@ -67,7 +72,8 @@ package body logging.socket is
    end SendMessage;
    -- codemd: end
 
-   overriding procedure Close (dest : SocketDestination_Type) is
+   overriding
+   procedure Close (dest : SocketDestination_Type) is
    begin
       GS.Close_Socket (dest.s);
    end Close;

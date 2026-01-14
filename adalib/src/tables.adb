@@ -1,4 +1,5 @@
 with Ada.Calendar;
+
 package body tables is
 
    function "=" (Left, Right : Ada.Calendar.Time) return Boolean is
@@ -98,11 +99,12 @@ package body tables is
    --codemd: end
 
    procedure Load
-     (filename : String; table : in out TableType;
-      sep      : String := ";") is separate;
+     (filename : String; table : in out TableType; sep : String := ";")
+   is separate;
 
    procedure PrintHeader
-     (tbl     : tables.TableType; sep : String := " ; ";
+     (tbl     : tables.TableType;
+      sep     : String := " ; ";
       outfile : Ada.Text_IO.File_Type := Ada.Text_IO.Standard_Output)
    is
       use Ada.Text_IO;
@@ -115,7 +117,9 @@ package body tables is
    end PrintHeader;
 
    procedure Print
-     (table   : TableType; sep : String := " ; "; header : Boolean := False;
+     (table   : TableType;
+      sep     : String := " ; ";
+      header  : Boolean := False;
       outfile : Ada.Text_IO.File_Type := Ada.Text_IO.Standard_Output)
    is
       use Ada.Text_IO;
@@ -133,7 +137,9 @@ package body tables is
    end Print;
 
    procedure Save
-     (filename : String; table : TableType; sep : String := ";";
+     (filename : String;
+      table    : TableType;
+      sep      : String := ";";
       header   : Boolean := False)
    is
       use Ada.Text_IO;
@@ -165,10 +171,13 @@ package body tables is
    end Iterate;
 
    procedure Mutate
-     (table : in out TableType; col : in out ColPtrType;
-      proc  :        not null access procedure
-        (table : in out TableType; rownum : Natural; col : in out ColPtrType))
-   is
+     (table : in out TableType;
+      col   : in out ColPtrType;
+      proc  :
+        not null access procedure
+          (table  : in out TableType;
+           rownum : Natural;
+           col    : in out ColPtrType)) is
    begin
       for rn in 0 .. Rows (table) - 1 loop
          proc (table, rn, col);
@@ -178,8 +187,9 @@ package body tables is
 
    procedure Filter
      (table  : in out TableType;
-      remove :        not null access function
-        (table : in out TableType; rownum : Natural) return Boolean)
+      remove :
+        not null access function
+          (table : in out TableType; rownum : Natural) return Boolean)
    is
       cp : ColPtrType;
    begin

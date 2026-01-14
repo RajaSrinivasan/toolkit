@@ -19,7 +19,7 @@ package body numlib is
       ptr    : Integer := 0;
       procedure Copy (c : Cursor) is
       begin
-         ptr          := ptr + 1;
+         ptr := ptr + 1;
          result (ptr) := Element (c);
       end Copy;
    begin
@@ -46,8 +46,8 @@ package body numlib is
    end Create;
 
    function Create (length : Natural; low, high : RealType) return Vector is
-      result : Vector            := Create (length);
-      val    : RealType          := low;
+      result : Vector := Create (length);
+      val    : RealType := low;
       vdelta : constant RealType := (high - low) / Float (length - 1);
    begin
       for idx in 0 .. length - 1 loop
@@ -72,8 +72,8 @@ package body numlib is
    -- codemd: begin segment=Populate caption=populate with a custom data generator
    function Create
      (length   : Natural;
-      populate : not null access function
-        (length, idx : Natural) return RealType)
+      populate :
+        not null access function (length, idx : Natural) return RealType)
       return Vector
    is
       use type Ada.Containers.Count_Type;
@@ -97,8 +97,10 @@ package body numlib is
    end Set;
 
    procedure Print
-     (v    : Vector; sep : String := ","; linelen : Positive_Count := 80;
-      dest : File_Type := Standard_Output)
+     (v       : Vector;
+      sep     : String := ",";
+      linelen : Positive_Count := 80;
+      dest    : File_Type := Standard_Output)
    is
       procedure Print (c : Cursor) is
       begin

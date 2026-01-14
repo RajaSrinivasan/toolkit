@@ -1,7 +1,9 @@
 with Ada.Directories;
 
 procedure dirwalk
-  (context   : context_type; dirname : String; pattern : String;
+  (context   : context_type;
+   dirname   : String;
+   pattern   : String;
    processor : access procedure (context : context_type; filename : in String))
 is
 

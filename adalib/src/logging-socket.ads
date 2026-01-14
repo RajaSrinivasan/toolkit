@@ -1,5 +1,6 @@
 with GNAT.Sockets;
 with Ada.Calendar;
+
 package logging.socket is
 
    type SocketDestination_Type is new Destination_Type with record
@@ -13,13 +14,16 @@ package logging.socket is
      (port : GNAT.Sockets.Port_Type; host : String := "127.0.0.1")
       return SocketDestinationPtr_Type;
 
-   overriding procedure SendMessage
-     (dest   : in out SocketDestination_Type; message : String;
-      level  :        message_level_type := INFORMATIONAL;
-      source :        String             := Default_Source_Name;
-      class  :        String             := Default_Message_Class);
+   overriding
+   procedure SendMessage
+     (dest    : in out SocketDestination_Type;
+      message : String;
+      level   : message_level_type := INFORMATIONAL;
+      source  : String := Default_Source_Name;
+      class   : String := Default_Message_Class);
 
-   overriding procedure Close (dest : SocketDestination_Type);
+   overriding
+   procedure Close (dest : SocketDestination_Type);
 
    MAX_MESSAGE_SIZE : constant := Short_Short_Integer'Last;
    type Message_Type is record

@@ -7,16 +7,16 @@ package numbers is
    subtype DecimalDigit_Type is Natural range 0 .. 9;
    subtype HexadecimalDigit_Type is Natural range 0 .. 15;
 
-   package OctalVector_Pkg is new Ada.Containers.Vectors
-     (Natural, OctalDigit_Type);
+   package OctalVector_Pkg is new
+     Ada.Containers.Vectors (Natural, OctalDigit_Type);
    subtype OctalDigits_Type is OctalVector_Pkg.Vector;
 
-   package DecimalVector_Pkg is new Ada.Containers.Vectors
-     (Natural, DecimalDigit_Type);
+   package DecimalVector_Pkg is new
+     Ada.Containers.Vectors (Natural, DecimalDigit_Type);
    subtype DecimalDigits_Type is DecimalVector_Pkg.Vector;
 
-   package HexadecimalVector_Pkg is new Ada.Containers.Vectors
-     (Natural, HexadecimalDigit_Type);
+   package HexadecimalVector_Pkg is new
+     Ada.Containers.Vectors (Natural, HexadecimalDigit_Type);
    subtype HexadecimalDigits_Type is HexadecimalVector_Pkg.Vector;
    --codemd: end
 
