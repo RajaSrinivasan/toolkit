@@ -2,7 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body crc16 is
    CRCtable : constant array (1 .. 256) of Interfaces.Unsigned_16 :=
-     [16#0000#, 16#C0C1#, 16#C181#, 16#0140#, 16#C301#, 16#03C0#, 16#0280#,
+     [ 16#0000#, 16#C0C1#, 16#C181#, 16#0140#, 16#C301#, 16#03C0#, 16#0280#,
      16#C241#, 16#C601#, 16#06C0#, 16#0780#, 16#C741#, 16#0500#, 16#C5C1#,
      16#C481#, 16#0440#, 16#CC01#, 16#0CC0#, 16#0D80#, 16#CD41#, 16#0F00#,
      16#CFC1#, 16#CE81#, 16#0E40#, 16#0A00#, 16#CAC1#, 16#CB81#, 16#0B40#,
@@ -38,7 +38,7 @@ package body crc16 is
      16#4A40#, 16#4E00#, 16#8EC1#, 16#8F81#, 16#4F40#, 16#8D01#, 16#4DC0#,
      16#4C80#, 16#8C41#, 16#4400#, 16#84C1#, 16#8581#, 16#4540#, 16#8701#,
      16#47C0#, 16#4680#, 16#8641#, 16#8201#, 16#42C0#, 16#4380#, 16#8341#,
-     16#4100#, 16#81C1#, 16#8081#, 16#4040#];
+     16#4100#, 16#81C1#, 16#8081#, 16#4040# ];
    procedure Update
      (Oldvalue : Interfaces.Unsigned_16; Blockptr : System.Address;
       Blocklen : Integer; Newvalue : out Interfaces.Unsigned_16)
@@ -96,7 +96,7 @@ package body crc16 is
      (crcvalue : in out Interfaces.Unsigned_16;
       block    :        System.Storage_Elements.Storage_Array)
    is
-      oldvalue : Interfaces.Unsigned_16 := crcvalue;
+      oldvalue : constant Interfaces.Unsigned_16 := crcvalue;
       newvalue : Interfaces.Unsigned_16;
    begin
       Update (oldvalue, block'Address, block'Length, newvalue);

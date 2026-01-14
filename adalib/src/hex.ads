@@ -3,7 +3,7 @@ with System.Storage_Elements;
 
 with Interfaces;
 
-package Hex is
+package Hex with SPARK_Mode => On is
    format_error : exception;
    subtype Hexstring is String (1 .. 2);
 

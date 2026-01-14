@@ -1,5 +1,5 @@
 package logging is
-
+   pragma Elaborate_Body;
    -- codemd: begin segment=API caption=Basic logging needs
    subtype message_level_type is Natural;
 

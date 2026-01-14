@@ -2,7 +2,8 @@ with System;
 with System.Storage_Elements;
 with Interfaces;
 
-package crc16 is
+package crc16 
+   with SPARK_Mode => On is
 
    type block_type is array (Integer range <>) of Interfaces.Unsigned_8;
 
