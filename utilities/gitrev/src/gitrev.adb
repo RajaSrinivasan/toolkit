@@ -109,21 +109,13 @@ begin
       New_Line;
       StringConstOutput ("branch", git.CurrentBranch (argdir));
       New_Line;
-      if cli.ci_env.all = "GitLab"
+      
+      if cli.ci_env.all /= ""
       then
-         New_Line ;
-         Put(Comment); Put("GitLab CI"); New_Line ;
-         New_Line ;
-      elsif cli.ci_env.all = "GitHub"
-      then
-         New_Line ;
-         Put(Comment); Put("GitHub CI"); New_Line ;
-         CaptureEnv("gh_sha" , "GITHUB_SHA" );
-         CaptureEnv("gh_ref_name" , "GITHUB_REF_NAME") ;
-         CaptureEnv("gh_run_id" , "GITHUB_RUN_ID");
-         CaptureEnv("gh_run_number","GITHUB_RUN_NUMBER");
-         New_Line ;
+         StringConstOutput ("ci_env", cli.ci_env.all);
+         New_Line;
       end if ;
+
       Put ("end ");
       Put (specfilename);
       Put_Line (" ;");
