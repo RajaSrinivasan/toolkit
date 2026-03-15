@@ -3,7 +3,7 @@ with Ada.Text_IO;         use Ada.Text_IO;
 with GNAT.Command_Line;
 with GNAT.Source_Info; use GNAT.Source_Info;
 
-with revisions;
+with revisions; use revisions;
 
 package body cli is
 
@@ -27,8 +27,19 @@ package body cli is
 
       GNAT.Command_Line.Set_Usage
         (Config,
-         Help  => NAME & " " & Compilation_ISO_Date & " " & Compilation_Time,
-         Usage => "");
+         Help  =>
+           NAME
+           & " "
+           & revisions.Version
+           & " "
+           & branch
+           & ":"
+           & abbrev_commitid
+           & " "
+           & Compilation_ISO_Date
+           & " "
+           & Compilation_Time,
+         Usage => "[-v] [-o:<outputfile>] [-r:<version>] [-e:<list of env to record>]");
 
       GNAT.Command_Line.Define_Switch
         (Config, Verbose'Access, Switch => "-v", Long_Switch => "--verbose",
@@ -46,7 +57,7 @@ package body cli is
 
       GNAT.Command_Line.Define_Switch
         (Config, ci_env'Access, Switch => "-e:", Long_Switch => "--environment:",
-         Help => "Additional CI build references. GitLab|GitHub|codeberg");
+         Help => "Additional CI build references.");
 
       GNAT.Command_Line.Getopt (Config);
 
@@ -55,10 +66,10 @@ package body cli is
          ShowRevision;
       end if;
 
-      if ci_env.all /= "GitLab" and
-         ci_env.all /= "GitHub"
+      if ci_env.all /= ""
       then
-         Put_Line("CI Environment is unknown|unsupported. Ignored");
+         Put("CI Environment ");
+         Put_Line(ci_env.all);
       end if ;
 
    end ProcessCommandLine;
@@ -76,7 +87,7 @@ package body cli is
       New_Line;
       Put ("Output File ");
       Put_Line (outputFile.all);
-      Put ("Version ");
+      Put ("Version of the app ");
       Put_Line (version.all);
    end ShowCommandLineArguments;
 
