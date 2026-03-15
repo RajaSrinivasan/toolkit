@@ -9,40 +9,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive   # fetch all submodules recursively
+      - name: Setup alr
+        uses: alire-project/setup-alire@v4
 
-    - name: Setup alr
-      uses: alire-project/setup-alire@v4
+      - name: Preparations
+        run: env | grep GITHUB | sort
 
-    - name: Preparations
-      run: env | grep GITHUB | sort
+      - name: Build
+        run: |
+          cd adalib ; alr build
 
-    - name: Build
-      run: |
-        cd adalib ; alr build
+      - name: Utilities
+        run: |
+          cd utilities; source build.sh
 
-  - name: Utilities
-      run: |
-        cd utilities; source build.sh
+      - name: Examples
+        run: |
+          cd examples; source build.sh
 
-  - name: Examples
-      run: |
-        cd examples; source build.sh
+      - name: UpdatePath
+        run: echo "$HOME/toolkit/utilities/bin" >> $GITHUB_PATH
 
-
-    - name: UpdatePath
-      run: echo "$HOME/toolkit/utilities/bin" >> $GITHUB_PATH
-
-    - name: Publish
-      uses: actions/upload-artifact@v4
-      with:
-        name: "artifacts"
-        path: |
-          ./examples/bin/*
-          ./utilities/bin/*
+      - name: Publish
+        uses: actions/upload-artifact@v4
+        with:
+          name: "artifacts"
+          path: |
+            ./examples/bin/*
+            ./utilities/bin/*
