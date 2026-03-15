@@ -1,0 +1,15 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\colorlet{shadecolor}{orange!15}
+\lstset{basicstyle=\linespread{0.8}\ttfamily\footnotesize,
+    xleftmargin=0.7cm,
+    frame=tlbr, framesep=0.2cm, framerule=0pt,
+}
+\lstset{frame=single}
+
+\begin{document}
+\input{fragment.tex}
+#include "../src/cli-Show.tex"
+#include "../src/cli-getnext.tex"
+\end{document}

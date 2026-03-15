@@ -1,0 +1,33 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\colorlet{shadecolor}{orange!15}
+\lstset{basicstyle=\linespread{0.8}\ttfamily\footnotesize,
+    xleftmargin=0.7cm,
+    frame=tlbr, framesep=0.2cm, framerule=0pt,
+}
+\lstset{frame=single}
+
+\begin{document}
+\input{fragment.tex}
+\lstset{language=Ada, caption=cli.adb: Show Command Line Argument}
+\begin{tcolorbox}[width=\linewidth, sharp corners=all, colback=white!95!black]
+\begin{lstlisting}[frame=single, numbers=left, numbersep=5pt, firstnumber= 57]
+   procedure ShowCommandLineArguments is
+   begin
+      Put ("Verbose ");
+      Put (Verbose);
+      New_Line;
+   end ShowCommandLineArguments;
+\end{lstlisting}
+\end{tcolorbox}
+\lstset{language=Ada, caption=cli.adb: GetNext}
+\begin{tcolorbox}[width=\linewidth, sharp corners=all, colback=white!95!black]
+\begin{lstlisting}[frame=single, numbers=left, numbersep=5pt, firstnumber= 50]
+   function GetNextArgument return String is
+   begin
+      return GNAT.Command_Line.Get_Argument (Do_Expansion => True);
+   end GetNextArgument;
+\end{lstlisting}
+\end{tcolorbox}
+\end{document}
