@@ -25,20 +25,19 @@ jobs:
 
     - name: Build
       run: |
-        cd adalib 
-        alr build
-        cd ../examples/gitrev
-        alr build
-        ../bin/gitrev -r 0.0.1 -e GitHub .
-        cat revisions.ads
+        cd adalib ; alr build
 
-    - name: Codemd
-      run: cd codemd ; alr build
-    - name: Examples
-      run: cd examples; source build.sh
+  - name: Utilities
+      run: |
+        cd utilities; source build.sh
+
+  - name: Examples
+      run: |
+        cd examples; source build.sh
+
 
     - name: UpdatePath
-      run: echo "$HOME/toolkit/examples/bin:$HOME/codemd/bin" >> $GITHUB_PATH
+      run: echo "$HOME/toolkit/utilities/bin" >> $GITHUB_PATH
 
     - name: Publish
       uses: actions/upload-artifact@v4
@@ -46,4 +45,4 @@ jobs:
         name: "artifacts"
         path: |
           ./examples/bin/*
-          ./codemd/bin/*
+          ./utilities/bin/*
