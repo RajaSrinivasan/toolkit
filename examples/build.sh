@@ -12,7 +12,7 @@ pushd dstruct; alr build; popd
 pushd dtypes; alr build; popd
 pushd fileio; alr build; popd
 pushd frep; alr build; popd
-pushd gitrev; alr build; popd
+
 pushd hello; alr build; popd
 pushd integ; alr build; popd
 # pushd interf; alr build; popd
