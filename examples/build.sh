@@ -7,7 +7,7 @@ pushd cvar; alr build; popd
 pushd bday; alr build; popd
 pushd dglogs; alr build; popd
 pushd diffint; alr build; popd
-pushd dump; alr build; popd
+
 pushd dstruct; alr build; popd
 pushd dtypes; alr build; popd
 pushd fileio; alr build; popd
