@@ -6,6 +6,8 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 
 with cli;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+
 with GNAT.Regpat; use GNAT.Regpat;
 with GNAT.Expect;
 
@@ -98,6 +100,7 @@ package body impl is
       inplinelen : Natural;
       lineno     : Integer := 0;
       segspec    : Match_Array (0 .. 2);
+      output_dir : GNAT.Strings.String_Access := cli.output_dir ;
 
       procedure Skip_Segment is
       begin
@@ -123,7 +126,17 @@ package body impl is
 
       --codemd: begin segment=Segment caption=Process_Segment
       procedure Process_Segment is
+         listfile : File_Type;
+         -- outfilename : String := output_dir.all & GNAT.Directory_Operations.Path_Separator & segment & ".md";
       begin
+         if segment = "*" then
+            Create( listfile , Out_File, output_dir.all & 
+                                         GNAT.Directory_Operations.Dir_Separator & 
+                                         inpline (segspec (1).First .. segspec (1).Last) &
+                                         ".md");
+            Set_Output(listfile);
+         end if;
+
          while not End_Of_File (inpfile) loop
             Get_Line (inpfile, inpline, inplinelen);
             lineno := lineno + 1;
@@ -138,13 +151,25 @@ package body impl is
                Emit_Line (lineno, inpline (1 .. inplinelen));
             end if;
          end loop;
+         if segment = "*" then
+            Close (listfile);
+         end if;
       end Process_Segment;
+ 
       --codemd: end
    begin
       --codemd: begin segment=Process
       --Put_Line(inputfilename);
+      if segment="*" then
+         if cli.output_dir.all'Length = 0 then
+            Put ("No output directory specified, using current directory");
+            output_dir := new String'(GNAT.Directory_Operations.Get_Current_Dir);
+            Put_Line ("Current directory is " & output_dir.all);
+         end if;
+      end if ;
+
       Open (inpfile, In_File, inputfilename);
-      Emit_Prolog (caption, "Reference : " & inputfilename);
+      --Emit_Prolog (caption, "Reference : " & inputfilename);
       while not End_Of_File (inpfile) loop
          Get_Line (inpfile, inpline, inplinelen);
          lineno := lineno + 1;
