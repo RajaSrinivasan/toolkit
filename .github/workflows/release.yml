@@ -45,8 +45,10 @@ jobs:
       - name: Install Alire (Linux/macOS)
         if: runner.os != 'Windows'
         run: |
-          curl -L https://alire.ada.dev/install.sh | bash
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+            curl -fsSL https://alire.ada.dev/install.sh -o install_alire.sh
+            head install_alire.sh
+            bash install_alire.sh       
+            echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install Alire (Windows)
         if: runner.os == 'Windows'
