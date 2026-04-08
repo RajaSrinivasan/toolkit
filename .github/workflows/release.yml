@@ -1,0 +1,118 @@
+name: Build and Release (Alire Multi-Platform)
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }} / ${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux
+          - os: ubuntu-latest
+            arch: x86_64
+          - os: ubuntu-latest
+            arch: aarch64
+
+          # macOS
+          - os: macos-latest
+            arch: x86_64
+          - os: macos-latest
+            arch: aarch64
+
+          # Windows
+          - os: windows-latest
+            arch: x86_64
+          - os: windows-latest
+            arch: aarch64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # -------------------------
+      # Install Alire
+      # -------------------------
+      - name: Install Alire (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          curl -L https://alire.ada.dev/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install Alire (Windows)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          Invoke-WebRequest https://alire.ada.dev/install.ps1 -OutFile install.ps1
+          ./install.ps1
+          echo "$env:USERPROFILE\.local\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      # -------------------------
+      # Select toolchain
+      # -------------------------
+      - name: Toolchain setup
+        run: |
+          alr toolchain --select gnat_native
+
+      # -------------------------
+      # Build
+      # -------------------------
+      - name: Build project
+        run: |
+            cd adalib; alr build
+            cd ../utilities; python3 buildall.py
+
+      # -------------------------
+      # Package artifacts
+      # -------------------------
+      - name: Package
+        run: |
+          mkdir package
+
+          # Adjust based on your project output
+          cp -r utilities/bin/* package/ || true
+
+          # Create archive
+          tar -czf toolkit-${{ matrix.os }}-${{ matrix.arch }}.tar.gz package
+
+      # -------------------------
+      # Upload artifact (for aggregation)
+      # -------------------------
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: toolkit-${{ matrix.os }}-${{ matrix.arch }}
+          path: toolkit-*.tar.gz
+
+  # -----------------------------------
+  # Release job (collects all artifacts)
+  # -----------------------------------
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: List files (debug)
+        run: ls -R
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Toolkit ${{ github.ref_name }}
+          files: "**/*.tar.gz"
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -27,7 +27,7 @@ jobs:
 
       - name: Utilities
         run: |
-          cd utilities; source build.sh
+          cd utilities; python3 buildall.py
 
       - name: Examples
         run: |
