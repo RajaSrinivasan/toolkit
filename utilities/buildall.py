@@ -4,7 +4,6 @@ import subprocess
 
 def build_project(project_dir):
     os.chdir(project_dir)
-    subprocess.run(["alr", "clean"], check=True)    
     subprocess.run(["alr", "build"], check=True)    
     os.chdir("..")
     
