@@ -6,6 +6,8 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 
 with cli;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+
 with GNAT.Regpat; use GNAT.Regpat;
 with GNAT.Expect;
 
@@ -83,10 +85,31 @@ package body impl is
 
    end Emit_Prolog;
 
+   procedure Emit_Segment_Prolog
+     (segname : String; 
+      caption : GNAT.Strings.String_Access; 
+      inputfilename : String) is
+   begin
+
+      Put("```{.ada .bg-beige #lst-patterns lst-cap=");
+      Put('"');
+      Put(segname);
+      Put('"');
+      Put_Line("}");
+
+   end Emit_Segment_Prolog;
+
    procedure Emit_Epilog is
    begin
       Put_Line ("```");
    end Emit_Epilog;
+
+   procedure Emit_Segment_Epilog( hdr : String) is
+   begin
+      Put_Line ("```");
+      Put_Line( hdr ) ;
+      Put_Line (":::");
+   end Emit_Segment_Epilog;
 
    procedure Extract
      (inputfilename : String;
@@ -98,6 +121,7 @@ package body impl is
       inplinelen : Natural;
       lineno     : Integer := 0;
       segspec    : Match_Array (0 .. 2);
+      output_dir : GNAT.Strings.String_Access := cli.output_dir ;
 
       procedure Skip_Segment is
       begin
@@ -123,11 +147,26 @@ package body impl is
 
       --codemd: begin segment=Segment caption=Process_Segment
       procedure Process_Segment is
+         listfile : File_Type;
+         segname : constant String := inpline (segspec (1).First .. segspec (1).Last) ;
       begin
+         if segment = "*" then
+            Create( listfile , Out_File, output_dir.all & 
+                                         GNAT.Directory_Operations.Dir_Separator & 
+                                         segname &
+                                         ".md");
+            Set_Output(listfile);
+         end if;
+         Emit_Segment_Prolog (segname , caption , inputfilename);
          while not End_Of_File (inpfile) loop
             Get_Line (inpfile, inpline, inplinelen);
             lineno := lineno + 1;
             if Match (endpat, inpline (1 .. inplinelen)) then
+               if segment = "*" then
+                  Emit_Epilog ;
+                  Close (listfile);
+                  Set_Output (Standard_Output);
+               end if;
                return;
             elsif Match (skippat, inpline (1 .. inplinelen)) then
                New_Line;
@@ -138,13 +177,23 @@ package body impl is
                Emit_Line (lineno, inpline (1 .. inplinelen));
             end if;
          end loop;
+         Emit_Epilog;
       end Process_Segment;
+ 
       --codemd: end
    begin
       --codemd: begin segment=Process
       --Put_Line(inputfilename);
+      if segment="*" then
+         if cli.output_dir.all'Length = 0 then
+            Put ("No output directory specified, using current directory");
+            output_dir := new String'(GNAT.Directory_Operations.Get_Current_Dir);
+            Put_Line ("Current directory is " & output_dir.all);
+         end if;
+      end if ;
+
       Open (inpfile, In_File, inputfilename);
-      Emit_Prolog (caption, "Reference : " & inputfilename);
+
       while not End_Of_File (inpfile) loop
          Get_Line (inpfile, inpline, inplinelen);
          lineno := lineno + 1;

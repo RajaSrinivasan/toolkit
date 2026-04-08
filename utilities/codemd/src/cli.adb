@@ -68,10 +68,18 @@ package body cli is
 
       GNAT.Command_Line.Define_Switch
         (Config,
-         lines'Access,
+         output_file'Access,
          Switch      => "-O?",
          Long_Switch => "--output-file?",
          Help        => "Save output to a file. Need a filename for cmd exec");
+
+      GNAT.Command_Line.Define_Switch
+        (Config,
+         output_dir'Access,
+         Switch      => "-D?",
+         Long_Switch => "--output-dir?",
+         Help        => "while -x: is used, each segment is saved to a file in this directory. Need a dir name");
+
 
       GNAT.Command_Line.Getopt (Config);
 
