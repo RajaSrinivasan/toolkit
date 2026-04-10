@@ -13,17 +13,22 @@ with GNAT.Expect;
 
 package body impl is
    use GNAT.Strings;
-   -- codemd: begin segment=patterns 
+   -- codemd: begin segment=patterns caption="Patterns for codemd directives"
    cmdid      : constant String := "codemd" & ":";
+
+   strpat     : constant Pattern_Matcher := Compile ('"' & "(.+)" & '"');
+   wordpat    : constant Pattern_Matcher := Compile ("[a-zA-Z_]+");   
+
    beginpat   : constant Pattern_Matcher :=
-     Compile (cmdid & " +begin" & " +segment=([a-zA-Z0-9]+)");
+     Compile (cmdid & " +begin" & " +segment=([a-zA-Z0-9]+)" );
    endpat     : constant Pattern_Matcher := Compile (cmdid & " +end");
    skippat    : constant Pattern_Matcher := Compile (cmdid & " +skipbegin");
    skipendpat : constant Pattern_Matcher := Compile (cmdid & " +skipend");
+
+   captionpat : constant Pattern_Matcher := Compile (" +caption=" & '"' & "(.+)" & '"')  ;
+
    -- codemd: end
 
-   strpat     : constant Pattern_Matcher := Compile ('"' & ".+" & '"');
-   wordpat    : constant Pattern_Matcher := Compile ("[a-zA-Z_]+");
    keywordpat : constant Pattern_Matcher :=
      Compile
        ("procedure|begin|end|function|with|use|if|then|else",
@@ -89,11 +94,16 @@ package body impl is
      (segname : String; 
       caption : GNAT.Strings.String_Access; 
       inputfilename : String) is
+      use GNAT.Strings ;
    begin
 
       Put("```{.ada .bg-beige #lst-patterns lst-cap=");
       Put('"');
-      Put(segname);
+      if gnat.strings."/="(caption,null) and then caption.all'Length > 0 then
+         Put(caption.all);
+      else
+         Put(segname);
+      end if;
       Put('"');
       Put_Line("}");
 
@@ -103,13 +113,6 @@ package body impl is
    begin
       Put_Line ("```");
    end Emit_Epilog;
-
-   procedure Emit_Segment_Epilog( hdr : String) is
-   begin
-      Put_Line ("```");
-      Put_Line( hdr ) ;
-      Put_Line (":::");
-   end Emit_Segment_Epilog;
 
    procedure Extract
      (inputfilename : String;
@@ -121,6 +124,8 @@ package body impl is
       inplinelen : Natural;
       lineno     : Integer := 0;
       segspec    : Match_Array (0 .. 2);
+      captspec   : Match_Array (0 .. 2);
+
       output_dir : GNAT.Strings.String_Access := cli.output_dir ;
 
       procedure Skip_Segment is
@@ -149,7 +154,14 @@ package body impl is
       procedure Process_Segment is
          listfile : File_Type;
          segname : constant String := inpline (segspec (1).First .. segspec (1).Last) ;
+         captoverride : gnat.Strings.String_Access := null;
       begin
+         Match (captionpat, inpline (segspec (1).Last.. inplinelen), captspec) ;
+         if captspec (0) /= No_Match then
+            pragma Debug(Put_Line("Found caption " & inpline(captspec (1).First .. captspec (1).Last)));
+            captoverride := new String'(inpline(captspec (1).First .. captspec (1).Last));
+         end if ;
+
          if segment = "*" then
             Create( listfile , Out_File, output_dir.all & 
                                          GNAT.Directory_Operations.Dir_Separator & 
@@ -157,7 +169,8 @@ package body impl is
                                          ".md");
             Set_Output(listfile);
          end if;
-         Emit_Segment_Prolog (segname , caption , inputfilename);
+
+         Emit_Segment_Prolog (segname , captoverride , inputfilename);
          while not End_Of_File (inpfile) loop
             Get_Line (inpfile, inpline, inplinelen);
             lineno := lineno + 1;
