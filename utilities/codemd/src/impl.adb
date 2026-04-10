@@ -162,10 +162,10 @@ package body impl is
             Get_Line (inpfile, inpline, inplinelen);
             lineno := lineno + 1;
             if Match (endpat, inpline (1 .. inplinelen)) then
+               Emit_Epilog ;           
                if segment = "*" then
-                  Emit_Epilog ;
                   Close (listfile);
-                  Set_Output (Standard_Output);
+                  Set_Output (Standard_Output);               
                end if;
                return;
             elsif Match (skippat, inpline (1 .. inplinelen)) then
@@ -177,7 +177,6 @@ package body impl is
                Emit_Line (lineno, inpline (1 .. inplinelen));
             end if;
          end loop;
-         Emit_Epilog;
       end Process_Segment;
  
       --codemd: end
@@ -211,7 +210,6 @@ package body impl is
          --codemd: skipend
       end loop;
       Close (inpfile);
-      Emit_Epilog;
       --codemd: end
    end Extract;
 
