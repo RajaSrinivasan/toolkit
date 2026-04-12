@@ -94,7 +94,6 @@ package body impl is
      (segname : String; 
       caption : GNAT.Strings.String_Access; 
       inputfilename : String) is
-      use GNAT.Strings ;
    begin
 
       Put("```{.ada .bg-beige #lst-patterns lst-cap=");
@@ -106,6 +105,10 @@ package body impl is
       end if;
       Put('"');
       Put_Line("}");
+      New_Line ;
+      Put("File : ");
+      Put_Line(gnat.Directory_Operations.Base_Name(inputfilename));
+      New_Line ;
 
    end Emit_Segment_Prolog;
 
@@ -154,7 +157,7 @@ package body impl is
       procedure Process_Segment is
          listfile : File_Type;
          segname : constant String := inpline (segspec (1).First .. segspec (1).Last) ;
-         captoverride : gnat.Strings.String_Access := null;
+         captoverride : gnat.Strings.String_Access := caption;
       begin
          Match (captionpat, inpline (segspec (1).Last.. inplinelen), captspec) ;
          if captspec (0) /= No_Match then
@@ -170,7 +173,7 @@ package body impl is
             Set_Output(listfile);
          end if;
 
-         Emit_Segment_Prolog (segname , captoverride , inputfilename);
+         Emit_Segment_Prolog (segname , captoverride , Name(inpfile) );
          while not End_Of_File (inpfile) loop
             Get_Line (inpfile, inpline, inplinelen);
             lineno := lineno + 1;
