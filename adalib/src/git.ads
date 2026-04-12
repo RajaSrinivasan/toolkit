@@ -27,7 +27,8 @@ package git is
    -- @returns The default branch name
 
    function RepoUrl (dir : String := ".") return String;
-
+   function RepoTopLevel (dir : String := ".") return String;
+   
    function CurrentBranch (dir : String := ".") return String;
    -- Find the current branch in the local working directory
    -- @param dir The local working directory

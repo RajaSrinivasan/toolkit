@@ -149,7 +149,12 @@ package body git is
    begin
       return Exec (dir, repourlcmd);
    end RepoUrl;
-
+   function RepoTopLevel (dir : String := ".") return String is
+      toplevelcmd : constant String := "rev-parse --show-toplevel";
+   begin
+      return Exec (dir, toplevelcmd);
+   end RepoTopLevel;
+   
    function CommitId (dir : String := ".") return String is
       cmd : constant String := "rev-parse HEAD";
    begin
