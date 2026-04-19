@@ -8,9 +8,10 @@ project Codemd is
    for Create_Missing_Dirs use "True";
    for Exec_Dir use "../bin";
    for Main use ("codemd.adb","exp1.adb");
-
+-- codemd: begin segment=example1 caption="Example 1: Hello World in Ada"
    package Compiler is
       for Default_Switches ("Ada") use Codemd_Config.Ada_Compiler_Switches;
    end Compiler;
+--codemd: end
 
 end Codemd;

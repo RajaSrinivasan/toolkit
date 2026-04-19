@@ -93,19 +93,24 @@ package body impl is
    procedure Emit_Segment_Prolog
      (segname : String; 
       caption : GNAT.Strings.String_Access; 
-      inputfilename : String) is
+      inputfilename : String ;
+      ada_source : Boolean ) is
    begin
 
-      Put("```{.ada .bg-beige #lst-patterns lst-cap=");
-      Put('"');
-      if gnat.strings."/="(caption,null) and then caption.all'Length > 0 then
-         Put(caption.all);
-      else
-         Put(segname);
-      end if;
-      Put('"');
-      Put_Line("}");
-      New_Line ;
+      if ada_source then
+         Put("```{.ada .bg-beige #lst-patterns lst-cap=");
+         Put('"');
+         if gnat.strings."/="(caption,null) and then caption.all'Length > 0 then
+            Put(caption.all);
+         else
+            Put(segname);
+         end if;
+         Put('"');
+         Put_Line("}");
+   else
+   Put_Line("```");
+   end if ;
+
       Put("File : ");
       Put_Line(gnat.Directory_Operations.Base_Name(inputfilename));
       New_Line ;
@@ -128,6 +133,7 @@ package body impl is
       lineno     : Integer := 0;
       segspec    : Match_Array (0 .. 2);
       captspec   : Match_Array (0 .. 2);
+      ada_source : Boolean := false;
 
       output_dir : GNAT.Strings.String_Access := cli.output_dir ;
 
@@ -161,7 +167,8 @@ package body impl is
       begin
          Match (captionpat, inpline (segspec (1).Last.. inplinelen), captspec) ;
          if captspec (0) /= No_Match then
-            pragma Debug(Put_Line("Found caption " & inpline(captspec (1).First .. captspec (1).Last)));
+            --pragma Debug(Put_Line("Found caption " & inpline(captspec (1).First .. captspec (1).Last)));
+            Put_Line("Found caption " & inpline(captspec (1).First .. captspec (1).Last));            
             captoverride := new String'(inpline(captspec (1).First .. captspec (1).Last));
          end if ;
 
@@ -173,7 +180,7 @@ package body impl is
             Set_Output(listfile);
          end if;
 
-         Emit_Segment_Prolog (segname , captoverride , Name(inpfile) );
+         Emit_Segment_Prolog (segname , captoverride , Name(inpfile) , ada_source );
          while not End_Of_File (inpfile) loop
             Get_Line (inpfile, inpline, inplinelen);
             lineno := lineno + 1;
@@ -207,22 +214,36 @@ package body impl is
          end if;
       end if ;
 
+      declare
+         filetype : constant String := gnat.directory_operations.File_Extension(inputfilename);
+      begin
+         if filetype = ".adb" or
+            filetype = ".ads" then
+            ada_source := true ;
+         else
+            Put_Line("File " & inputfilename & " is not an Ada source file");
+         end if ;
+      end ;
       Open (inpfile, In_File, inputfilename);
 
       while not End_Of_File (inpfile) loop
          Get_Line (inpfile, inpline, inplinelen);
          lineno := lineno + 1;
          --codemd: skipbegin
-         Match (beginpat, inpline (1 .. inplinelen), segspec);
-         if segspec (0) /= No_Match then
-            if segment = inpline (segspec (1).First .. segspec (1).Last)
-              or segment = "*"
-            then
-               Process_Segment;
-            else
-               Skip_Segment;
+
+            Match (beginpat, inpline (1 .. inplinelen), segspec);
+            if segspec (0) /= No_Match then
+               if segment = inpline (segspec (1).First .. segspec (1).Last)
+               or segment = "*"
+               then
+                  --Put_Line ("Segment " & inpline (segspec (1).First .. segspec (1).Last) & " processed");
+                  Process_Segment;
+               else
+                  Skip_Segment;
+                  --Put_Line ("Segment " & inpline (segspec (1).First .. segspec (1).Last) & " skipped");
+               end if;
             end if;
-         end if;
+
          --codemd: skipend
       end loop;
       Close (inpfile);
