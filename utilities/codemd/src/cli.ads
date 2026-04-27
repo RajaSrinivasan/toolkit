@@ -8,7 +8,8 @@ package cli is
    Verbose    : aliased Boolean := False;
    HelpOption : aliased Boolean;
    allsections     : aliased Boolean := False;
-
+   listingOption : aliased Boolean := False;
+   
    extractSection : aliased GNAT.Strings.String_Access;
    caption        : aliased GNAT.Strings.String_Access;
    lines          : aliased GNAT.Strings.String_Access;

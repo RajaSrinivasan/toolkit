@@ -40,6 +40,13 @@ package body cli is
 
       GNAT.Command_Line.Define_Switch
         (Config,
+         listingOption'Access,
+         Switch      => "-l",
+         Long_Switch => "--listing",
+         Help        => "listing on Stardard Output");
+
+      GNAT.Command_Line.Define_Switch
+        (Config,
          extractSection'Access,
          Switch      => "-x:",
          Long_Switch => "--extract:",
