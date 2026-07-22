@@ -58,6 +58,8 @@ int get(void *buffer, size_t buflen, uint32_t *_seq, uint32_t *_now)
         printf("Decoding failed: %s\n", PB_GET_ERROR(&stream));
         return -1;
     }
+    *_seq = message.seq ;
+    *_now = message.now ;
     return 0;
 }
 

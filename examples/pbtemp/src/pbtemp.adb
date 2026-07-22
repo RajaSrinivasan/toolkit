@@ -1,5 +1,6 @@
 with Interfaces.C ; use Interfaces.C ;
 with nanopblib ;
+with mq ;
 procedure Pbtemp is
    buffer : Integer ;
    Status : Int ;
