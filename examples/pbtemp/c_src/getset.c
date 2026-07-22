@@ -41,7 +41,7 @@ int set(void *buffer, size_t buflen, uint32_t _seq, uint32_t _now)
 int get(void *buffer, size_t buflen, uint32_t *_seq, uint32_t *_now)
     
 {
-    size_t message_length;
+    //size_t message_length;
     bool status;
 
     /* Allocate space for the decoded message. */
@@ -50,7 +50,7 @@ int get(void *buffer, size_t buflen, uint32_t *_seq, uint32_t *_now)
     pb_istream_t stream = pb_istream_from_buffer(buffer, buflen);
     
     /* Now we are ready to decode the message. */
-    status = pb_decode(&stream, msgtime_fields, &message);
+    status = pb_decode(&stream, msgtime_fields, &message );
         
         /* Check for errors... */
     if (!status)
@@ -58,6 +58,8 @@ int get(void *buffer, size_t buflen, uint32_t *_seq, uint32_t *_now)
         printf("Decoding failed: %s\n", PB_GET_ERROR(&stream));
         return -1;
     }
+    *_seq = (uint32_t) message.seq ;
+    *_now = (uint32_t) message.now ;
     return 0;
 }
 
