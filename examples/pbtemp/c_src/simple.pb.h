@@ -12,7 +12,7 @@
 /* Struct definitions */
 typedef struct _msgtime {
     uint32_t seq;
-    uint32_t now;
+    float now;
 } msgtime;
 
 
@@ -31,7 +31,7 @@ extern "C" {
 /* Struct field encoding specification for nanopb */
 #define msgtime_FIELDLIST(X, a) \
 X(a, STATIC,   REQUIRED, UINT32,   seq,               1) \
-X(a, STATIC,   REQUIRED, UINT32,   now,               2)
+X(a, STATIC,   REQUIRED, FLOAT,    now,               2)
 #define msgtime_CALLBACK NULL
 #define msgtime_DEFAULT NULL
 
@@ -42,7 +42,7 @@ extern const pb_msgdesc_t msgtime_msg;
 
 /* Maximum encoded size of messages (where known) */
 #define SIMPLE_PB_H_MAX_SIZE                     msgtime_size
-#define msgtime_size                             12
+#define msgtime_size                             11
 
 #ifdef __cplusplus
 } /* extern "C" */

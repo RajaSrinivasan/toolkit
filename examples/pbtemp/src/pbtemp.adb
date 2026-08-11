@@ -7,11 +7,12 @@ procedure Pbtemp is
    buflen : System.Storage_Elements.Storage_Count ;
 
    Status : Int ;
-   seq, now : aliased Int ;
+   seq : aliased Int ;
+   now : aliased C_Float ;
 begin
    for i in 32000..32032
    loop
-      Status := nanopblib.Set( buffer(buffer'first)'Address , Int( buffer'length ) , seq => Int(i) , now => Int(32032 - i)) ;
+      Status := nanopblib.Set( buffer(buffer'first)'Address , Int( buffer'length ) , seq => Int(i) , now => C_Float(32032 - i)) ;
       if Status <= 0
       then
          Put_Line("Error packing");

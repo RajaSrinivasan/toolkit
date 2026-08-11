@@ -4,7 +4,7 @@
 #include <pb_decode.h>
 #include "simple_pb.h"
 
-int set(void *buffer, size_t buflen, uint32_t _seq, uint32_t _now)
+int set(void *buffer, size_t buflen, uint32_t _seq, float _now)
 {
     size_t message_length;
     bool status;
@@ -38,7 +38,7 @@ int set(void *buffer, size_t buflen, uint32_t _seq, uint32_t _now)
         return message_length;
 }
   
-int get(void *buffer, size_t buflen, uint32_t *_seq, uint32_t *_now)
+int get(void *buffer, size_t buflen, uint32_t *_seq, float *_now)
     
 {
     //size_t message_length;
@@ -59,7 +59,7 @@ int get(void *buffer, size_t buflen, uint32_t *_seq, uint32_t *_now)
         return -1;
     }
     *_seq = (uint32_t) message.seq ;
-    *_now = (uint32_t) message.now ;
+    *_now = (float) message.now ;
     return 0;
 }
 
