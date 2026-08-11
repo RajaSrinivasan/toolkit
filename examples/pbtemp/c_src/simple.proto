@@ -1,5 +1,5 @@
 syntax="proto2";
 message msgtime {
   required uint32 seq           = 1;
-  required uint32 now           = 2;
+  required float now           = 2;
 }

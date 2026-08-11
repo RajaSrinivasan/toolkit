@@ -4,7 +4,7 @@ package nanopblib is
    function Set(buffer : System.Address ;
                 buflen : Int ;
                 seq : Int ;
-                now : Int )
+                now : C_Float )
             return Int ;
    pragma Import(C,Set,"set");
 

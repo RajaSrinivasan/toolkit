@@ -4,7 +4,7 @@
 #include <pb_decode.h>
 #include "simple_pb.h"
 
-int set(void *buffer, size_t buflen, uint32_t _seq, uint32_t _now)
+int set(void *buffer, size_t buflen, uint32_t _seq, float _now)
 {
     size_t message_length;
     bool status;
@@ -38,10 +38,10 @@ int set(void *buffer, size_t buflen, uint32_t _seq, uint32_t _now)
         return message_length;
 }
   
-int get(void *buffer, size_t buflen, uint32_t *_seq, uint32_t *_now)
+int get(void *buffer, size_t buflen, uint32_t *_seq, float *_now)
     
 {
-    size_t message_length;
+    //size_t message_length;
     bool status;
 
     /* Allocate space for the decoded message. */
@@ -50,7 +50,7 @@ int get(void *buffer, size_t buflen, uint32_t *_seq, uint32_t *_now)
     pb_istream_t stream = pb_istream_from_buffer(buffer, buflen);
     
     /* Now we are ready to decode the message. */
-    status = pb_decode(&stream, msgtime_fields, &message);
+    status = pb_decode(&stream, msgtime_fields, &message );
         
         /* Check for errors... */
     if (!status)
