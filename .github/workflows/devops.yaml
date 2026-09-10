@@ -18,5 +18,5 @@ jobs:
 
       - name: Build
         run: |
-          cd adalib ; alr build --non-interactive
+          cd adalib ; alr --non-interactive build
 
